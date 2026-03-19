@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls c:/Users/morga/Desktop/stmevents/public/*.jpg c:/Users/morga/Desktop/stmevents/public/*.png c:/Users/morga/Desktop/stmevents/public/*.webp)"
+    ]
+  }
+}
