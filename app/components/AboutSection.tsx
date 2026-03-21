@@ -3,12 +3,6 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 
-const STATS = [
-  { value: "50+", label: "Events Produced" },
-  { value: "10K+", label: "People Moved" },
-  { value: "30+", label: "Artists Featured" },
-];
-
 export default function AboutSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
@@ -21,31 +15,15 @@ export default function AboutSection() {
       ref={sectionRef}
       className="relative overflow-hidden bg-black py-28 sm:py-32 md:py-40"
     >
-      {/* ── Background ── */}
-      <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        {/* Purple gradient wash */}
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-950/20 via-transparent to-violet-950/10" />
-
-        {/* Orb — pure CSS */}
-        <div
-          className="about-orb absolute h-[600px] w-[600px] rounded-full will-change-transform"
-          style={{
-            background: "radial-gradient(circle, rgba(157,78,221,0.07) 0%, transparent 70%)",
-            filter: "blur(120px)",
-            top: "30%",
-            left: "20%",
-          }}
-        />
-
-        {/* Noise */}
-        <div
-          className="absolute inset-0 opacity-[0.015]"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
-            backgroundSize: "128px 128px",
-          }}
-        />
-      </div>
+      {/* Noise only — no orbs */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.015]"
+        aria-hidden="true"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
+          backgroundSize: "128px 128px",
+        }}
+      />
 
       {/* ── Content ── */}
       <div className="relative z-10 mx-auto w-full px-6 sm:px-8 md:px-12 lg:px-16 xl:px-20">
@@ -100,59 +78,7 @@ export default function AboutSection() {
               </p>
             </motion.div>
 
-            {/* Stats */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={textInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
-              className="mt-10 flex gap-10 border-t border-white/[0.06] pt-8"
-            >
-              {STATS.map((stat, i) => (
-                <motion.div
-                  key={stat.label}
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={textInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{
-                    duration: 0.5,
-                    delay: 0.55 + i * 0.1,
-                    ease: [0.16, 1, 0.3, 1],
-                  }}
-                >
-                  <span className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
-                    {stat.value}
-                  </span>
-                  <span className="mt-1 block text-[11px] font-medium uppercase tracking-[0.2em] text-white/30">
-                    {stat.label}
-                  </span>
-                </motion.div>
-              ))}
-            </motion.div>
 
-            {/* CTA */}
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={textInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.65, ease: [0.16, 1, 0.3, 1] }}
-              className="mt-10"
-            >
-              <a
-                href="/about"
-                className="group inline-flex items-center gap-3 text-[12px] font-semibold uppercase tracking-[0.25em] text-white/50 transition-colors duration-300 hover:text-white"
-              >
-                <span>Learn Our Story</span>
-                <span className="flex h-7 w-7 items-center justify-center rounded-full border border-white/10 transition-all duration-300 group-hover:border-purple-500/30 group-hover:bg-purple-500/10">
-                  <svg
-                    className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-0.5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </span>
-              </a>
-            </motion.div>
           </div>
 
           {/* ── Right — Visual ── */}
@@ -164,9 +90,6 @@ export default function AboutSection() {
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
             className="relative"
           >
-            {/* Purple glow behind image */}
-            <div className="absolute -inset-8 rounded-3xl bg-purple-600/[0.04] blur-3xl" />
-
             {/* Accent line (left edge) */}
             <motion.div
               className="absolute -left-3 top-8 bottom-8 hidden w-px lg:block"
@@ -216,16 +139,6 @@ export default function AboutSection() {
           </motion.div>
         </div>
       </div>
-      <style jsx>{`
-        @keyframes about-orb-drift {
-          0%, 100% { transform: translate(0, 0) scale(1); }
-          33% { transform: translate(30%, -20%) scale(1.1); }
-          66% { transform: translate(-10%, 15%) scale(0.9); }
-        }
-        .about-orb {
-          animation: about-orb-drift 20s ease-in-out infinite;
-        }
-      `}</style>
     </section>
   );
 }

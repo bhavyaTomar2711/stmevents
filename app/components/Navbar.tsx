@@ -6,7 +6,7 @@ const navLinks = [
   { label: "EVENTS", href: "#events" },
   { label: "GALLERY", href: "#gallery" },
   { label: "SERVICES", href: "#services" },
-  { label: "ABOUT", href: "#about" },
+  { label: "DJS", href: "#djs" },
   { label: "CONTACT", href: "#contact" },
 ];
 
