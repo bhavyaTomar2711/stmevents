@@ -28,13 +28,12 @@ function DJCard({
       onClick={onActivate}
     >
       <div
-        className={`relative overflow-hidden rounded-2xl border backdrop-blur-sm transition-all duration-500 ease-out ${
-          isActive
+        className={`relative overflow-hidden rounded-2xl border backdrop-blur-sm transition-all duration-500 ease-out ${isActive
             ? "scale-[1.03] border-purple-500/30 shadow-[0_0_35px_rgba(124,58,237,0.15)]"
             : isDimmed
               ? "scale-[0.97] border-white/[0.04] opacity-50"
               : "border-white/[0.06] bg-white/[0.02]"
-        }`}
+          }`}
         style={{ aspectRatio: "3 / 4" }}
       >
         <Image
@@ -42,9 +41,8 @@ function DJCard({
           alt={dj.name}
           fill
           sizes="(max-width: 768px) 260px, 360px"
-          className={`object-cover transition-all duration-500 ease-out ${
-            isDimmed ? "brightness-50" : "brightness-90"
-          } ${isActive ? "scale-105 brightness-110" : ""}`}
+          className={`object-cover transition-all duration-500 ease-out ${isDimmed ? "brightness-50" : "brightness-90"
+            } ${isActive ? "scale-105 brightness-110" : ""}`}
         />
 
         {/* Gradient overlay */}
@@ -54,9 +52,8 @@ function DJCard({
         <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
           {/* Genre */}
           <span
-            className={`mb-2 inline-block text-[10px] font-medium uppercase tracking-[0.2em] transition-all duration-400 ${
-              isActive ? "text-purple-300 opacity-100" : "text-white/40 opacity-70"
-            }`}
+            className={`mb-2 inline-block text-[10px] font-medium uppercase tracking-[0.2em] transition-all duration-400 ${isActive ? "text-purple-300 opacity-100" : "text-white/40 opacity-70"
+              }`}
           >
             {dj.genre}
           </span>
@@ -68,9 +65,8 @@ function DJCard({
 
           {/* Accent line */}
           <div
-            className={`mt-2 h-[1px] bg-purple-500 transition-all duration-500 ${
-              isActive ? "w-12 opacity-100" : "w-0 opacity-0"
-            }`}
+            className={`mt-2 h-[1px] bg-purple-500 transition-all duration-500 ${isActive ? "w-12 opacity-100" : "w-0 opacity-0"
+              }`}
           />
         </div>
       </div>
@@ -180,14 +176,12 @@ export default function ResidentDJs({ djs }: { djs: DJData[] }) {
       <div className="relative z-10 mt-14 sm:mt-20">
         {/* Edge fades */}
         <div
-          className={`pointer-events-none absolute inset-y-0 left-0 z-20 w-16 bg-gradient-to-r from-black to-transparent transition-opacity duration-300 sm:w-24 ${
-            canScrollLeft ? "opacity-100" : "opacity-0"
-          }`}
+          className={`pointer-events-none absolute inset-y-0 left-0 z-20 w-16 bg-gradient-to-r from-black to-transparent transition-opacity duration-300 sm:w-24 ${canScrollLeft ? "opacity-100" : "opacity-0"
+            }`}
         />
         <div
-          className={`pointer-events-none absolute inset-y-0 right-0 z-20 w-16 bg-gradient-to-l from-black to-transparent transition-opacity duration-300 sm:w-24 ${
-            canScrollRight ? "opacity-100" : "opacity-0"
-          }`}
+          className={`pointer-events-none absolute inset-y-0 right-0 z-20 w-16 bg-gradient-to-l from-black to-transparent transition-opacity duration-300 sm:w-24 ${canScrollRight ? "opacity-100" : "opacity-0"
+            }`}
         />
 
         <div

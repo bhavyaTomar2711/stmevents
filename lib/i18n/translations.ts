@@ -82,6 +82,7 @@ const translations = {
     en: "The sound behind the experience.",
     de: "Der Sound hinter dem Erlebnis.",
   },
+  "djs.viewAll": { en: "View All DJs", de: "Alle DJs ansehen" },
 
   // ── Equipment ──
   "equipment.label": { en: "Equipment Rentals", de: "Equipment Vermietung" },
