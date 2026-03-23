@@ -4,8 +4,10 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import type { DJData } from "@/lib/djs";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 function DJCard({ dj, index }: { dj: DJData; index: number }) {
+  const { t } = useLanguage();
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -13,7 +15,7 @@ function DJCard({ dj, index }: { dj: DJData; index: number }) {
       transition={{ duration: 0.5, delay: index * 0.06 }}
     >
       <Link href={`/djs/${dj.slug}`} className="group block">
-        <div className="relative overflow-hidden rounded-2xl border border-white/[0.06] transition-all duration-500 hover:-translate-y-2 hover:border-purple-500/25 hover:shadow-[0_0_25px_rgba(124,58,237,0.1)]">
+        <div className="glass-card relative overflow-hidden rounded-2xl transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_0_35px_rgba(124,58,237,0.12)]">
           {/* Image */}
           <div className="relative overflow-hidden" style={{ aspectRatio: "3 / 4" }}>
             <Image
@@ -28,7 +30,7 @@ function DJCard({ dj, index }: { dj: DJData; index: number }) {
             {/* Resident badge */}
             {dj.resident && (
               <div className="absolute top-4 left-4 rounded-full border border-purple-500/30 bg-purple-500/10 px-3 py-1 text-[9px] font-semibold uppercase tracking-[0.2em] text-purple-300 backdrop-blur-sm">
-                Resident
+                {t("common.resident")}
               </div>
             )}
 
@@ -52,6 +54,7 @@ function DJCard({ dj, index }: { dj: DJData; index: number }) {
 }
 
 export default function DJsPageClient({ djs }: { djs: DJData[] }) {
+  const { t } = useLanguage();
   return (
     <main className="relative min-h-screen bg-black">
       {/* Background */}
@@ -87,7 +90,7 @@ export default function DJsPageClient({ djs }: { djs: DJData[] }) {
             <svg className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
             </svg>
-            Back to Home
+            {t("common.backToHome")}
           </Link>
         </motion.div>
 
@@ -100,7 +103,7 @@ export default function DJsPageClient({ djs }: { djs: DJData[] }) {
             className="mb-4 inline-flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.3em] text-purple-400"
           >
             <span className="inline-block h-px w-10 bg-gradient-to-r from-purple-500 to-transparent" />
-            The Artists
+            {t("djsPage.label")}
           </motion.span>
 
           <motion.h1
@@ -109,7 +112,7 @@ export default function DJsPageClient({ djs }: { djs: DJData[] }) {
             transition={{ duration: 0.6, delay: 0.15 }}
             className="mt-3 text-[clamp(2.5rem,6vw,6rem)] font-bold uppercase leading-[0.88] tracking-[-0.03em] text-white"
           >
-            DJS
+            {t("djsPage.heading")}
           </motion.h1>
 
           <motion.p
@@ -118,7 +121,7 @@ export default function DJsPageClient({ djs }: { djs: DJData[] }) {
             transition={{ duration: 0.5, delay: 0.25 }}
             className="mt-5 max-w-lg text-[15px] leading-relaxed text-white/30"
           >
-            The sound behind every STM Events experience.
+            {t("djsPage.description")}
           </motion.p>
         </div>
 

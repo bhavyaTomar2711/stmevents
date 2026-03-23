@@ -5,6 +5,7 @@ import { motion, useInView } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import type { DJData } from "@/lib/djs";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 /* ── Card Component ── */
 function DJCard({
@@ -27,12 +28,12 @@ function DJCard({
       onClick={onActivate}
     >
       <div
-        className={`relative overflow-hidden rounded-2xl border transition-all duration-500 ease-out ${
+        className={`relative overflow-hidden rounded-2xl border backdrop-blur-sm transition-all duration-500 ease-out ${
           isActive
-            ? "scale-[1.03] border-purple-500/30 shadow-[0_0_25px_rgba(124,58,237,0.12)]"
+            ? "scale-[1.03] border-purple-500/30 shadow-[0_0_35px_rgba(124,58,237,0.15)]"
             : isDimmed
               ? "scale-[0.97] border-white/[0.04] opacity-50"
-              : "border-white/[0.06]"
+              : "border-white/[0.06] bg-white/[0.02]"
         }`}
         style={{ aspectRatio: "3 / 4" }}
       >
@@ -79,6 +80,7 @@ function DJCard({
 
 /* ── Main Section ── */
 export default function ResidentDJs({ djs }: { djs: DJData[] }) {
+  const { t } = useLanguage();
   const sectionRef = useRef<HTMLElement>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
@@ -133,19 +135,19 @@ export default function ResidentDJs({ djs }: { djs: DJData[] }) {
           <div className="mb-4 flex items-center gap-4">
             <div className="h-px w-8 bg-purple-500" />
             <span className="text-xs font-medium uppercase tracking-[0.3em] text-purple-400">
-              Resident DJs
+              {t("djs.label")}
             </span>
           </div>
 
           <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <h2 className="text-5xl font-bold uppercase leading-[0.95] tracking-tight text-white sm:text-6xl md:text-7xl lg:text-8xl">
-                MEET THE
+                {t("djs.heading1")}
                 <br />
-                ARTISTS
+                {t("djs.heading2")}
               </h2>
               <p className="mt-5 max-w-md text-sm leading-relaxed text-white/40 sm:text-base">
-                The sound behind the experience.
+                {t("djs.description")}
               </p>
             </div>
 

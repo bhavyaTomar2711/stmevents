@@ -4,8 +4,10 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import EventCard from "@/app/components/EventCard";
 import type { EventData } from "@/lib/events";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 export default function EventsPageClient({ events }: { events: EventData[] }) {
+  const { t } = useLanguage();
   return (
     <main className="relative min-h-screen bg-black">
       {/* Background effects */}
@@ -57,7 +59,7 @@ export default function EventsPageClient({ events }: { events: EventData[] }) {
             >
               <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
             </svg>
-            Back to Home
+            {t("common.backToHome")}
           </Link>
         </motion.div>
 
@@ -70,7 +72,7 @@ export default function EventsPageClient({ events }: { events: EventData[] }) {
             className="mb-4 inline-flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.3em] text-purple-400"
           >
             <span className="inline-block h-px w-10 bg-gradient-to-r from-purple-500 to-transparent" />
-            All Events
+            {t("eventsPage.label")}
           </motion.span>
 
           <motion.h1
@@ -79,7 +81,7 @@ export default function EventsPageClient({ events }: { events: EventData[] }) {
             transition={{ duration: 0.6, delay: 0.15 }}
             className="mt-3 text-[clamp(2.5rem,6vw,6rem)] font-bold uppercase leading-[0.88] tracking-[-0.03em] text-white"
           >
-            EVENTS
+            {t("eventsPage.heading")}
           </motion.h1>
 
           <motion.p
@@ -88,7 +90,7 @@ export default function EventsPageClient({ events }: { events: EventData[] }) {
             transition={{ duration: 0.5, delay: 0.25 }}
             className="mt-5 max-w-lg text-[15px] leading-relaxed text-white/30"
           >
-            Discover upcoming nights and immersive underground experiences.
+            {t("eventsPage.description")}
           </motion.p>
         </div>
 

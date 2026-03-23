@@ -69,7 +69,7 @@ export default function DJDetailClient({ dj }: { dj: DJData }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
-            <div className="relative overflow-hidden rounded-2xl border border-white/[0.06]">
+            <div className="glass-card relative overflow-hidden rounded-2xl">
               <div className="relative aspect-[3/4] w-full">
                 <Image
                   src={dj.photo}
@@ -130,7 +130,7 @@ export default function DJDetailClient({ dj }: { dj: DJData }) {
                       href={dj.instagramUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2.5 rounded-lg border border-white/[0.08] bg-white/[0.03] px-5 py-3 text-sm font-medium text-white/60 transition-all duration-300 hover:border-purple-500/25 hover:bg-purple-500/5 hover:text-white"
+                      className="glass-card flex items-center gap-2.5 rounded-lg px-5 py-3 text-sm font-medium text-white/60 transition-all duration-300 hover:text-white"
                     >
                       <InstagramIcon />
                       <span>Instagram</span>
@@ -141,7 +141,7 @@ export default function DJDetailClient({ dj }: { dj: DJData }) {
                       href={dj.soundcloudUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2.5 rounded-lg border border-white/[0.08] bg-white/[0.03] px-5 py-3 text-sm font-medium text-white/60 transition-all duration-300 hover:border-purple-500/25 hover:bg-purple-500/5 hover:text-white"
+                      className="glass-card flex items-center gap-2.5 rounded-lg px-5 py-3 text-sm font-medium text-white/60 transition-all duration-300 hover:text-white"
                     >
                       <SoundCloudIcon />
                       <span>SoundCloud</span>
@@ -153,20 +153,20 @@ export default function DJDetailClient({ dj }: { dj: DJData }) {
 
             {/* CTA */}
             <div className="mt-10 flex flex-wrap gap-4">
-              <a
-                href="#contact"
+              <Link
+                href="/events"
                 className="group relative inline-flex items-center gap-3 overflow-hidden rounded-lg bg-gradient-to-r from-[#7B2CBF] to-[#9D4EDD] px-7 py-4 text-sm font-semibold tracking-[0.12em] text-white uppercase transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_40px_rgba(157,78,221,0.3)]"
               >
-                <span className="relative z-10">Book for Event</span>
+                <span className="relative z-10">View Events</span>
                 <svg className="relative z-10 h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                 </svg>
                 <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-white/0 via-white/10 to-white/0 transition-transform duration-700 group-hover:translate-x-full" />
-              </a>
+              </Link>
 
               <Link
                 href="/djs"
-                className="inline-flex items-center gap-2 rounded-lg border border-white/[0.08] bg-white/[0.02] px-7 py-4 text-[11px] font-semibold tracking-[0.2em] text-white/50 uppercase transition-all duration-300 hover:border-purple-500/20 hover:text-white/70"
+                className="glass-card inline-flex items-center gap-2 rounded-lg px-7 py-4 text-[11px] font-semibold tracking-[0.2em] text-white/50 uppercase transition-all duration-300 hover:text-white/70"
               >
                 <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />

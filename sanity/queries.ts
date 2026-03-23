@@ -63,6 +63,20 @@ export const eventBySlugQuery = groq`
   }
 `;
 
+// Next upcoming event (for hero)
+export const nextEventQuery = groq`
+  *[_type == "event" && date >= now()] | order(date asc)[0] {
+    _id,
+    title,
+    "slug": slug.current,
+    date,
+    location,
+    mainImage,
+    eventbriteLink,
+    ticketStatus
+  }
+`;
+
 // All event slugs (for generateStaticParams)
 export const eventSlugsQuery = groq`
   *[_type == "event" && defined(slug.current)]{

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { TicketStatus } from "@/lib/events";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 interface EventCTAStickyProps {
   ticketUrl: string;
@@ -11,6 +12,7 @@ interface EventCTAStickyProps {
 }
 
 export default function EventCTASticky({ ticketUrl, ticketStatus, eventTitle }: EventCTAStickyProps) {
+  const { t } = useLanguage();
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -25,7 +27,7 @@ export default function EventCTASticky({ ticketUrl, ticketStatus, eventTitle }: 
 
   const isUrgent = ticketStatus === "limited" || ticketStatus === "final-release";
   const urgentLabel =
-    ticketStatus === "limited" ? "Limited Tickets" : "Final Release";
+    ticketStatus === "limited" ? t("cta.limitedTickets") : t("cta.finalRelease");
 
   return (
     <AnimatePresence>
@@ -56,7 +58,7 @@ export default function EventCTASticky({ ticketUrl, ticketStatus, eventTitle }: 
                     </span>
                   )}
                   <span className="text-[11px] text-white/25">
-                    Powered by Eventbrite
+                    {t("cta.poweredBy")}
                   </span>
                 </div>
               </div>
@@ -71,7 +73,7 @@ export default function EventCTASticky({ ticketUrl, ticketStatus, eventTitle }: 
                 <svg className="relative z-10 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 010 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 010-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375z" />
                 </svg>
-                <span className="relative z-10">Get Tickets</span>
+                <span className="relative z-10">{t("cta.getTickets")}</span>
                 <svg className="relative z-10 h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
                 </svg>

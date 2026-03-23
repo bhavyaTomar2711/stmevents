@@ -4,12 +4,14 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import EventCard from "./EventCard";
 import type { EventData } from "@/lib/events";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 interface UpcomingEventsProps {
   events: EventData[];
 }
 
 export default function UpcomingEvents({ events }: UpcomingEventsProps) {
+  const { t } = useLanguage();
   return (
     <section id="events" className="relative overflow-hidden bg-black pt-24 pb-16 sm:pt-28 sm:pb-20 md:pt-32 md:pb-24">
       {/* Background orbs */}
@@ -58,7 +60,7 @@ export default function UpcomingEvents({ events }: UpcomingEventsProps) {
             className="mb-4 inline-flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.3em] text-purple-400"
           >
             <span className="inline-block h-px w-10 bg-gradient-to-r from-purple-500 to-transparent" />
-            Upcoming Experiences
+            {t("events.label")}
           </motion.span>
 
           <motion.h2
@@ -68,9 +70,9 @@ export default function UpcomingEvents({ events }: UpcomingEventsProps) {
             transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             className="mt-3 text-[clamp(2.5rem,5.5vw,5.5rem)] font-bold uppercase leading-[0.88] tracking-[-0.03em] text-white"
           >
-            UPCOMING
+            {t("events.heading1")}
             <br />
-            EVENTS
+            {t("events.heading2")}
           </motion.h2>
 
           <motion.p
@@ -80,7 +82,7 @@ export default function UpcomingEvents({ events }: UpcomingEventsProps) {
             transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className="mt-5 max-w-lg text-[15px] leading-relaxed text-white/30"
           >
-            Discover our next underground experiences and immersive nights.
+            {t("events.description")}
           </motion.p>
         </div>
 
@@ -111,9 +113,9 @@ export default function UpcomingEvents({ events }: UpcomingEventsProps) {
         >
           <Link
             href="/events"
-            className="group inline-flex items-center gap-3 rounded-full border border-white/[0.06] bg-white/[0.02] px-6 py-3 text-[11px] font-semibold uppercase tracking-[0.25em] text-white/50 backdrop-blur-sm transition-all duration-400 hover:border-purple-500/20 hover:bg-purple-500/5 hover:text-white"
+            className="glass-card group inline-flex items-center gap-3 rounded-full px-6 py-3 text-[11px] font-semibold uppercase tracking-[0.25em] text-white/50 transition-all duration-400 hover:text-white hover:shadow-[0_4px_20px_rgba(124,58,237,0.1)]"
           >
-            <span>View All Events</span>
+            <span>{t("events.viewAll")}</span>
             <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/[0.06] transition-all duration-300 group-hover:bg-purple-500/20">
               <svg
                 className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-0.5"

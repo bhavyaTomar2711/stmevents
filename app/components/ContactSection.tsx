@@ -2,8 +2,11 @@
 
 import { useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
+import type { TranslationKey } from "@/lib/i18n/translations";
 
 export default function ContactSection() {
+  const { t } = useLanguage();
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
   const [formData, setFormData] = useState({ name: "", email: "", subject: "", message: "" });
@@ -17,7 +20,12 @@ export default function ContactSection() {
     setFormData({ name: "", email: "", subject: "", message: "" });
   };
 
-  const subjects = ["Event Booking", "DJ Booking", "Equipment Rental", "General Inquiry"];
+  const subjects: { key: TranslationKey; value: string }[] = [
+    { key: "contact.eventBooking", value: "Event Booking" },
+    { key: "contact.djBooking", value: "DJ Booking" },
+    { key: "contact.equipmentRental", value: "Equipment Rental" },
+    { key: "contact.generalInquiry", value: "General Inquiry" },
+  ];
 
   return (
     <section
@@ -25,6 +33,24 @@ export default function ContactSection() {
       id="contact"
       className="relative overflow-hidden bg-black py-28 sm:py-32 md:py-40"
     >
+      {/* Ambient purple glow */}
+      <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+        <div
+          className="absolute top-1/4 left-1/3 h-[600px] w-[600px] rounded-full"
+          style={{
+            background: "radial-gradient(circle, rgba(124,58,237,0.08) 0%, transparent 60%)",
+            filter: "blur(120px)",
+          }}
+        />
+        <div
+          className="absolute right-0 bottom-1/4 h-[400px] w-[400px] rounded-full"
+          style={{
+            background: "radial-gradient(circle, rgba(157,78,221,0.06) 0%, transparent 70%)",
+            filter: "blur(100px)",
+          }}
+        />
+      </div>
+
       {/* Noise texture */}
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.02]"
@@ -36,7 +62,7 @@ export default function ContactSection() {
       />
 
       {/* Top divider */}
-      <div className="absolute top-0 right-0 left-0 h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
+      <div className="absolute top-0 right-0 left-0 h-px bg-gradient-to-r from-transparent via-purple-500/30 to-transparent" />
 
       <div className="relative z-10 mx-auto w-full px-6 sm:px-8 md:px-12 lg:px-16 xl:px-20">
         {/* Header */}
@@ -48,7 +74,7 @@ export default function ContactSection() {
             className="inline-flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.3em] text-purple-400"
           >
             <span className="inline-block h-px w-10 bg-gradient-to-r from-purple-500 to-transparent" />
-            Get In Touch
+            {t("contact.label")}
           </motion.span>
 
           <motion.h2
@@ -57,17 +83,17 @@ export default function ContactSection() {
             transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             className="mt-4 text-[clamp(2rem,4.5vw,4.5rem)] font-bold uppercase leading-[0.9] tracking-[-0.03em]"
           >
-            <span className="block text-white">LET&apos;S CREATE</span>
-            <span className="block text-white">YOUR NEXT EVENT</span>
+            <span className="block text-white">{t("contact.heading1")}</span>
+            <span className="block text-white">{t("contact.heading2")}</span>
           </motion.h2>
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-5 max-w-lg text-[15px] leading-relaxed text-white/35"
+            className="mt-5 max-w-lg text-[15px] leading-relaxed text-white/50"
           >
-            From underground nights to full-scale productions — we bring your vision to life.
+            {t("contact.description")}
           </motion.p>
         </div>
 
@@ -81,14 +107,14 @@ export default function ContactSection() {
             className="lg:col-span-3"
           >
             <form onSubmit={handleSubmit}>
-              <div className="overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.02] p-7 sm:p-10">
+              <div className="overflow-hidden rounded-2xl border border-white/[0.1] bg-white/[0.04] p-7 backdrop-blur-xl sm:p-10">
                 <div className="space-y-7">
                   {/* Name & Email row */}
                   <div className="grid gap-7 sm:grid-cols-2">
                     {/* Name */}
                     <div className="relative">
-                      <label className="mb-2.5 block text-[10px] font-semibold uppercase tracking-[0.25em] text-white/25">
-                        Name
+                      <label className="mb-2.5 block text-[10px] font-semibold uppercase tracking-[0.25em] text-purple-400">
+                        {t("contact.name")}
                       </label>
                       <input
                         type="text"
@@ -96,8 +122,8 @@ export default function ContactSection() {
                         onChange={(e) => setFormData((p) => ({ ...p, name: e.target.value }))}
                         onFocus={() => setFocusedField("name")}
                         onBlur={() => setFocusedField(null)}
-                        placeholder="Your name"
-                        className="w-full border-b border-white/[0.08] bg-transparent py-3 text-sm text-white placeholder-white/15 transition-colors duration-300 outline-none focus:border-purple-500/40"
+                        placeholder={t("contact.namePlaceholder")}
+                        className="w-full border-b border-white/[0.15] bg-transparent py-3 text-sm text-white placeholder-white/30 transition-colors duration-300 outline-none focus:border-purple-500/40"
                       />
                       <div
                         className={`absolute bottom-0 left-0 h-[1.5px] bg-gradient-to-r from-purple-500 to-purple-400/50 transition-all duration-500 ${
@@ -108,8 +134,8 @@ export default function ContactSection() {
 
                     {/* Email */}
                     <div className="relative">
-                      <label className="mb-2.5 block text-[10px] font-semibold uppercase tracking-[0.25em] text-white/25">
-                        Email
+                      <label className="mb-2.5 block text-[10px] font-semibold uppercase tracking-[0.25em] text-purple-400">
+                        {t("contact.email")}
                       </label>
                       <input
                         type="email"
@@ -117,8 +143,8 @@ export default function ContactSection() {
                         onChange={(e) => setFormData((p) => ({ ...p, email: e.target.value }))}
                         onFocus={() => setFocusedField("email")}
                         onBlur={() => setFocusedField(null)}
-                        placeholder="your@email.com"
-                        className="w-full border-b border-white/[0.08] bg-transparent py-3 text-sm text-white placeholder-white/15 transition-colors duration-300 outline-none focus:border-purple-500/40"
+                        placeholder={t("contact.emailPlaceholder")}
+                        className="w-full border-b border-white/[0.15] bg-transparent py-3 text-sm text-white placeholder-white/30 transition-colors duration-300 outline-none focus:border-purple-500/40"
                       />
                       <div
                         className={`absolute bottom-0 left-0 h-[1.5px] bg-gradient-to-r from-purple-500 to-purple-400/50 transition-all duration-500 ${
@@ -130,22 +156,22 @@ export default function ContactSection() {
 
                   {/* Subject */}
                   <div>
-                    <label className="mb-3 block text-[10px] font-semibold uppercase tracking-[0.25em] text-white/25">
-                      Subject
+                    <label className="mb-3 block text-[10px] font-semibold uppercase tracking-[0.25em] text-purple-400">
+                      {t("contact.subject")}
                     </label>
                     <div className="flex flex-wrap gap-2.5">
                       {subjects.map((opt) => (
                         <button
-                          key={opt}
+                          key={opt.value}
                           type="button"
-                          onClick={() => setFormData((p) => ({ ...p, subject: opt }))}
+                          onClick={() => setFormData((p) => ({ ...p, subject: opt.value }))}
                           className={`rounded-full border px-4 py-2 text-[11px] font-medium tracking-wide transition-all duration-300 ${
-                            formData.subject === opt
-                              ? "border-purple-500/40 bg-purple-500/10 text-purple-300"
-                              : "border-white/[0.06] bg-white/[0.02] text-white/40 hover:border-purple-500/25 hover:text-white/60"
+                            formData.subject === opt.value
+                              ? "border-purple-500/50 bg-purple-500/20 text-purple-200 shadow-[0_0_15px_rgba(124,58,237,0.15)]"
+                              : "border-white/[0.12] bg-white/[0.04] text-white/60 hover:border-purple-500/40 hover:bg-purple-500/10 hover:text-white/80"
                           }`}
                         >
-                          {opt}
+                          {t(opt.key)}
                         </button>
                       ))}
                     </div>
@@ -153,8 +179,8 @@ export default function ContactSection() {
 
                   {/* Message */}
                   <div className="relative">
-                    <label className="mb-2.5 block text-[10px] font-semibold uppercase tracking-[0.25em] text-white/25">
-                      Message
+                    <label className="mb-2.5 block text-[10px] font-semibold uppercase tracking-[0.25em] text-purple-400">
+                      {t("contact.message")}
                     </label>
                     <textarea
                       rows={4}
@@ -162,8 +188,8 @@ export default function ContactSection() {
                       onChange={(e) => setFormData((p) => ({ ...p, message: e.target.value }))}
                       onFocus={() => setFocusedField("message")}
                       onBlur={() => setFocusedField(null)}
-                      placeholder="Tell us about your event or inquiry..."
-                      className="w-full resize-none border-b border-white/[0.08] bg-transparent py-3 text-sm text-white placeholder-white/15 transition-colors duration-300 outline-none focus:border-purple-500/40"
+                      placeholder={t("contact.messagePlaceholder")}
+                      className="w-full resize-none border-b border-white/[0.15] bg-transparent py-3 text-sm text-white placeholder-white/30 transition-colors duration-300 outline-none focus:border-purple-500/40"
                     />
                     <div
                       className={`absolute bottom-0 left-0 h-[1.5px] bg-gradient-to-r from-purple-500 to-purple-400/50 transition-all duration-500 ${
@@ -176,10 +202,10 @@ export default function ContactSection() {
                   <div className="pt-3">
                     <button
                       type="submit"
-                      className="group relative overflow-hidden rounded-full bg-gradient-to-r from-purple-600 to-purple-500 px-10 py-4 text-[11px] font-semibold uppercase tracking-[0.2em] text-white transition-all duration-400 hover:shadow-[0_0_30px_rgba(124,58,237,0.25)]"
+                      className="group relative overflow-hidden rounded-full bg-gradient-to-r from-purple-600 to-purple-400 px-10 py-4 text-[11px] font-bold uppercase tracking-[0.2em] text-white shadow-[0_0_20px_rgba(124,58,237,0.2)] transition-all duration-400 hover:shadow-[0_0_40px_rgba(124,58,237,0.4)] hover:scale-[1.02]"
                     >
                       <span className="relative z-10">
-                        {submitted ? "SENT SUCCESSFULLY !" : "SEND INQUIRY"}
+                        {submitted ? t("contact.sent") : t("contact.send")}
                       </span>
                       <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-white/0 via-white/10 to-white/0 transition-transform duration-700 group-hover:translate-x-full" />
                     </button>
@@ -197,9 +223,9 @@ export default function ContactSection() {
             className="space-y-6 lg:col-span-2"
           >
             {/* Contact info cards */}
-            {[
+            {([
               {
-                label: "Email",
+                labelKey: "contact.emailLabel" as TranslationKey,
                 value: "contact@stm-events.com",
                 href: "mailto:contact@stm-events.com",
                 icon: (
@@ -209,7 +235,7 @@ export default function ContactSection() {
                 ),
               },
               {
-                label: "Phone",
+                labelKey: "contact.phoneLabel" as TranslationKey,
                 value: "+49 123 456 7890",
                 href: "tel:+491234567890",
                 icon: (
@@ -219,9 +245,9 @@ export default function ContactSection() {
                 ),
               },
               {
-                label: "Location",
+                labelKey: "contact.locationLabel" as TranslationKey,
                 value: "Berlin, Germany",
-                href: null,
+                href: null as string | null,
                 icon: (
                   <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -229,27 +255,27 @@ export default function ContactSection() {
                   </svg>
                 ),
               },
-            ].map((item) => (
+            ]).map((item) => (
               <div
-                key={item.label}
-                className="group flex items-center gap-5 rounded-xl border border-white/[0.06] bg-white/[0.02] p-5 transition-all duration-400 hover:border-purple-500/20 hover:bg-white/[0.03]"
+                key={item.labelKey}
+                className="group flex items-center gap-5 rounded-xl border border-white/[0.1] bg-white/[0.04] p-5 backdrop-blur-sm transition-all duration-400 hover:border-purple-500/30 hover:bg-white/[0.06]"
               >
-                <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl border border-white/[0.06] bg-white/[0.03] text-white/30 transition-all duration-300 group-hover:border-purple-500/25 group-hover:text-purple-400">
+                <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl border border-purple-500/20 bg-purple-500/10 text-purple-400 transition-all duration-300 group-hover:border-purple-500/40 group-hover:bg-purple-500/15 group-hover:text-purple-300">
                   {item.icon}
                 </div>
                 <div>
-                  <span className="block text-[10px] font-semibold uppercase tracking-[0.25em] text-white/25">
-                    {item.label}
+                  <span className="block text-[10px] font-semibold uppercase tracking-[0.25em] text-purple-400">
+                    {t(item.labelKey)}
                   </span>
                   {item.href ? (
                     <a
                       href={item.href}
-                      className="mt-1 block text-[15px] font-medium text-white/70 transition-colors duration-300 hover:text-purple-400"
+                      className="mt-1 block text-[15px] font-medium text-white/80 transition-colors duration-300 hover:text-purple-400"
                     >
                       {item.value}
                     </a>
                   ) : (
-                    <span className="mt-1 block text-[15px] font-medium text-white/70">
+                    <span className="mt-1 block text-[15px] font-medium text-white/80">
                       {item.value}
                     </span>
                   )}
@@ -262,8 +288,8 @@ export default function ContactSection() {
 
             {/* Socials */}
             <div>
-              <span className="mb-4 block text-[10px] font-semibold uppercase tracking-[0.25em] text-white/25">
-                Follow Us
+              <span className="mb-4 block text-[10px] font-semibold uppercase tracking-[0.25em] text-purple-400">
+                {t("contact.followUs")}
               </span>
               <div className="flex gap-3">
                 {[
@@ -296,7 +322,7 @@ export default function ContactSection() {
                     key={social.name}
                     href="#"
                     aria-label={social.name}
-                    className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/[0.06] bg-white/[0.02] text-white/30 transition-all duration-300 hover:border-purple-500/25 hover:bg-purple-500/10 hover:text-purple-400"
+                    className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/[0.1] bg-white/[0.04] text-white/50 transition-all duration-300 hover:border-purple-500/40 hover:bg-purple-500/15 hover:text-purple-300 hover:shadow-[0_0_15px_rgba(124,58,237,0.15)]"
                   >
                     {social.icon}
                   </a>
@@ -308,18 +334,17 @@ export default function ContactSection() {
             <div className="h-px bg-gradient-to-r from-white/[0.04] via-white/[0.06] to-transparent" />
 
             {/* Quote */}
-            <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-6">
-              <svg className="mb-3 h-5 w-5 text-purple-500/40" fill="currentColor" viewBox="0 0 24 24">
+            <div className="rounded-xl border border-purple-500/15 bg-purple-500/[0.04] p-6">
+              <svg className="mb-3 h-5 w-5 text-purple-400" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10H14.017zM0 21v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151C7.563 6.068 6 8.789 6 11h4v10H0z" />
               </svg>
-              <p className="text-[14px] leading-relaxed text-white/30 italic">
-                We don&apos;t just plan events — we engineer experiences that people remember
-                forever.
+              <p className="text-[14px] leading-relaxed text-white/50 italic">
+                {t("contact.quote")}
               </p>
               <div className="mt-4 flex items-center gap-3">
-                <div className="h-px w-6 bg-purple-500/30" />
-                <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-purple-400/50">
-                  STM Events Team
+                <div className="h-px w-6 bg-purple-500/50" />
+                <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-purple-400/70">
+                  {t("contact.quoteAuthor")}
                 </span>
               </div>
             </div>
@@ -335,7 +360,7 @@ export default function ContactSection() {
         >
           <div className="h-px w-24 bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
           <p className="text-[11px] tracking-[0.25em] text-white/20 uppercase">
-            STM Events &copy; {new Date().getFullYear()}. All rights reserved.
+            STM Events &copy; {new Date().getFullYear()}. {t("footer.rights")}
           </p>
         </motion.div>
       </div>

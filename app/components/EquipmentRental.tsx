@@ -5,9 +5,11 @@ import { motion, useInView } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import type { EquipmentData } from "@/lib/equipment";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 /* ── Product Card — lightweight, no tilt/glow/perspective ── */
 function ProductCard({ item, index }: { item: EquipmentData; index: number }) {
+  const { t } = useLanguage();
   const coverImage = item.images[0] || "/1.png";
 
   return (
@@ -18,7 +20,7 @@ function ProductCard({ item, index }: { item: EquipmentData; index: number }) {
       transition={{ duration: 0.5, delay: index * 0.06, ease: [0.22, 1, 0.36, 1] }}
     >
       <Link href={`/equipment/${item.slug}`} className="group block h-full">
-        <div className="relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.02] transition-all duration-500 hover:-translate-y-2 hover:border-purple-500/25 hover:shadow-[0_0_25px_rgba(124,58,237,0.1)]">
+        <div className="glass-card relative flex h-full flex-col overflow-hidden rounded-2xl transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_8px_35px_rgba(124,58,237,0.1)]">
           {/* Image — fixed aspect ratio for uniform cards */}
           <div className="relative aspect-[16/10] w-full flex-shrink-0 overflow-hidden">
             <Image
@@ -31,7 +33,7 @@ function ProductCard({ item, index }: { item: EquipmentData; index: number }) {
             {/* Unavailable badge */}
             {!item.available && (
               <div className="absolute top-4 right-4 z-10 rounded-full border border-red-500/30 bg-red-500/10 px-3 py-1 text-[9px] font-semibold uppercase tracking-[0.2em] text-red-400">
-                Unavailable
+                {t("equipment.unavailable")}
               </div>
             )}
           </div>
@@ -63,7 +65,7 @@ function ProductCard({ item, index }: { item: EquipmentData; index: number }) {
               </div>
 
               <span className="inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.15em] text-white/30 transition-colors duration-300 group-hover:text-purple-400">
-                Details
+                {t("equipment.details")}
                 <svg className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
@@ -81,6 +83,7 @@ function ProductCard({ item, index }: { item: EquipmentData; index: number }) {
 
 /* ── Main Section ── */
 export default function EquipmentRental({ equipment }: { equipment: EquipmentData[] }) {
+  const { t } = useLanguage();
   const headerRef = useRef<HTMLDivElement>(null);
   const headerInView = useInView(headerRef, { once: true, margin: "-100px" });
 
@@ -110,7 +113,7 @@ export default function EquipmentRental({ equipment }: { equipment: EquipmentDat
             className="inline-flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.3em] text-purple-400"
           >
             <span className="inline-block h-px w-10 bg-gradient-to-r from-purple-500 to-transparent" />
-            Equipment Rentals
+            {t("equipment.label")}
           </motion.span>
 
           <motion.h2
@@ -119,8 +122,8 @@ export default function EquipmentRental({ equipment }: { equipment: EquipmentDat
             transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             className="mt-4 text-[clamp(2rem,4.5vw,4.5rem)] font-bold uppercase leading-[0.9] tracking-[-0.03em]"
           >
-            <span className="block text-white">Professional</span>
-            <span className="block text-white">Sound & Lighting</span>
+            <span className="block text-white">{t("equipment.heading1")}</span>
+            <span className="block text-white">{t("equipment.heading2")}</span>
           </motion.h2>
 
           <motion.p
@@ -129,7 +132,7 @@ export default function EquipmentRental({ equipment }: { equipment: EquipmentDat
             transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className="mt-5 max-w-lg text-[15px] leading-relaxed text-white/35"
           >
-            High-performance gear designed to elevate every event. No direct online booking — contact us for availability and custom packages.
+            {t("equipment.description")}
           </motion.p>
         </div>
 
@@ -151,7 +154,7 @@ export default function EquipmentRental({ equipment }: { equipment: EquipmentDat
           <div className="h-px w-24 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
           <p className="max-w-md text-center text-[13px] leading-relaxed text-white/30">
-            Need a custom setup? We build tailored sound and lighting packages for events of any scale.
+            {t("equipment.customSetup")}
           </p>
 
           <div className="flex flex-col items-center gap-4 sm:flex-row sm:gap-6">
@@ -159,7 +162,7 @@ export default function EquipmentRental({ equipment }: { equipment: EquipmentDat
               href="/equipment"
               className="group inline-flex items-center gap-3 rounded-full border border-white/[0.08] bg-white/[0.02] px-7 py-3.5 text-[11px] font-semibold uppercase tracking-[0.25em] text-white/60 transition-all duration-400 hover:border-purple-500/25 hover:bg-purple-500/5 hover:text-white"
             >
-              <span>View All Equipment</span>
+              <span>{t("equipment.viewAll")}</span>
               <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/[0.06] transition-all duration-300 group-hover:bg-purple-500/20">
                 <svg className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -171,7 +174,7 @@ export default function EquipmentRental({ equipment }: { equipment: EquipmentDat
               href="#contact"
               className="group inline-flex items-center gap-3 rounded-full border border-white/[0.08] bg-white/[0.02] px-7 py-3.5 text-[11px] font-semibold uppercase tracking-[0.25em] text-white/60 transition-all duration-400 hover:border-purple-500/25 hover:bg-purple-500/5 hover:text-white"
             >
-              <span>Get a Custom Quote</span>
+              <span>{t("equipment.getQuote")}</span>
               <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/[0.06] transition-all duration-300 group-hover:bg-purple-500/20">
                 <svg className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />

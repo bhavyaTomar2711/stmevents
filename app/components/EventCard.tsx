@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import type { TicketStatus } from "@/lib/events";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
+import type { TranslationKey } from "@/lib/i18n/translations";
 
 interface EventCardProps {
   title: string;
@@ -18,24 +20,24 @@ interface EventCardProps {
 
 const statusConfig: Record<
   string,
-  { label: string; color: string; border: string; bg: string; dot: string }
+  { labelKey: TranslationKey; color: string; border: string; bg: string; dot: string }
 > = {
   "sold-out": {
-    label: "Sold Out",
+    labelKey: "eventCard.soldOut",
     color: "text-red-400",
     border: "border-red-500/30",
     bg: "bg-red-500/10",
     dot: "bg-red-400",
   },
   limited: {
-    label: "Limited",
+    labelKey: "eventCard.limited",
     color: "text-amber-400",
     border: "border-amber-500/30",
     bg: "bg-amber-500/10",
     dot: "bg-amber-400",
   },
   "final-release": {
-    label: "Final Release",
+    labelKey: "eventCard.finalRelease",
     color: "text-orange-400",
     border: "border-orange-500/30",
     bg: "bg-orange-500/10",
@@ -54,18 +56,19 @@ export default function EventCard({
   ticketStatus = "available",
 }: EventCardProps) {
   const router = useRouter();
+  const { t } = useLanguage();
   const isSoldOut = ticketStatus === "sold-out";
   const badge = statusConfig[ticketStatus];
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 50 }}
+      initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
+      viewport={{ once: true, margin: "-50px" }}
       transition={{
-        duration: 0.7,
-        delay: index * 0.1,
-        ease: [0.16, 1, 0.3, 1],
+        duration: 0.5,
+        delay: index * 0.08,
+        ease: [0.22, 1, 0.36, 1],
       }}
       className="h-full"
     >
@@ -76,7 +79,7 @@ export default function EventCard({
         onKeyDown={(e) => { if (e.key === "Enter") router.push(`/events/${slug}`); }}
         className="group block h-full cursor-pointer"
       >
-        <div className="relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.02] transition-all duration-500 ease-out hover:-translate-y-3 hover:border-purple-500/30 hover:shadow-[0_0_30px_rgba(124,58,237,0.12),0_20px_50px_-20px_rgba(0,0,0,0.5)]">
+        <div className="glass-card relative flex h-full flex-col overflow-hidden rounded-2xl transition-all duration-500 ease-out hover:-translate-y-3 hover:shadow-[0_0_40px_rgba(124,58,237,0.15),0_20px_50px_-20px_rgba(0,0,0,0.6)]">
           {/* Image Area */}
           <div className="relative aspect-square w-full flex-shrink-0 overflow-hidden">
             {image ? (
@@ -114,7 +117,7 @@ export default function EventCard({
                   className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.2em] ${badge.color} ${badge.border} ${badge.bg}`}
                 >
                   <span className={`h-1 w-1 rounded-full ${badge.dot}`} />
-                  {badge.label}
+                  {t(badge.labelKey)}
                 </span>
               </div>
             )}
@@ -128,10 +131,14 @@ export default function EventCard({
           {/* Content */}
           <div className="relative z-10 flex flex-1 flex-col justify-between px-5 pt-4 pb-5">
             <div>
-              <h3 className="text-sm font-semibold uppercase tracking-[0.08em] text-white sm:text-[15px]">
+              <h3 className="text-sm font-semibold uppercase tracking-[0.08em] text-white transition-colors duration-300 group-hover:text-purple-100 sm:text-[15px]">
                 {title}
               </h3>
-              <p className="mt-1.5 text-[12px] tracking-wider text-white/35">
+              <p className="mt-1.5 flex items-center gap-1.5 text-[12px] tracking-wider text-white/35">
+                <svg className="h-3 w-3 text-purple-500/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                </svg>
                 {location}
               </p>
             </div>
@@ -147,18 +154,18 @@ export default function EventCard({
                   onClick={(e) => e.stopPropagation()}
                   className="inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-purple-400/80 transition-colors duration-300 hover:text-purple-300"
                 >
-                  Tickets
+                  {t("eventCard.tickets")}
                   <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
                   </svg>
                 </a>
               ) : isSoldOut ? (
                 <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-red-400/60">
-                  Sold Out
+                  {t("eventCard.soldOut")}
                 </span>
               ) : (
                 <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/20">
-                  Coming Soon
+                  {t("eventCard.comingSoon")}
                 </span>
               )}
 

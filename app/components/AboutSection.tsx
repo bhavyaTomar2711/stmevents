@@ -2,8 +2,10 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 export default function AboutSection() {
+  const { t } = useLanguage();
   const sectionRef = useRef<HTMLElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
@@ -44,7 +46,7 @@ export default function AboutSection() {
                 animate={textInView ? { width: 40 } : {}}
                 transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
               />
-              About STM Events
+              {t("about.label")}
             </motion.span>
 
             {/* Heading */}
@@ -54,8 +56,8 @@ export default function AboutSection() {
               transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
               className="mt-4 text-[clamp(1.8rem,3.5vw,3.2rem)] font-bold uppercase leading-[1] tracking-[-0.02em] text-white"
             >
-              Creating underground experiences that{" "}
-              <span className="text-purple-400">move</span> people
+              {t("about.heading")}{" "}
+              <span className="text-purple-400">{t("about.headingHighlight")}</span> {t("about.headingEnd")}
             </motion.h2>
 
             {/* Description */}
@@ -66,15 +68,10 @@ export default function AboutSection() {
               className="mt-6 space-y-4"
             >
               <p className="text-[15px] leading-[1.75] text-white/40">
-                STM Events is more than just nightlife — it&apos;s a curated
-                journey into sound, energy, and connection. We craft immersive
-                experiences where music, visuals, and atmosphere collide to
-                create unforgettable nights.
+                {t("about.p1")}
               </p>
               <p className="text-[15px] leading-[1.75] text-white/40">
-                From warehouse raves to intimate club sets, every event is
-                designed to blur the line between artist and audience. No
-                barriers. No boundaries. Just raw, unfiltered energy.
+                {t("about.p2")}
               </p>
             </motion.div>
 
@@ -102,7 +99,7 @@ export default function AboutSection() {
               transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
             />
 
-            <div className="relative overflow-hidden rounded-2xl border border-white/[0.05]">
+            <div className="glass-card relative overflow-hidden rounded-2xl">
               <div className="aspect-[4/5] w-full overflow-hidden">
                 <img
                   src="/about us.png"
@@ -131,7 +128,7 @@ export default function AboutSection() {
                     style={{ transformOrigin: "left" }}
                   />
                   <span className="text-[10px] font-medium uppercase tracking-[0.3em] text-white/30">
-                    Est. 2023
+                    {t("about.est")}
                   </span>
                 </div>
               </div>

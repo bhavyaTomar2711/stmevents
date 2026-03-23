@@ -5,17 +5,20 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import type { EquipmentData } from "@/lib/equipment";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
+import type { TranslationKey } from "@/lib/i18n/translations";
 
-const CATEGORIES = [
-  { value: "all", label: "All" },
-  { value: "dj-gear", label: "DJ Gear" },
-  { value: "sound", label: "Sound" },
-  { value: "lighting", label: "Lighting" },
-  { value: "stage", label: "Stage" },
-  { value: "effects", label: "Effects" },
+const CATEGORIES: { value: string; labelKey: TranslationKey }[] = [
+  { value: "all", labelKey: "equipmentPage.filterAll" },
+  { value: "dj-gear", labelKey: "equipmentPage.filterDJGear" },
+  { value: "sound", labelKey: "equipmentPage.filterSound" },
+  { value: "lighting", labelKey: "equipmentPage.filterLighting" },
+  { value: "stage", labelKey: "equipmentPage.filterStage" },
+  { value: "effects", labelKey: "equipmentPage.filterEffects" },
 ];
 
 function EquipmentCard({ item, index }: { item: EquipmentData; index: number }) {
+  const { t } = useLanguage();
   const coverImage = item.images[0] || "/1.png";
 
   return (
@@ -27,7 +30,7 @@ function EquipmentCard({ item, index }: { item: EquipmentData; index: number }) 
       transition={{ duration: 0.4, delay: index * 0.05 }}
     >
       <Link href={`/equipment/${item.slug}`} className="group block">
-        <div className="relative overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.02] transition-all duration-500 hover:border-purple-500/20 hover:bg-white/[0.04]">
+        <div className="glass-card relative overflow-hidden rounded-2xl transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(124,58,237,0.08)]">
           {/* Image */}
           <div className="relative overflow-hidden">
             <div className="relative aspect-[16/10] w-full transition-transform duration-700 group-hover:scale-105">
@@ -46,7 +49,7 @@ function EquipmentCard({ item, index }: { item: EquipmentData; index: number }) 
             {/* Availability badge */}
             {!item.available && (
               <div className="absolute top-4 right-4 z-10 rounded-full border border-red-500/30 bg-red-500/10 px-3 py-1 text-[9px] font-semibold uppercase tracking-[0.2em] text-red-400 backdrop-blur-sm">
-                Unavailable
+                {t("equipment.unavailable")}
               </div>
             )}
           </div>
@@ -74,7 +77,7 @@ function EquipmentCard({ item, index }: { item: EquipmentData; index: number }) 
               </div>
 
               <span className="inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.15em] text-white/30 transition-colors duration-300 group-hover:text-purple-400">
-                Details
+                {t("equipment.details")}
                 <svg className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
@@ -91,6 +94,7 @@ function EquipmentCard({ item, index }: { item: EquipmentData; index: number }) 
 }
 
 export default function EquipmentPageClient({ equipment }: { equipment: EquipmentData[] }) {
+  const { t } = useLanguage();
   const [activeCategory, setActiveCategory] = useState("all");
 
   const filtered =
@@ -146,7 +150,7 @@ export default function EquipmentPageClient({ equipment }: { equipment: Equipmen
             <svg className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
             </svg>
-            Back to Home
+            {t("common.backToHome")}
           </Link>
         </motion.div>
 
@@ -159,7 +163,7 @@ export default function EquipmentPageClient({ equipment }: { equipment: Equipmen
             className="mb-4 inline-flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.3em] text-purple-400"
           >
             <span className="inline-block h-px w-10 bg-gradient-to-r from-purple-500 to-transparent" />
-            Equipment Catalog
+            {t("equipmentPage.label")}
           </motion.span>
 
           <motion.h1
@@ -168,7 +172,7 @@ export default function EquipmentPageClient({ equipment }: { equipment: Equipmen
             transition={{ duration: 0.6, delay: 0.15 }}
             className="mt-3 text-[clamp(2.5rem,6vw,6rem)] font-bold uppercase leading-[0.88] tracking-[-0.03em] text-white"
           >
-            EQUIPMENT
+            {t("equipmentPage.heading")}
           </motion.h1>
 
           <motion.p
@@ -177,7 +181,7 @@ export default function EquipmentPageClient({ equipment }: { equipment: Equipmen
             transition={{ duration: 0.5, delay: 0.25 }}
             className="mt-5 max-w-lg text-[15px] leading-relaxed text-white/30"
           >
-            Professional sound, lighting, and DJ gear available for rental. Contact us for availability and custom packages.
+            {t("equipmentPage.description")}
           </motion.p>
         </div>
 
@@ -198,7 +202,7 @@ export default function EquipmentPageClient({ equipment }: { equipment: Equipmen
                   : "border-white/[0.08] bg-white/[0.02] text-white/40 hover:border-white/15 hover:text-white/60"
               }`}
             >
-              {cat.label}
+              {t(cat.labelKey)}
               <span className="ml-1.5 text-[9px] opacity-50">{cat.count}</span>
             </button>
           ))}
@@ -218,7 +222,7 @@ export default function EquipmentPageClient({ equipment }: { equipment: Equipmen
 
         {filtered.length === 0 && (
           <div className="py-20 text-center text-white/30">
-            <p className="text-lg">No equipment in this category yet.</p>
+            <p className="text-lg">{t("equipmentPage.noItems")}</p>
           </div>
         )}
       </div>

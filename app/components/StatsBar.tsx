@@ -2,12 +2,14 @@
 
 import { useRef, useState, useEffect, useCallback } from "react";
 import { useInView } from "framer-motion";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
+import type { TranslationKey } from "@/lib/i18n/translations";
 
-const STATS = [
-  { value: 50, suffix: "+", label: "Events Produced" },
-  { value: 10, suffix: "K+", label: "People Moved" },
-  { value: 30, suffix: "+", label: "Artists Featured" },
-  { value: 15, suffix: "+", label: "Venues" },
+const STATS: { value: number; suffix: string; labelKey: TranslationKey }[] = [
+  { value: 50, suffix: "+", labelKey: "stats.eventsProduced" },
+  { value: 10, suffix: "K+", labelKey: "stats.peopleMoved" },
+  { value: 30, suffix: "+", labelKey: "stats.artistsFeatured" },
+  { value: 15, suffix: "+", labelKey: "stats.venues" },
 ];
 
 function CountUpNumber({ target, suffix, triggered }: { target: number; suffix: string; triggered: boolean }) {
@@ -45,6 +47,7 @@ function CountUpNumber({ target, suffix, triggered }: { target: number; suffix: 
 }
 
 export default function StatsBar() {
+  const { t } = useLanguage();
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-50px" });
   const [triggered, setTriggered] = useState(false);
@@ -58,21 +61,21 @@ export default function StatsBar() {
   return (
     <div
       ref={ref}
-      className="relative border-t border-b border-white/[0.06] bg-black"
+      className="relative border-t border-b border-white/[0.06] bg-black/80 backdrop-blur-xl"
     >
       <div className="mx-auto grid max-w-6xl grid-cols-2 gap-px sm:grid-cols-4">
         {STATS.map((stat, i) => (
           <div
-            key={stat.label}
-            className={`group relative flex flex-col items-center justify-center px-6 py-10 sm:py-12 ${
+            key={stat.labelKey}
+            className={`group relative flex flex-col items-center justify-center px-6 py-10 transition-colors duration-500 hover:bg-white/[0.02] sm:py-12 ${
               i < STATS.length - 1 ? "sm:border-r sm:border-white/[0.06]" : ""
             } ${i < 2 ? "border-b border-white/[0.06] sm:border-b-0" : ""}`}
           >
-            <span className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
+            <span className="text-4xl font-bold tracking-tight text-white transition-colors duration-300 group-hover:text-purple-100 sm:text-5xl">
               <CountUpNumber target={stat.value} suffix={stat.suffix} triggered={triggered} />
             </span>
-            <span className="mt-2 text-[10px] font-medium uppercase tracking-[0.25em] text-purple-400/70">
-              {stat.label}
+            <span className="mt-2 text-[10px] font-medium uppercase tracking-[0.25em] text-purple-400/70 transition-colors duration-300 group-hover:text-purple-400">
+              {t(stat.labelKey)}
             </span>
           </div>
         ))}

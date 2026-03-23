@@ -5,6 +5,7 @@ import { motion, useInView, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import type { GalleryItem } from "@/lib/gallery";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 interface GallerySectionProps {
   items: GalleryItem[];
@@ -140,7 +141,7 @@ function MediaBlock({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.6, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
-      className={`group relative cursor-pointer overflow-hidden rounded-2xl border border-white/[0.04] ${aspect} ${className ?? ""}`}
+      className={`group relative cursor-pointer overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.02] backdrop-blur-sm ${aspect} ${className ?? ""}`}
       onClick={onClick}
     >
       {/* Skeleton while loading */}
@@ -203,6 +204,7 @@ function MediaBlock({
 
 /* ── Main Section ── */
 export default function GallerySection({ items }: GallerySectionProps) {
+  const { t } = useLanguage();
   const sectionRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const headerInView = useInView(headerRef, { once: true, margin: "-100px" });
@@ -247,7 +249,7 @@ export default function GallerySection({ items }: GallerySectionProps) {
             className="mb-4 inline-flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.3em] text-purple-400"
           >
             <span className="inline-block h-px w-10 bg-gradient-to-r from-purple-500 to-transparent" />
-            The Experience
+            {t("gallery.label")}
           </motion.span>
 
           <motion.h2
@@ -256,8 +258,8 @@ export default function GallerySection({ items }: GallerySectionProps) {
             transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             className="mt-3 text-[clamp(2.5rem,5.5vw,5.5rem)] font-bold uppercase leading-[0.88] tracking-[-0.03em]"
           >
-            <span className="block text-white">STEP INSIDE</span>
-            <span className="block text-white">THE NIGHT</span>
+            <span className="block text-white">{t("gallery.heading1")}</span>
+            <span className="block text-white">{t("gallery.heading2")}</span>
           </motion.h2>
 
           <motion.p
@@ -266,49 +268,43 @@ export default function GallerySection({ items }: GallerySectionProps) {
             transition={{ duration: 0.5, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
             className="mt-5 max-w-lg text-[15px] leading-relaxed text-white/30"
           >
-            A glimpse into the energy, lights, and moments that define STM Events.
+            {t("gallery.description")}
           </motion.p>
         </div>
 
         {/* Gallery Grid — with skeleton fallback */}
         {hasItems ? (
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-12 md:gap-5 lg:gap-6">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:gap-4 lg:grid-cols-3">
+            {/* Row 1: large feature + tall right that stretches to match */}
             {video && (
-              <div className="md:col-span-7 lg:col-span-8">
-                <MediaBlock item={video} index={0} aspect="aspect-[16/10]" onClick={() => setLightboxItem(video)} />
+              <div className="sm:col-span-1 lg:col-span-2">
+                <MediaBlock item={video} index={0} aspect="aspect-[16/9]" onClick={() => setLightboxItem(video)} />
               </div>
             )}
-            <div className="flex flex-col gap-4 md:col-span-5 md:gap-5 lg:col-span-4 lg:gap-6">
-              {grid1 && <MediaBlock item={grid1} index={1} aspect="aspect-[4/3]" onClick={() => setLightboxItem(grid1)} />}
-              {grid2 && <MediaBlock item={grid2} index={2} aspect="aspect-[4/3]" onClick={() => setLightboxItem(grid2)} />}
-            </div>
+            {grid1 && (
+              <MediaBlock item={grid1} index={1} aspect="" className="h-full" onClick={() => setLightboxItem(grid1)} />
+            )}
+            {/* Row 2: three equal columns */}
+            {grid2 && (
+              <MediaBlock item={grid2} index={2} aspect="aspect-[16/9]" onClick={() => setLightboxItem(grid2)} />
+            )}
             {grid3 && (
-              <div className="md:col-span-4">
-                <MediaBlock item={grid3} index={3} aspect="aspect-[4/3]" onClick={() => setLightboxItem(grid3)} />
-              </div>
+              <MediaBlock item={grid3} index={3} aspect="aspect-[16/9]" onClick={() => setLightboxItem(grid3)} />
             )}
             {grid4 && (
-              <div className="md:col-span-8">
-                <MediaBlock item={grid4} index={4} aspect="aspect-[21/9]" onClick={() => setLightboxItem(grid4)} />
-              </div>
+              <MediaBlock item={grid4} index={4} aspect="aspect-[16/9]" onClick={() => setLightboxItem(grid4)} />
             )}
           </div>
         ) : (
           /* Skeleton grid while data loads */
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-12 md:gap-5 lg:gap-6">
-            <div className="md:col-span-7 lg:col-span-8">
-              <SkeletonBlock aspect="aspect-[16/10]" />
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:gap-4 lg:grid-cols-3">
+            <div className="sm:col-span-2 lg:col-span-2">
+              <SkeletonBlock aspect="aspect-[16/9]" />
             </div>
-            <div className="flex flex-col gap-4 md:col-span-5 md:gap-5 lg:col-span-4 lg:gap-6">
-              <SkeletonBlock aspect="aspect-[4/3]" />
-              <SkeletonBlock aspect="aspect-[4/3]" />
-            </div>
-            <div className="md:col-span-4">
-              <SkeletonBlock aspect="aspect-[4/3]" />
-            </div>
-            <div className="md:col-span-8">
-              <SkeletonBlock aspect="aspect-[21/9]" />
-            </div>
+            <SkeletonBlock aspect="aspect-[16/9]" />
+            <SkeletonBlock aspect="aspect-[16/9]" />
+            <SkeletonBlock aspect="aspect-[16/9]" />
+            <SkeletonBlock aspect="aspect-[16/9]" />
           </div>
         )}
 
@@ -350,7 +346,7 @@ export default function GallerySection({ items }: GallerySectionProps) {
             href="/gallery"
             className="group inline-flex items-center gap-3 rounded-full border border-white/[0.06] bg-white/[0.02] px-6 py-3 text-[11px] font-semibold uppercase tracking-[0.25em] text-white/50 backdrop-blur-sm transition-all duration-400 hover:border-purple-500/20 hover:bg-purple-500/5 hover:text-white"
           >
-            <span>Explore Full Gallery</span>
+            <span>{t("gallery.viewAll")}</span>
             <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/[0.06] transition-all duration-300 group-hover:bg-purple-500/20">
               <svg
                 className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-0.5"

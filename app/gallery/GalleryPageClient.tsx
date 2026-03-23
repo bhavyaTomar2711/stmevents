@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import type { GalleryItem } from "@/lib/gallery";
 import { CATEGORY_LABELS } from "@/lib/gallery";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
+import type { TranslationKey } from "@/lib/i18n/translations";
 
 /* ── Lightbox ── */
 function Lightbox({ item, onClose }: { item: GalleryItem; onClose: () => void }) {
@@ -98,10 +100,10 @@ function GalleryCard({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 40 }}
+      initial={{ opacity: 0, y: 25 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: index * 0.05 }}
-      className="group relative cursor-pointer overflow-hidden rounded-2xl border border-white/[0.04] bg-white/[0.02]"
+      transition={{ duration: 0.4, delay: index * 0.04 }}
+      className="glass-card group relative cursor-pointer overflow-hidden rounded-2xl"
       onClick={onClick}
     >
       <div className="relative aspect-[4/3] overflow-hidden">
@@ -155,17 +157,18 @@ function GalleryCard({
 }
 
 /* ── Filter Tabs ── */
-const FILTER_TABS = [
-  { label: "All", value: "all" },
-  { label: "Events", value: "event" },
-  { label: "Aftermovies", value: "aftermovie" },
-  { label: "DJ Sets", value: "djset" },
-  { label: "Behind the Scenes", value: "bts" },
-  { label: "Promo", value: "promo" },
+const FILTER_TABS: { labelKey: TranslationKey; value: string }[] = [
+  { labelKey: "galleryPage.filterAll", value: "all" },
+  { labelKey: "galleryPage.filterEvents", value: "event" },
+  { labelKey: "galleryPage.filterAftermovies", value: "aftermovie" },
+  { labelKey: "galleryPage.filterDJSets", value: "djset" },
+  { labelKey: "galleryPage.filterBTS", value: "bts" },
+  { labelKey: "galleryPage.filterPromo", value: "promo" },
 ];
 
 /* ── Main Page ── */
 export default function GalleryPageClient({ items }: { items: GalleryItem[] }) {
+  const { t } = useLanguage();
   const [activeFilter, setActiveFilter] = useState("all");
   const [lightboxItem, setLightboxItem] = useState<GalleryItem | null>(null);
 
@@ -219,7 +222,7 @@ export default function GalleryPageClient({ items }: { items: GalleryItem[] }) {
             >
               <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
             </svg>
-            Back to Home
+            {t("common.backToHome")}
           </Link>
         </motion.div>
 
@@ -232,7 +235,7 @@ export default function GalleryPageClient({ items }: { items: GalleryItem[] }) {
             className="mb-4 inline-flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.3em] text-purple-400"
           >
             <span className="inline-block h-px w-10 bg-gradient-to-r from-purple-500 to-transparent" />
-            The Experience
+            {t("galleryPage.label")}
           </motion.span>
 
           <motion.h1
@@ -241,7 +244,7 @@ export default function GalleryPageClient({ items }: { items: GalleryItem[] }) {
             transition={{ duration: 0.6, delay: 0.15 }}
             className="mt-3 text-[clamp(2.5rem,6vw,6rem)] font-bold uppercase leading-[0.88] tracking-[-0.03em] text-white"
           >
-            GALLERY
+            {t("galleryPage.heading")}
           </motion.h1>
 
           <motion.p
@@ -250,7 +253,7 @@ export default function GalleryPageClient({ items }: { items: GalleryItem[] }) {
             transition={{ duration: 0.5, delay: 0.25 }}
             className="mt-5 max-w-lg text-[15px] leading-relaxed text-white/30"
           >
-            Photos, videos, and moments from our underground experiences.
+            {t("galleryPage.description")}
           </motion.p>
         </div>
 
@@ -272,11 +275,11 @@ export default function GalleryPageClient({ items }: { items: GalleryItem[] }) {
                 onClick={() => setActiveFilter(tab.value)}
                 className={`rounded-full border px-4 py-2 text-[11px] font-medium tracking-[0.1em] uppercase transition-all duration-300 ${
                   activeFilter === tab.value
-                    ? "border-purple-500/40 bg-purple-500/15 text-purple-300"
-                    : "border-white/[0.08] bg-white/[0.02] text-white/40 hover:border-purple-500/20 hover:text-white/60"
+                    ? "border-purple-500/40 bg-purple-500/15 text-purple-300 backdrop-blur-sm"
+                    : "border-white/[0.06] bg-white/[0.02] text-white/40 backdrop-blur-sm hover:border-purple-500/20 hover:text-white/60"
                 }`}
               >
-                {tab.label}
+                {t(tab.labelKey)}
                 <span className="ml-1.5 text-[9px] opacity-50">{count}</span>
               </button>
             );
@@ -306,7 +309,7 @@ export default function GalleryPageClient({ items }: { items: GalleryItem[] }) {
 
         {filtered.length === 0 && (
           <div className="py-20 text-center">
-            <p className="text-white/30">No items in this category yet.</p>
+            <p className="text-white/30">{t("common.noItems")}</p>
           </div>
         )}
       </div>

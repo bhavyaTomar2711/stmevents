@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 interface CountdownTimerProps {
   targetDate: Date;
@@ -67,6 +68,7 @@ function Separator() {
 }
 
 export default function CountdownTimer({ targetDate }: CountdownTimerProps) {
+  const { t } = useLanguage();
   const [time, setTime] = useState<TimeLeft>(calcTimeLeft(targetDate));
   const [mounted, setMounted] = useState(false);
   const prevRef = useRef<TimeLeft>(time);
@@ -94,25 +96,25 @@ export default function CountdownTimer({ targetDate }: CountdownTimerProps) {
     <div className="flex items-center gap-2.5 sm:gap-3 md:gap-4">
       <TimeBlock
         value={pad(display.days)}
-        label="Days"
+        label={t("countdown.days")}
         prevValue={pad(prevDisplay.days)}
       />
       <Separator />
       <TimeBlock
         value={pad(display.hours)}
-        label="Hrs"
+        label={t("countdown.hours")}
         prevValue={pad(prevDisplay.hours)}
       />
       <Separator />
       <TimeBlock
         value={pad(display.minutes)}
-        label="Min"
+        label={t("countdown.minutes")}
         prevValue={pad(prevDisplay.minutes)}
       />
       <Separator />
       <TimeBlock
         value={pad(display.seconds)}
-        label="Sec"
+        label={t("countdown.seconds")}
         prevValue={pad(prevDisplay.seconds)}
       />
     </div>

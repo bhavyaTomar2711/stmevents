@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Providers from "./Providers";
+import Footer from "./components/Footer";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -15,6 +17,10 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "STM Events",
   description: "Nightlife & Event Production",
+  icons: {
+    icon: "/logoo.png",
+    apple: "/logoo.png",
+  },
 };
 
 export default function RootLayout({
@@ -27,7 +33,12 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} antialiased`}
     >
-      <body>{children}</body>
+      <body>
+        <Providers>
+          {children}
+          <Footer />
+        </Providers>
+      </body>
     </html>
   );
 }

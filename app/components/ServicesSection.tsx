@@ -2,10 +2,12 @@
 
 import { useRef, useState, useCallback } from "react";
 import { motion, useInView } from "framer-motion";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
+import type { TranslationKey } from "@/lib/i18n/translations";
 
 /* ───────────────────── Service Data ───────────────────── */
 
-const SERVICES = [
+const SERVICES: { icon: React.ReactNode; titleKey: TranslationKey; descKey: TranslationKey }[] = [
   {
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="h-7 w-7">
@@ -13,9 +15,8 @@ const SERVICES = [
         <path strokeLinecap="round" strokeLinejoin="round" d="M6 14.25a2.25 2.25 0 100 4.5 2.25 2.25 0 000-4.5z" />
       </svg>
     ),
-    title: "DJ Bookings",
-    description:
-      "Curated DJ lineups featuring top-tier underground and mainstream talent, tailored to your crowd and vision.",
+    titleKey: "services.djBookings",
+    descKey: "services.djBookingsDesc",
   },
   {
     icon: (
@@ -24,9 +25,8 @@ const SERVICES = [
         <path strokeLinecap="round" strokeLinejoin="round" d="M12 18a3.75 3.75 0 00.495-7.468 5.99 5.99 0 00-1.925 3.547 5.975 5.975 0 01-2.133-1.001A3.75 3.75 0 0012 18z" />
       </svg>
     ),
-    title: "Private Events",
-    description:
-      "Exclusive, invite-only experiences designed for high-end clients — from luxury launches to private celebrations.",
+    titleKey: "services.privateEvents",
+    descKey: "services.privateEventsDesc",
   },
   {
     icon: (
@@ -34,9 +34,8 @@ const SERVICES = [
         <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" />
       </svg>
     ),
-    title: "Club Events",
-    description:
-      "High-energy club nights with immersive production, cutting-edge sound, and atmospheres that keep people moving.",
+    titleKey: "services.clubEvents",
+    descKey: "services.clubEventsDesc",
   },
   {
     icon: (
@@ -44,9 +43,8 @@ const SERVICES = [
         <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
       </svg>
     ),
-    title: "Event Production",
-    description:
-      "Full-scale event production — lighting, sound, stage design, and visuals engineered for maximum impact.",
+    titleKey: "services.eventProduction",
+    descKey: "services.eventProductionDesc",
   },
 ];
 
@@ -59,6 +57,7 @@ function ServiceCard({
   service: (typeof SERVICES)[number];
   index: number;
 }) {
+  const { t } = useLanguage();
   const cardRef = useRef<HTMLDivElement>(null);
   const [glowPos, setGlowPos] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
@@ -89,7 +88,7 @@ function ServiceCard({
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="group relative overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.03] backdrop-blur-xl transition-all duration-500 hover:-translate-y-2 hover:border-purple-500/20 hover:bg-white/[0.06]"
+      className="glass-card group relative overflow-hidden rounded-2xl backdrop-blur-xl transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_8px_40px_rgba(124,58,237,0.08)]"
     >
       {/* ── Cursor-following glow ── */}
       <div
@@ -128,7 +127,7 @@ function ServiceCard({
 
         {/* Title */}
         <h3 className="text-[15px] font-bold uppercase tracking-[0.2em] text-white/90 transition-colors duration-300 group-hover:text-white">
-          {service.title}
+          {t(service.titleKey)}
         </h3>
 
         {/* Divider */}
@@ -140,13 +139,13 @@ function ServiceCard({
 
         {/* Description */}
         <p className="mt-4 text-[14px] leading-[1.8] text-white/35 transition-colors duration-300 group-hover:text-white/50">
-          {service.description}
+          {t(service.descKey)}
         </p>
 
         {/* Arrow indicator */}
         <div className="mt-6 flex items-center gap-2 opacity-0 transition-all duration-500 group-hover:opacity-100">
           <span className="text-[10px] font-semibold uppercase tracking-[0.25em] text-purple-400/70">
-            Learn more
+            {t("services.learnMore")}
           </span>
           <svg
             className="h-3 w-3 text-purple-400/70 transition-transform duration-300 group-hover:translate-x-1"
@@ -170,6 +169,7 @@ function ServiceCard({
 /* ───────────────────── Main Section ───────────────────── */
 
 export default function ServicesSection() {
+  const { t } = useLanguage();
   const headingRef = useRef<HTMLDivElement>(null);
   const headingInView = useInView(headingRef, { once: true, margin: "-80px" });
 
@@ -255,7 +255,7 @@ export default function ServicesSection() {
               }}
             />
             <span className="text-[11px] font-semibold uppercase tracking-[0.3em] text-purple-400">
-              Services
+              {t("services.label")}
             </span>
             <motion.span
               className="inline-block h-px bg-gradient-to-r from-purple-500 to-transparent"
@@ -280,9 +280,9 @@ export default function ServicesSection() {
             }}
             className="mt-5 text-[clamp(1.8rem,3.5vw,3.2rem)] font-bold uppercase leading-[1.05] tracking-[-0.02em] text-white"
           >
-            What We{" "}
+            {t("services.heading1")}{" "}
             <span className="bg-gradient-to-r from-purple-400 to-violet-400 bg-clip-text text-transparent">
-              Offer
+              {t("services.heading2")}
             </span>
           </motion.h2>
 
@@ -297,14 +297,14 @@ export default function ServicesSection() {
             }}
             className="mx-auto mt-5 max-w-md text-[14px] leading-[1.7] text-white/35"
           >
-            From curated DJ lineups to full-scale event production.
+            {t("services.description")}
           </motion.p>
         </div>
 
         {/* ── Card grid ── */}
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {SERVICES.map((service, i) => (
-            <ServiceCard key={service.title} service={service} index={i} />
+            <ServiceCard key={service.titleKey} service={service} index={i} />
           ))}
         </div>
 
@@ -318,7 +318,7 @@ export default function ServicesSection() {
         >
           <div className="h-px w-16 bg-gradient-to-r from-transparent to-white/[0.06]" />
           <span className="text-[10px] font-medium uppercase tracking-[0.3em] text-white/20">
-            Tailored to your vision
+            {t("services.tagline")}
           </span>
           <div className="h-px w-16 bg-gradient-to-r from-white/[0.06] to-transparent" />
         </motion.div>

@@ -5,9 +5,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import type { EquipmentData } from "@/lib/equipment";
+import RentalModal from "@/app/components/RentalModal";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 export default function EquipmentDetailClient({ item }: { item: EquipmentData }) {
+  const { t } = useLanguage();
   const [activeImage, setActiveImage] = useState(0);
+  const [rentalOpen, setRentalOpen] = useState(false);
   const hasMultipleImages = item.images.length > 1;
 
   return (
@@ -54,7 +58,7 @@ export default function EquipmentDetailClient({ item }: { item: EquipmentData })
             <svg className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
             </svg>
-            All Equipment
+            {t("rental.allEquipment")}
           </Link>
         </motion.div>
 
@@ -66,7 +70,7 @@ export default function EquipmentDetailClient({ item }: { item: EquipmentData })
             transition={{ duration: 0.6, delay: 0.1 }}
           >
             {/* Main image */}
-            <div className="relative overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.02]">
+            <div className="glass-card relative overflow-hidden rounded-2xl">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeImage}
@@ -97,7 +101,7 @@ export default function EquipmentDetailClient({ item }: { item: EquipmentData })
               {/* Availability badge */}
               {!item.available && (
                 <div className="absolute top-4 left-4 rounded-full border border-red-500/30 bg-red-500/10 px-4 py-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-red-400 backdrop-blur-sm">
-                  Currently Unavailable
+                  {t("rental.unavailable")}
                 </div>
               )}
             </div>
@@ -158,7 +162,7 @@ export default function EquipmentDetailClient({ item }: { item: EquipmentData })
             {/* Description */}
             <div>
               <h2 className="mb-3 text-[11px] font-medium uppercase tracking-[0.2em] text-white/30">
-                Description
+                {t("rental.description")}
               </h2>
               <p className="text-[15px] leading-relaxed text-white/50">
                 {item.fullDescription || item.shortDescription}
@@ -169,7 +173,7 @@ export default function EquipmentDetailClient({ item }: { item: EquipmentData })
             {item.specs.length > 0 && (
               <div className="mt-10">
                 <h2 className="mb-4 text-[11px] font-medium uppercase tracking-[0.2em] text-white/30">
-                  Specifications
+                  {t("rental.specifications")}
                 </h2>
                 <div className="grid grid-cols-2 gap-3">
                   {item.specs.map((spec, i) => (
@@ -178,7 +182,7 @@ export default function EquipmentDetailClient({ item }: { item: EquipmentData })
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.3, delay: 0.3 + i * 0.05 }}
-                      className="rounded-xl border border-white/[0.06] bg-white/[0.02] px-5 py-4"
+                      className="glass-card rounded-xl px-5 py-4"
                     >
                       <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-purple-400/70">
                         {spec.label}
@@ -194,30 +198,37 @@ export default function EquipmentDetailClient({ item }: { item: EquipmentData })
 
             {/* CTA */}
             <div className="mt-10 space-y-4">
-              <a
-                href="#contact"
+              <button
+                onClick={() => setRentalOpen(true)}
                 className="group relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-[#7B2CBF] to-[#9D4EDD] px-8 py-4 text-sm font-semibold tracking-[0.15em] text-white uppercase transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_40px_rgba(157,78,221,0.3)]"
               >
-                <span className="relative z-10">Inquire About Rental</span>
+                <span className="relative z-10">{t("rental.inquire")}</span>
                 <svg className="relative z-10 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                 </svg>
                 <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-white/0 via-white/10 to-white/0 transition-transform duration-700 group-hover:translate-x-full" />
-              </a>
+              </button>
 
               <Link
                 href="/equipment"
-                className="flex w-full items-center justify-center gap-2 rounded-lg border border-white/[0.08] bg-white/[0.02] px-8 py-4 text-[11px] font-semibold tracking-[0.2em] text-white/50 uppercase transition-all duration-300 hover:border-purple-500/20 hover:text-white/70"
+                className="glass-card flex w-full items-center justify-center gap-2 rounded-lg px-8 py-4 text-[11px] font-semibold tracking-[0.2em] text-white/50 uppercase transition-all duration-300 hover:text-white/70"
               >
                 <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
                 </svg>
-                Browse All Equipment
+                {t("rental.allEquipment")}
               </Link>
             </div>
           </motion.div>
         </div>
       </div>
+
+      {/* Rental Inquiry Modal */}
+      <RentalModal
+        isOpen={rentalOpen}
+        onClose={() => setRentalOpen(false)}
+        equipmentName={item.name}
+      />
     </main>
   );
 }

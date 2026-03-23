@@ -10,14 +10,15 @@ import ResidentDJs from "./components/ResidentDJs";
 import EquipmentRental from "./components/EquipmentRental";
 import ContactSection from "./components/ContactSection";
 import StatsBar from "./components/StatsBar";
-import { getFeaturedEvents } from "@/lib/events";
+import { getFeaturedEvents, getNextEvent } from "@/lib/events";
 import { getFeaturedGallery } from "@/lib/gallery";
 import { getResidentDJs } from "@/lib/djs";
 import { getFeaturedEquipment } from "@/lib/equipment";
 
 export default async function Home() {
-  const [featuredEvents, galleryItems, residentDJs, featuredEquipment] =
+  const [nextEvent, featuredEvents, galleryItems, residentDJs, featuredEquipment] =
     await Promise.all([
+      getNextEvent(),
       getFeaturedEvents(4),
       getFeaturedGallery(6),
       getResidentDJs(),
@@ -27,7 +28,7 @@ export default async function Home() {
   return (
     <main className="relative">
       <Navbar />
-      <HeroSection />
+      <HeroSection nextEvent={nextEvent} />
       <StatsBar />
       <UpcomingEvents events={featuredEvents} />
       <GallerySection items={galleryItems} />
