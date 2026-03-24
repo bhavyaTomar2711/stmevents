@@ -19,7 +19,7 @@ const CATEGORIES: { value: string; labelKey: TranslationKey }[] = [
 
 function EquipmentCard({ item, index }: { item: EquipmentData; index: number }) {
   const { t } = useLanguage();
-  const coverImage = item.images[0] || "/1.png";
+  const coverImage = item.images[0] || "";
 
   return (
     <motion.div

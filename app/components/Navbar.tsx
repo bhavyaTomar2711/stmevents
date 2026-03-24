@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 import type { TranslationKey } from "@/lib/i18n/translations";
 
@@ -137,6 +138,18 @@ export default function Navbar() {
               DE
             </button>
           </div>
+
+          {/* Admin */}
+          <div className="h-4 w-px bg-white/15" />
+          <Link
+            href="/admin/login"
+            className="flex items-center gap-1.5 rounded-full border border-purple-500/20 bg-purple-500/5 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.15em] text-purple-400 transition-all duration-300 hover:border-purple-500/40 hover:bg-purple-500/10"
+          >
+            <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+            Admin
+          </Link>
         </div>
 
         {/* Mobile Hamburger */}

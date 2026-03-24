@@ -81,7 +81,7 @@ export default function EquipmentDetailClient({ item }: { item: EquipmentData })
                   className="relative aspect-[4/3] w-full"
                 >
                   <Image
-                    src={item.images[activeImage] || "/1.png"}
+                    src={item.images[activeImage] || ""}
                     alt={`${item.name} — image ${activeImage + 1}`}
                     fill
                     sizes="(max-width: 1024px) 100vw, 50vw"

@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import type { GalleryItem } from "@/lib/gallery";
-import { CATEGORY_LABELS } from "@/lib/gallery";
+import type { GalleryItem } from "@/lib/gallery-shared";
+import { CATEGORY_LABELS } from "@/lib/gallery-shared";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 import type { TranslationKey } from "@/lib/i18n/translations";
 

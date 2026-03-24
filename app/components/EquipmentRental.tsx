@@ -10,7 +10,7 @@ import { useLanguage } from "@/lib/i18n/LanguageContext";
 /* ── Product Card — lightweight, no tilt/glow/perspective ── */
 function ProductCard({ item, index }: { item: EquipmentData; index: number }) {
   const { t } = useLanguage();
-  const coverImage = item.images[0] || "/1.png";
+  const coverImage = item.images[0] || "";
 
   return (
     <motion.div

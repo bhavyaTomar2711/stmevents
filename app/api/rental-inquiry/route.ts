@@ -1,4 +1,5 @@
 import { Resend } from "resend";
+import { createServerSupabase } from "@/lib/supabase/server";
 
 export async function POST(request: Request) {
   try {
@@ -12,6 +13,22 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
+
+    // Save to Supabase
+    try {
+      const supabase = await createServerSupabase();
+      await supabase.from("inquiries").insert({
+        type: "rental",
+        name, email, phone: phone || null,
+        message: requirements || "",
+        equipment_name: equipmentName,
+        rental_date: rentalDate || null,
+        duration: duration || null,
+        location: location || null,
+        requirements: requirements || null,
+        status: "new",
+      });
+    } catch { /* Continue even if DB save fails */ }
 
     await resend.emails.send({
       from: "STM Events <onboarding@resend.dev>",

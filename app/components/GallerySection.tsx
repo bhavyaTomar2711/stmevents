@@ -4,7 +4,7 @@ import { useRef, useState, useCallback } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import type { GalleryItem } from "@/lib/gallery";
+import type { GalleryItem } from "@/lib/gallery-shared";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 interface GallerySectionProps {
@@ -61,7 +61,7 @@ function Lightbox({
           ) : (
             <div className="relative flex items-center justify-center">
               <Image
-                src={item.imageUrl || ""}
+                src={item.imageUrl || "/logoo.png"}
                 alt={item.title}
                 width={1200}
                 height={800}
@@ -217,7 +217,8 @@ export default function GallerySection({ items }: GallerySectionProps) {
   const grid3 = images[2] || null;
   const grid4 = images[3] || null;
 
-  const marqueeItems = [...items, ...items];
+  const validItems = items.filter((i) => i.thumbnailUrl || i.imageUrl);
+  const marqueeItems = [...validItems, ...validItems];
 
   // Check if items are loaded (from CMS vs empty)
   const hasItems = items.length > 0;
@@ -309,30 +310,32 @@ export default function GallerySection({ items }: GallerySectionProps) {
         )}
 
         {/* Marquee Strip */}
-        <div className="mt-16 md:mt-20">
-          <div className="relative overflow-hidden rounded-xl">
-            <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-32 bg-gradient-to-r from-black to-transparent" />
-            <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-32 bg-gradient-to-l from-black to-transparent" />
-            <div className="animate-marquee flex gap-4">
-              {marqueeItems.map((item, i) => (
-                <div
-                  key={`marquee-${i}`}
-                  className="group relative h-28 w-48 flex-shrink-0 cursor-pointer overflow-hidden rounded-lg border border-white/[0.04] sm:h-32 sm:w-56 md:h-40 md:w-72"
-                  onClick={() => setLightboxItem(item)}
-                >
-                  <Image
-                    src={item.thumbnailUrl || item.imageUrl || ""}
-                    alt={item.title}
-                    fill
-                    sizes="288px"
-                    className="object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-black/25 transition-colors duration-500 group-hover:bg-black/5" />
-                </div>
-              ))}
+        {marqueeItems.length > 0 && (
+          <div className="mt-16 md:mt-20">
+            <div className="relative overflow-hidden rounded-xl">
+              <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-32 bg-gradient-to-r from-black to-transparent" />
+              <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-32 bg-gradient-to-l from-black to-transparent" />
+              <div className="animate-marquee flex gap-4">
+                {marqueeItems.map((item, i) => (
+                  <div
+                    key={`marquee-${i}`}
+                    className="group relative h-28 w-48 flex-shrink-0 cursor-pointer overflow-hidden rounded-lg border border-white/[0.04] sm:h-32 sm:w-56 md:h-40 md:w-72"
+                    onClick={() => setLightboxItem(item)}
+                  >
+                    <Image
+                      src={item.thumbnailUrl || item.imageUrl || "/logoo.png"}
+                      alt={item.title}
+                      fill
+                      sizes="288px"
+                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-black/25 transition-colors duration-500 group-hover:bg-black/5" />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
         {/* View Full Gallery Link */}
         <motion.div
