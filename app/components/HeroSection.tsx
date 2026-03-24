@@ -16,7 +16,7 @@ export default function HeroSection({ nextEvent }: HeroSectionProps) {
   const hasTicketUrl = !!nextEvent?.ticketUrl && !isSoldOut;
 
   return (
-    <section className="relative h-screen w-full overflow-hidden">
+    <section className="relative min-h-screen w-full overflow-hidden">
       {/* Background Video */}
       <video
         autoPlay
@@ -46,7 +46,7 @@ export default function HeroSection({ nextEvent }: HeroSectionProps) {
       <div className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-black via-black/60 to-transparent" />
 
       {/* Hero Content */}
-      <div className="relative z-10 flex h-full items-center">
+      <div className="relative z-10 w-full pt-32 pb-20 sm:pt-36 sm:pb-24 md:pt-40 md:pb-28">
         <div className="w-full pl-6 pr-6 sm:pl-10 md:pl-16 lg:pl-24 xl:pl-32">
           <div className="flex max-w-2xl flex-col items-start gap-7 md:gap-8">
             {/* Main Heading */}
