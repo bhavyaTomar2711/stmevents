@@ -1,4 +1,4 @@
-import { createServerSupabase } from "@/lib/supabase/server";
+import { createPublicSupabase } from "@/lib/supabase/server";
 import type { DbEvent } from "@/lib/supabase/types";
 
 // ─── Hero Event Type ───────────────────────────────────────────────
@@ -61,7 +61,7 @@ function transformEvent(row: DbEvent): EventData {
 
 export async function getAllEvents(): Promise<EventData[]> {
   try {
-    const supabase = await createServerSupabase();
+    const supabase = await createPublicSupabase();
     const { data, error } = await supabase
       .from("events")
       .select("*")
@@ -76,7 +76,7 @@ export async function getAllEvents(): Promise<EventData[]> {
 
 export async function getFeaturedEvents(count = 4): Promise<EventData[]> {
   try {
-    const supabase = await createServerSupabase();
+    const supabase = await createPublicSupabase();
     const { data, error } = await supabase
       .from("events")
       .select("*")
@@ -92,7 +92,7 @@ export async function getFeaturedEvents(count = 4): Promise<EventData[]> {
 
 export async function getEventBySlug(slug: string): Promise<EventData | null> {
   try {
-    const supabase = await createServerSupabase();
+    const supabase = await createPublicSupabase();
     const { data, error } = await supabase
       .from("events")
       .select("*")
@@ -108,7 +108,7 @@ export async function getEventBySlug(slug: string): Promise<EventData | null> {
 
 export async function getEventSlugs(): Promise<string[]> {
   try {
-    const supabase = await createServerSupabase();
+    const supabase = await createPublicSupabase();
     const { data, error } = await supabase
       .from("events")
       .select("slug")
@@ -124,7 +124,7 @@ export async function getEventSlugs(): Promise<string[]> {
 
 export async function getNextEvent(): Promise<HeroEvent | null> {
   try {
-    const supabase = await createServerSupabase();
+    const supabase = await createPublicSupabase();
     const { data, error } = await supabase
       .from("events")
       .select("*")

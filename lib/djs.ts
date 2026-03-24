@@ -1,4 +1,4 @@
-import { createServerSupabase } from "@/lib/supabase/server";
+import { createPublicSupabase } from "@/lib/supabase/server";
 import type { DbDJ } from "@/lib/supabase/types";
 
 // ─── Types ─────────────────────────────────────────────────────────
@@ -39,7 +39,7 @@ function transformDJ(row: DbDJ): DJData {
 
 export async function getAllDJs(): Promise<DJData[]> {
   try {
-    const supabase = await createServerSupabase();
+    const supabase = await createPublicSupabase();
     const { data, error } = await supabase
       .from("djs")
       .select("*")
@@ -54,7 +54,7 @@ export async function getAllDJs(): Promise<DJData[]> {
 
 export async function getResidentDJs(): Promise<DJData[]> {
   try {
-    const supabase = await createServerSupabase();
+    const supabase = await createPublicSupabase();
     const { data, error } = await supabase
       .from("djs")
       .select("*")
@@ -70,7 +70,7 @@ export async function getResidentDJs(): Promise<DJData[]> {
 
 export async function getDJSlugs(): Promise<string[]> {
   try {
-    const supabase = await createServerSupabase();
+    const supabase = await createPublicSupabase();
     const { data, error } = await supabase
       .from("djs")
       .select("slug")
@@ -84,7 +84,7 @@ export async function getDJSlugs(): Promise<string[]> {
 
 export async function getDJBySlug(slug: string): Promise<DJData | null> {
   try {
-    const supabase = await createServerSupabase();
+    const supabase = await createPublicSupabase();
     const { data, error } = await supabase
       .from("djs")
       .select("*")

@@ -1,4 +1,4 @@
-import { createServerSupabase } from "@/lib/supabase/server";
+import { createPublicSupabase } from "@/lib/supabase/server";
 import type { DbEquipment } from "@/lib/supabase/types";
 
 // ─── Types ─────────────────────────────────────────────────────────
@@ -58,7 +58,7 @@ function transformEquipment(row: DbEquipment): EquipmentData {
 
 export async function getAllEquipment(): Promise<EquipmentData[]> {
   try {
-    const supabase = await createServerSupabase();
+    const supabase = await createPublicSupabase();
     const { data, error } = await supabase
       .from("equipment")
       .select("*")
@@ -73,7 +73,7 @@ export async function getAllEquipment(): Promise<EquipmentData[]> {
 
 export async function getFeaturedEquipment(count = 6): Promise<EquipmentData[]> {
   try {
-    const supabase = await createServerSupabase();
+    const supabase = await createPublicSupabase();
     const { data, error } = await supabase
       .from("equipment")
       .select("*")
@@ -90,7 +90,7 @@ export async function getFeaturedEquipment(count = 6): Promise<EquipmentData[]> 
 
 export async function getEquipmentBySlug(slug: string): Promise<EquipmentData | null> {
   try {
-    const supabase = await createServerSupabase();
+    const supabase = await createPublicSupabase();
     const { data, error } = await supabase
       .from("equipment")
       .select("*")
@@ -106,7 +106,7 @@ export async function getEquipmentBySlug(slug: string): Promise<EquipmentData | 
 
 export async function getEquipmentSlugs(): Promise<string[]> {
   try {
-    const supabase = await createServerSupabase();
+    const supabase = await createPublicSupabase();
     const { data, error } = await supabase
       .from("equipment")
       .select("slug")

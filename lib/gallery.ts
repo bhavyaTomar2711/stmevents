@@ -1,4 +1,4 @@
-import { createServerSupabase } from "@/lib/supabase/server";
+import { createPublicSupabase } from "@/lib/supabase/server";
 import type { DbGalleryItem } from "@/lib/supabase/types";
 import type { GalleryItem, GalleryCategory } from "@/lib/gallery-shared";
 
@@ -28,7 +28,7 @@ function transformGalleryItem(row: DbGalleryItem): GalleryItem {
 
 export async function getAllGalleryItems(): Promise<GalleryItem[]> {
   try {
-    const supabase = await createServerSupabase();
+    const supabase = await createPublicSupabase();
     const { data, error } = await supabase
       .from("gallery")
       .select("*")
@@ -43,7 +43,7 @@ export async function getAllGalleryItems(): Promise<GalleryItem[]> {
 
 export async function getGalleryByCategory(category: GalleryCategory): Promise<GalleryItem[]> {
   try {
-    const supabase = await createServerSupabase();
+    const supabase = await createPublicSupabase();
     const { data, error } = await supabase
       .from("gallery")
       .select("*")
@@ -59,7 +59,7 @@ export async function getGalleryByCategory(category: GalleryCategory): Promise<G
 
 export async function getGalleryByEvent(eventId: string): Promise<GalleryItem[]> {
   try {
-    const supabase = await createServerSupabase();
+    const supabase = await createPublicSupabase();
     const { data, error } = await supabase
       .from("gallery")
       .select("*")
@@ -74,7 +74,7 @@ export async function getGalleryByEvent(eventId: string): Promise<GalleryItem[]>
 
 export async function getFeaturedGallery(count = 6): Promise<GalleryItem[]> {
   try {
-    const supabase = await createServerSupabase();
+    const supabase = await createPublicSupabase();
     const { data, error } = await supabase
       .from("gallery")
       .select("*")

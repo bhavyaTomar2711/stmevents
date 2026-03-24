@@ -1,6 +1,8 @@
 import { createServerClient } from "@supabase/ssr";
+import { createClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 
+// Authenticated server client (for admin routes — uses cookies)
 export async function createServerSupabase() {
   const cookieStore = await cookies();
 
@@ -23,5 +25,13 @@ export async function createServerSupabase() {
         },
       },
     }
+  );
+}
+
+// Public server client (for data fetching — no cookies needed)
+export function createPublicSupabase() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   );
 }
