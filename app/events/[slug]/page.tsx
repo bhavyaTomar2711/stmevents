@@ -1,3 +1,6 @@
+export const revalidate = 30;
+export const dynamicParams = true;
+
 import { getEventBySlug, getEventSlugs } from "@/lib/events";
 import { notFound } from "next/navigation";
 import EventDetailClient from "./EventDetailClient";

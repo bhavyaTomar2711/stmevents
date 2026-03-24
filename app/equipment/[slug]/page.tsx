@@ -1,4 +1,5 @@
 export const revalidate = 30;
+export const dynamicParams = true;
 
 import { notFound } from "next/navigation";
 import { getEquipmentBySlug, getEquipmentSlugs } from "@/lib/equipment";
