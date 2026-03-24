@@ -173,6 +173,7 @@ const translations = {
     de: "Erzähl uns von deinem Event oder deiner Anfrage...",
   },
   "contact.send": { en: "SEND INQUIRY", de: "ANFRAGE SENDEN" },
+  "contact.sending": { en: "SENDING...", de: "SENDEN..." },
   "contact.sent": { en: "SENT SUCCESSFULLY !", de: "ERFOLGREICH GESENDET !" },
   "contact.emailLabel": { en: "Email", de: "E-Mail" },
   "contact.phoneLabel": { en: "Phone", de: "Telefon" },

@@ -39,7 +39,7 @@ const statusConfig: Record<
   },
 };
 
-const AUTO_SLIDE_INTERVAL = 4000;
+const AUTO_SLIDE_INTERVAL = 2000;
 
 export default function UpcomingEvents({ events }: UpcomingEventsProps) {
   const { t } = useLanguage();

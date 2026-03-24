@@ -12,12 +12,30 @@ export default function ContactSection() {
   const [formData, setFormData] = useState({ name: "", email: "", subject: "", message: "" });
   const [focusedField, setFocusedField] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 3000);
-    setFormData({ name: "", email: "", subject: "", message: "" });
+    if (!formData.name || !formData.email || !formData.message) return;
+    setSending(true);
+    setError(false);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      if (!res.ok) throw new Error();
+      setSubmitted(true);
+      setFormData({ name: "", email: "", subject: "", message: "" });
+      setTimeout(() => setSubmitted(false), 3000);
+    } catch {
+      setError(true);
+      setTimeout(() => setError(false), 3000);
+    } finally {
+      setSending(false);
+    }
   };
 
   const subjects: { key: TranslationKey; value: string }[] = [
@@ -199,16 +217,20 @@ export default function ContactSection() {
                   </div>
 
                   {/* Submit */}
-                  <div className="pt-3">
+                  <div className="flex items-center gap-4 pt-3">
                     <button
                       type="submit"
-                      className="group relative overflow-hidden rounded-full bg-gradient-to-r from-purple-600 to-purple-400 px-10 py-4 text-[11px] font-bold uppercase tracking-[0.2em] text-white shadow-[0_0_20px_rgba(124,58,237,0.2)] transition-all duration-400 hover:shadow-[0_0_40px_rgba(124,58,237,0.4)] hover:scale-[1.02]"
+                      disabled={sending}
+                      className="group relative overflow-hidden rounded-full bg-gradient-to-r from-purple-600 to-purple-400 px-10 py-4 text-[11px] font-bold uppercase tracking-[0.2em] text-white shadow-[0_0_20px_rgba(124,58,237,0.2)] transition-all duration-400 hover:shadow-[0_0_40px_rgba(124,58,237,0.4)] hover:scale-[1.02] disabled:opacity-60 disabled:cursor-not-allowed"
                     >
                       <span className="relative z-10">
-                        {submitted ? t("contact.sent") : t("contact.send")}
+                        {sending ? t("contact.sending") : submitted ? t("contact.sent") : t("contact.send")}
                       </span>
                       <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-white/0 via-white/10 to-white/0 transition-transform duration-700 group-hover:translate-x-full" />
                     </button>
+                    {error && (
+                      <span className="text-[12px] text-red-400">Failed to send. Please try again.</span>
+                    )}
                   </div>
                 </div>
               </div>
