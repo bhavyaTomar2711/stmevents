@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
@@ -17,6 +18,7 @@ const navItems = [
 export default function AdminShell({ children, user }: { children: React.ReactNode; user: User }) {
   const pathname = usePathname();
   const router = useRouter();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
@@ -25,17 +27,49 @@ export default function AdminShell({ children, user }: { children: React.ReactNo
   };
 
   return (
-    <div className="flex min-h-screen bg-[#0a0a0f]">
+    <div className="flex min-h-screen overflow-x-hidden bg-[#0a0a0f]">
+      {/* Mobile top bar */}
+      <div className="fixed inset-x-0 top-0 z-50 flex items-center justify-between border-b border-white/[0.06] bg-[#0d0d14] px-4 py-3 md:hidden">
+        <div className="flex items-center gap-3">
+          <Image src="/logoo.png" alt="STM" width={28} height={28} />
+          <h2 className="text-sm font-bold uppercase tracking-wider text-white">STM Admin</h2>
+        </div>
+        <button
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          className="flex h-9 w-9 flex-col items-center justify-center gap-[5px]"
+          aria-label="Toggle sidebar"
+        >
+          <span className={`h-[1.5px] w-5 rounded-full bg-white transition-all duration-300 ${sidebarOpen ? "translate-y-[6.5px] rotate-45" : ""}`} />
+          <span className={`h-[1.5px] w-5 rounded-full bg-white transition-all duration-300 ${sidebarOpen ? "opacity-0" : ""}`} />
+          <span className={`h-[1.5px] w-5 rounded-full bg-white transition-all duration-300 ${sidebarOpen ? "-translate-y-[6.5px] -rotate-45" : ""}`} />
+        </button>
+      </div>
+
+      {/* Mobile overlay */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm md:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
-      <aside className="fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-white/[0.06] bg-[#0d0d14]">
-        {/* Logo */}
-        <div className="flex items-center gap-3 border-b border-white/[0.06] px-6 py-5">
+      <aside
+        className={`fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-white/[0.06] bg-[#0d0d14] transition-transform duration-300 md:translate-x-0 ${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        {/* Logo - desktop only */}
+        <div className="hidden items-center gap-3 border-b border-white/[0.06] px-6 py-5 md:flex">
           <Image src="/logoo.png" alt="STM" width={32} height={32} />
           <div>
             <h2 className="text-sm font-bold uppercase tracking-wider text-white">STM Admin</h2>
             <p className="text-[10px] text-white/30">Dashboard</p>
           </div>
         </div>
+
+        {/* Spacer for mobile top bar */}
+        <div className="h-[53px] md:hidden" />
 
         {/* Nav */}
         <nav className="flex-1 overflow-y-auto px-3 py-4">
@@ -46,6 +80,7 @@ export default function AdminShell({ children, user }: { children: React.ReactNo
                 <Link
                   key={item.href}
                   href={item.href}
+                  onClick={() => setSidebarOpen(false)}
                   className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-[13px] font-medium transition-all duration-200 ${
                     isActive
                       ? "bg-purple-500/15 text-purple-300"
@@ -91,7 +126,9 @@ export default function AdminShell({ children, user }: { children: React.ReactNo
       </aside>
 
       {/* Main content */}
-      <main className="ml-64 flex-1 p-8">{children}</main>
+      <main className="min-w-0 flex-1 pt-[53px] md:ml-64 md:pt-0">
+        <div className="p-4 sm:p-6 md:p-8">{children}</div>
+      </main>
     </div>
   );
 }

@@ -21,8 +21,8 @@ export default async function AdminEquipmentPage() {
         </Link>
       </div>
 
-      <div className="overflow-hidden rounded-xl border border-white/[0.08]">
-        <table className="w-full">
+      <div className="overflow-x-auto rounded-xl border border-white/[0.08]">
+        <table className="w-full min-w-[600px]">
           <thead>
             <tr className="border-b border-white/[0.06] bg-white/[0.02]">
               <th className="px-5 py-3 text-left text-[10px] font-semibold uppercase tracking-[0.2em] text-white/40">Name</th>

@@ -39,33 +39,31 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-black px-4">
-      {/* Background */}
-      <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        <div
-          className="absolute top-1/3 left-1/2 h-[600px] w-[600px] -translate-x-1/2 rounded-full"
-          style={{
-            background: "radial-gradient(circle, rgba(124,58,237,0.1) 0%, transparent 60%)",
-            filter: "blur(120px)",
-          }}
-        />
-      </div>
+    <div className="fixed inset-0 flex items-center justify-center bg-black px-5">
+      {/* Background glow */}
+      <div
+        className="pointer-events-none absolute top-1/3 left-1/2 h-[300px] w-[300px] -translate-x-1/2 rounded-full sm:h-[600px] sm:w-[600px]"
+        style={{
+          background: "radial-gradient(circle, rgba(124,58,237,0.1) 0%, transparent 60%)",
+          filter: "blur(120px)",
+        }}
+      />
 
-      <div className="relative z-10 w-full max-w-md">
+      <div className="relative z-10 w-full max-w-sm sm:max-w-md">
         {/* Logo */}
-        <div className="mb-8 flex justify-center">
-          <Image src="/logoo.png" alt="STM Events" width={60} height={60} />
+        <div className="mb-6 flex justify-center">
+          <Image src="/logoo.png" alt="STM Events" width={50} height={50} />
         </div>
 
-        <div className="rounded-2xl border border-white/[0.1] bg-white/[0.04] p-8 backdrop-blur-xl">
-          <h1 className="mb-2 text-center text-2xl font-bold uppercase tracking-wider text-white">
+        <div className="rounded-2xl border border-white/[0.1] bg-white/[0.04] p-6 backdrop-blur-xl sm:p-8">
+          <h1 className="mb-1 text-center text-xl font-bold uppercase tracking-wider text-white sm:text-2xl">
             Admin Login
           </h1>
-          <p className="mb-8 text-center text-sm text-white/40">
+          <p className="mb-6 text-center text-sm text-white/40">
             Sign in to manage your content
           </p>
 
-          <form onSubmit={handleLogin} className="space-y-6">
+          <form onSubmit={handleLogin} className="space-y-5">
             <div>
               <label className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.25em] text-purple-400">
                 Email
