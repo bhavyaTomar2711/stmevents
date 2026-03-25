@@ -18,8 +18,10 @@ const CATEGORIES: { value: string; labelKey: TranslationKey }[] = [
 ];
 
 function EquipmentCard({ item, index }: { item: EquipmentData; index: number }) {
-  const { t } = useLanguage();
+  const { t, locale } = useLanguage();
   const coverImage = item.images[0] || "";
+  const displayName = (locale === "de" && item.name_de) ? item.name_de : item.name;
+  const displayShortDesc = (locale === "de" && item.shortDescription_de) ? item.shortDescription_de : item.shortDescription;
 
   return (
     <motion.div
@@ -61,11 +63,11 @@ function EquipmentCard({ item, index }: { item: EquipmentData; index: number }) 
             </span>
 
             <h3 className="mt-2 text-lg font-bold uppercase tracking-tight text-white transition-colors duration-300 group-hover:text-purple-100 sm:text-xl">
-              {item.name}
+              {displayName}
             </h3>
 
             <p className="mt-2 line-clamp-2 text-[13px] leading-relaxed text-white/35">
-              {item.shortDescription}
+              {displayShortDesc}
             </p>
 
             <div className="mt-5 flex items-end justify-between">

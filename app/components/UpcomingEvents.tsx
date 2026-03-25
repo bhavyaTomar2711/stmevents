@@ -319,8 +319,10 @@ export default function UpcomingEvents({ events }: UpcomingEventsProps) {
 
 /* ─── Slider Card ─── */
 function SliderCard({ event, index }: { event: EventData; index: number }) {
-  const { t } = useLanguage();
+  const { locale, t } = useLanguage();
   const router = useRouter();
+  const displayTitle = (locale === "de" && event.title_de) ? event.title_de : event.title;
+  const displayLocation = (locale === "de" && event.location_de) ? event.location_de : event.location;
   const isSoldOut = event.ticketStatus === "sold-out";
   const badge = statusConfig[event.ticketStatus || ""];
   const [isSaved, setIsSaved] = useState(false);
@@ -328,16 +330,18 @@ function SliderCard({ event, index }: { event: EventData; index: number }) {
 
   useEffect(() => {
     async function checkSaved() {
-      const supabase = createClient();
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
-      const { data } = await supabase
-        .from("saved_events")
-        .select("id")
-        .eq("user_id", user.id)
-        .eq("event_slug", event.slug)
-        .maybeSingle();
-      if (data) setIsSaved(true);
+      try {
+        const supabase = createClient();
+        const { data: { user }, error } = await supabase.auth.getUser();
+        if (error || !user) return;
+        const { data } = await supabase
+          .from("saved_events")
+          .select("id")
+          .eq("user_id", user.id)
+          .eq("event_slug", event.slug)
+          .maybeSingle();
+        if (data) setIsSaved(true);
+      } catch { /* stale token — ignore */ }
     }
     checkSaved();
   }, [event.slug]);
@@ -349,8 +353,12 @@ function SliderCard({ event, index }: { event: EventData; index: number }) {
     setSaving(true);
 
     const supabase = createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) { router.push("/account/login"); return; }
+    let user = null;
+    try {
+      const { data, error } = await supabase.auth.getUser();
+      if (!error) user = data.user;
+    } catch { /* stale token */ }
+    if (!user) { router.push("/account/login"); setSaving(false); return; }
 
     if (isSaved) {
       await supabase.from("saved_events").delete().eq("user_id", user.id).eq("event_slug", event.slug);
@@ -378,7 +386,7 @@ function SliderCard({ event, index }: { event: EventData; index: number }) {
           {event.image ? (
             <Image
               src={event.image}
-              alt={event.title}
+              alt={displayTitle}
               fill
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
               className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
@@ -436,14 +444,14 @@ function SliderCard({ event, index }: { event: EventData; index: number }) {
         <div className="relative z-10 flex flex-1 flex-col justify-between px-5 pt-4 pb-5">
           <div>
             <h3 className="text-sm font-semibold uppercase tracking-[0.08em] text-white transition-colors duration-300 group-hover:text-purple-100 sm:text-[15px]">
-              {event.title}
+              {displayTitle}
             </h3>
             <p className="mt-1.5 flex items-center gap-1.5 text-[12px] tracking-wider text-white/35">
               <svg className="h-3 w-3 text-purple-500/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
               </svg>
-              {event.location}
+              {displayLocation}
             </p>
           </div>
 

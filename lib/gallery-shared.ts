@@ -3,12 +3,14 @@
 export interface GalleryItem {
   id: string;
   title: string;
+  title_de: string;
   mediaType: "image" | "video";
   imageUrl: string | null;
   videoUrl: string | null;
   thumbnailUrl: string | null;
   category: string | null;
   description: string | null;
+  description_de: string;
   featured: boolean;
   date: string | null;
   relatedEvent: { title: string; slug: string } | null;

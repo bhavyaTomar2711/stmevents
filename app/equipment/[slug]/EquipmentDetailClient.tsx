@@ -9,10 +9,14 @@ import RentalModal from "@/app/components/RentalModal";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 export default function EquipmentDetailClient({ item }: { item: EquipmentData }) {
-  const { t } = useLanguage();
+  const { t, locale } = useLanguage();
   const [activeImage, setActiveImage] = useState(0);
   const [rentalOpen, setRentalOpen] = useState(false);
   const hasMultipleImages = item.images.length > 1;
+  const displayName = (locale === "de" && item.name_de) ? item.name_de : item.name;
+  const displayShortDesc = (locale === "de" && item.shortDescription_de) ? item.shortDescription_de : item.shortDescription;
+  const displayFullDesc = (locale === "de" && item.fullDescription_de) ? item.fullDescription_de : item.fullDescription;
+  const displayDesc = displayFullDesc || displayShortDesc;
 
   return (
     <main className="relative min-h-screen bg-black">
@@ -145,7 +149,7 @@ export default function EquipmentDetailClient({ item }: { item: EquipmentData })
 
             {/* Name */}
             <h1 className="mt-5 text-4xl font-bold uppercase leading-[0.95] tracking-tight text-white sm:text-5xl">
-              {item.name}
+              {displayName}
             </h1>
 
             {/* Price */}
@@ -164,9 +168,10 @@ export default function EquipmentDetailClient({ item }: { item: EquipmentData })
               <h2 className="mb-3 text-[11px] font-medium uppercase tracking-[0.2em] text-white/30">
                 {t("rental.description")}
               </h2>
-              <p className="text-[15px] leading-relaxed text-white/50">
-                {item.fullDescription || item.shortDescription}
-              </p>
+              <div
+                className="text-[15px] leading-relaxed text-white/50"
+                dangerouslySetInnerHTML={{ __html: displayDesc || "" }}
+              />
             </div>
 
             {/* Specs */}

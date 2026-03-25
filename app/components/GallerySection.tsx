@@ -19,6 +19,10 @@ function Lightbox({
   item: GalleryItem;
   onClose: () => void;
 }) {
+  const { locale } = useLanguage();
+  const displayTitle = (locale === "de" && item.title_de) ? item.title_de : item.title;
+  const displayDesc = (locale === "de" && item.description_de) ? item.description_de : item.description;
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -61,8 +65,8 @@ function Lightbox({
           ) : (
             <div className="relative flex items-center justify-center">
               <Image
-                src={item.imageUrl || "/logoo.png"}
-                alt={item.title}
+                src={item.imageUrl || "https://res.cloudinary.com/dqiuwzvfb/image/upload/v1774434332/logoo_bho6qe.png"}
+                alt={displayTitle}
                 width={1200}
                 height={800}
                 className="max-h-[65vh] w-full object-contain"
@@ -77,11 +81,11 @@ function Lightbox({
           <div className="flex items-start justify-between gap-4">
             <div>
               <h3 className="text-base font-semibold uppercase tracking-wide text-white">
-                {item.title}
+                {displayTitle}
               </h3>
-              {item.description && (
+              {displayDesc && (
                 <p className="mt-1.5 max-w-xl text-sm leading-relaxed text-white/40">
-                  {item.description}
+                  {displayDesc}
                 </p>
               )}
             </div>
@@ -127,6 +131,9 @@ function MediaBlock({
   className?: string;
   onClick: () => void;
 }) {
+  const { locale } = useLanguage();
+  const displayTitle = (locale === "de" && item.title_de) ? item.title_de : item.title;
+
   const [loaded, setLoaded] = useState(false);
   const src = item.mediaType === "video"
     ? (item.videoUrl || "")
@@ -323,7 +330,7 @@ export default function GallerySection({ items }: GallerySectionProps) {
                     onClick={() => setLightboxItem(item)}
                   >
                     <Image
-                      src={item.thumbnailUrl || item.imageUrl || "/logoo.png"}
+                      src={item.thumbnailUrl || item.imageUrl || "https://res.cloudinary.com/dqiuwzvfb/image/upload/v1774434332/logoo_bho6qe.png"}
                       alt={item.title}
                       fill
                       sizes="288px"

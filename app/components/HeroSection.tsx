@@ -28,7 +28,7 @@ export default function HeroSection({ nextEvent }: HeroSectionProps) {
         className="absolute inset-0 h-full w-full object-cover"
       >
         <source
-          src="/video/4043988-hd_1920_1080_24fps.mp4"
+          src="https://res.cloudinary.com/dqiuwzvfb/video/upload/v1774434324/4043988-hd_1920_1080_24fps_jrmf6b.mp4"
           type="video/mp4"
         />
       </video>

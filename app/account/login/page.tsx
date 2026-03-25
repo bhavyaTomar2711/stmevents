@@ -138,7 +138,7 @@ export default function LoginPage() {
       <nav className="relative z-10 border-b border-white/[0.06] bg-[#07070d]/80 backdrop-blur-xl">
         <div className="mx-auto flex items-center justify-between px-6 py-4 md:px-10 lg:px-16">
           <Link href="/" className="transition-opacity hover:opacity-80">
-            <Image src="/logoo.png" alt="STM Events" width={100} height={34} className="h-8 w-auto" priority />
+            <Image src="https://res.cloudinary.com/dqiuwzvfb/image/upload/v1774434332/logoo_bho6qe.png" alt="STM Events" width={100} height={34} className="h-8 w-auto" priority />
           </Link>
           <Link
             href="/"
@@ -368,7 +368,7 @@ export default function LoginPage() {
       <footer className="relative border-t border-white/[0.04] bg-[#07070d]">
         <div className="mx-auto flex flex-col items-center justify-between gap-3 px-6 py-6 sm:flex-row md:px-10 lg:px-16">
           <div className="flex items-center gap-3">
-            <Image src="/logoo.png" alt="STM Events" width={70} height={24} className="h-5 w-auto opacity-40" />
+            <Image src="https://res.cloudinary.com/dqiuwzvfb/image/upload/v1774434332/logoo_bho6qe.png" alt="STM Events" width={70} height={24} className="h-5 w-auto opacity-40" />
             <span className="text-[11px] tracking-wider text-white/15">&copy; {new Date().getFullYear()} STM Events</span>
           </div>
           <div className="flex items-center gap-4">

@@ -9,8 +9,10 @@ import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 /* ── Product Card — lightweight, no tilt/glow/perspective ── */
 function ProductCard({ item, index }: { item: EquipmentData; index: number }) {
-  const { t } = useLanguage();
+  const { t, locale } = useLanguage();
   const coverImage = item.images[0] || "";
+  const displayName = (locale === "de" && item.name_de) ? item.name_de : item.name;
+  const displayShortDesc = (locale === "de" && item.shortDescription_de) ? item.shortDescription_de : item.shortDescription;
 
   return (
     <motion.div
@@ -47,12 +49,12 @@ function ProductCard({ item, index }: { item: EquipmentData; index: number }) {
 
             {/* Name */}
             <h3 className="mt-2 text-lg font-bold uppercase tracking-tight text-white">
-              {item.name}
+              {displayName}
             </h3>
 
             {/* Description */}
             <p className="mt-2 line-clamp-2 flex-1 text-[13px] leading-relaxed text-white/35">
-              {item.shortDescription}
+              {displayShortDesc}
             </p>
 
             {/* Price + CTA */}

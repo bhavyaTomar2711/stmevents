@@ -55,7 +55,7 @@ export default function Footer() {
           {/* Brand Column */}
           <div className="md:col-span-5">
             <Image
-              src="/logoo.png"
+              src="https://res.cloudinary.com/dqiuwzvfb/image/upload/v1774434332/logoo_bho6qe.png"
               alt="STM Events"
               width={100}
               height={34}

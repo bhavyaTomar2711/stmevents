@@ -89,7 +89,7 @@ export default function Navbar() {
           className="group select-none transition-opacity hover:opacity-80"
         >
           <Image
-            src="/logoo.png"
+            src="https://res.cloudinary.com/dqiuwzvfb/image/upload/v1774434332/logoo_bho6qe.png"
             alt="STM Events"
             width={120}
             height={40}

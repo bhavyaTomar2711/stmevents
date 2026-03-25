@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import AdminFormField from "../_components/AdminFormField";
 import ImageUpload from "../_components/ImageUpload";
+import RichTextEditor from "../_components/RichTextEditor";
 import type { DbGalleryItem } from "@/lib/supabase/types";
 
 export default function GalleryForm({ item }: { item?: DbGalleryItem }) {
@@ -13,12 +14,14 @@ export default function GalleryForm({ item }: { item?: DbGalleryItem }) {
 
   const [form, setForm] = useState({
     title: item?.title || "",
+    title_de: item?.title_de || "",
     media_type: item?.media_type || "image",
     image_url: item?.image_url || "",
     video_url: item?.video_url || "",
     thumbnail_url: item?.thumbnail_url || "",
     category: item?.category || "event",
     description: item?.description || "",
+    description_de: item?.description_de || "",
     featured: item?.featured ?? false,
     date: item?.date || "",
     published: item?.published ?? true,
@@ -36,12 +39,14 @@ export default function GalleryForm({ item }: { item?: DbGalleryItem }) {
     const supabase = createClient();
     const payload = {
       title: form.title,
+      title_de: form.title_de || null,
       media_type: form.media_type,
       image_url: form.image_url || null,
       video_url: form.video_url || null,
       thumbnail_url: form.thumbnail_url || null,
       category: form.category,
       description: form.description || null,
+      description_de: form.description_de || null,
       featured: form.featured,
       date: form.date || null,
       published: form.published,
@@ -57,13 +62,22 @@ export default function GalleryForm({ item }: { item?: DbGalleryItem }) {
   };
 
   return (
-    <div className="mx-auto max-w-3xl">
-      <h1 className="mb-8 text-2xl font-bold uppercase tracking-wider text-white">{isNew ? "Add Gallery Item" : "Edit Gallery Item"}</h1>
+    <div className="mx-auto max-w-4xl">
+      <h1 className="mb-8 text-2xl font-bold uppercase tracking-wider text-white">{isNew ? "New Gallery Item" : "Edit Gallery Item"}</h1>
       <form onSubmit={handleSubmit} className="space-y-6 rounded-xl border border-white/[0.08] bg-white/[0.02] p-8">
-        <AdminFormField label="Title" name="title" value={form.title} onChange={(v) => update("title", v)} required placeholder="Photo/Video title" />
+        <div className="grid gap-6 sm:grid-cols-2">
+          <AdminFormField label="Title (English) *" name="title" value={form.title} onChange={(v) => update("title", v)} required placeholder="Photo/Video title" />
+          <AdminFormField label="Title (German)" name="title_de" value={form.title_de} onChange={(v) => update("title_de", v)} placeholder="Foto/Video Titel" />
+        </div>
+
+        <div className="grid gap-6 sm:grid-cols-2">
+          <RichTextEditor label="Description (English)" value={form.description} onChange={(v) => update("description", v)} placeholder="Enter description in English..." />
+          <RichTextEditor label="Description (German)" value={form.description_de} onChange={(v) => update("description_de", v)} placeholder="Enter description in German..." />
+        </div>
+
         <div className="grid gap-6 sm:grid-cols-2">
           <div>
-            <label className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.25em] text-purple-400">Media Type</label>
+            <label className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.25em] text-purple-400">Media Type *</label>
             <select value={form.media_type} onChange={(e) => update("media_type", e.target.value)} className="w-full rounded-lg border border-white/[0.1] bg-white/[0.06] px-4 py-3 text-sm text-white outline-none focus:border-purple-500/50">
               <option value="image" className="bg-zinc-900 text-white">Image</option>
               <option value="video" className="bg-zinc-900 text-white">Video</option>
@@ -80,14 +94,15 @@ export default function GalleryForm({ item }: { item?: DbGalleryItem }) {
             </select>
           </div>
         </div>
-        <ImageUpload label="Image" value={form.image_url} onChange={(v) => update("image_url", v)} folder="gallery" />
+
+        <ImageUpload label="Gallery Image" value={form.image_url} onChange={(v) => update("image_url", v)} folder="gallery" />
         {form.media_type === "video" && (
           <>
             <ImageUpload label="Video" value={form.video_url} onChange={(v) => update("video_url", v)} folder="gallery" accept="video/*" />
             <ImageUpload label="Video Thumbnail" value={form.thumbnail_url} onChange={(v) => update("thumbnail_url", v)} folder="gallery" />
           </>
         )}
-        <AdminFormField label="Description" name="description" value={form.description} onChange={(v) => update("description", v)} textarea />
+
         <AdminFormField label="Date" name="date" type="date" value={form.date} onChange={(v) => update("date", v)} />
         <div className="flex gap-6">
           <label className="flex cursor-pointer items-center gap-3">
@@ -101,7 +116,7 @@ export default function GalleryForm({ item }: { item?: DbGalleryItem }) {
         </div>
         {error && <p className="rounded-lg border border-red-500/20 bg-red-500/10 px-4 py-2.5 text-[12px] text-red-400">{error}</p>}
         <div className="flex gap-3 pt-4">
-          <button type="submit" disabled={saving} className="rounded-lg bg-purple-600 px-8 py-3 text-[12px] font-bold uppercase tracking-[0.2em] text-white transition-all hover:bg-purple-500 disabled:opacity-50">{saving ? "Saving..." : isNew ? "Create" : "Save Changes"}</button>
+          <button type="submit" disabled={saving} className="rounded-lg bg-purple-600 px-8 py-3 text-[12px] font-bold uppercase tracking-[0.2em] text-white transition-all hover:bg-purple-500 disabled:opacity-50">{saving ? "Saving..." : isNew ? "Add to Gallery" : "Save Changes"}</button>
           <button type="button" onClick={() => router.push("/admin/gallery")} className="rounded-lg border border-white/[0.08] px-8 py-3 text-[12px] font-semibold uppercase tracking-wider text-white/50 hover:text-white">Cancel</button>
         </div>
       </form>

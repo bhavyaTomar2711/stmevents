@@ -102,7 +102,7 @@ export default function AboutSection() {
             <div className="glass-card relative overflow-hidden rounded-2xl">
               <div className="aspect-[4/5] w-full overflow-hidden">
                 <img
-                  src="/about us.png"
+                  src="https://res.cloudinary.com/dqiuwzvfb/image/upload/v1774434331/about_us_eixodf.png"
                   alt="STM Events atmosphere"
                   loading="lazy"
                   decoding="async"

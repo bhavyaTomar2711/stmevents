@@ -100,8 +100,10 @@ export default function EventsPageClient({ events }: { events: EventData[] }) {
             <EventCard
               key={event.slug}
               title={event.title}
+              title_de={event.title_de}
               date={event.date}
               location={event.location}
+              location_de={event.location_de}
               image={event.image}
               slug={event.slug}
               index={i}

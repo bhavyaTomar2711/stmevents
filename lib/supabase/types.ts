@@ -1,11 +1,14 @@
 export interface DbEvent {
   id: string;
   title: string;
+  title_de: string | null;
   slug: string;
   date: string; // ISO date
   location: string;
+  location_de: string | null;
   lineup: string[] | null;
   description: string | null;
+  description_de: string | null;
   image_url: string | null;
   eventbrite_link: string | null;
   ticket_status: "available" | "sold-out" | "limited" | "final-release";
@@ -21,6 +24,7 @@ export interface DbDJ {
   logo_url: string | null;
   genre: string;
   bio: string | null;
+  bio_de: string | null;
   instagram_url: string | null;
   soundcloud_url: string | null;
   resident: boolean;
@@ -32,12 +36,14 @@ export interface DbDJ {
 export interface DbGalleryItem {
   id: string;
   title: string;
+  title_de: string | null;
   media_type: "image" | "video";
   image_url: string | null;
   video_url: string | null;
   thumbnail_url: string | null;
   category: "event" | "aftermovie" | "djset" | "bts" | "promo";
   description: string | null;
+  description_de: string | null;
   featured: boolean;
   date: string | null;
   related_event_id: string | null;
@@ -48,12 +54,15 @@ export interface DbGalleryItem {
 export interface DbEquipment {
   id: string;
   name: string;
+  name_de: string | null;
   slug: string;
   images: string[];
   price: string;
   price_per: string;
   short_description: string;
+  short_description_de: string | null;
   full_description: string | null;
+  full_description_de: string | null;
   category: string;
   category_label: string;
   available: boolean;

@@ -6,6 +6,7 @@ import type { DbDJ } from "@/lib/supabase/types";
 export interface DJData {
   id: string;
   name: string;
+  bio_de: string;
   slug: string;
   photo: string;
   logo: string | null;
@@ -28,6 +29,7 @@ function transformDJ(row: DbDJ): DJData {
     logo: row.logo_url || null,
     genre: row.genre || "Techno",
     bio: row.bio || null,
+    bio_de: row.bio_de || "",
     instagramUrl: row.instagram_url || null,
     soundcloudUrl: row.soundcloud_url || null,
     resident: row.resident || false,

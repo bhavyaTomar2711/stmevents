@@ -40,7 +40,7 @@ export default function AdminShell({ children, user }: { children: React.ReactNo
       <div className="fixed inset-x-0 top-0 z-50 flex items-center justify-between border-b border-white/[0.06] bg-[#0b0b14]/95 px-4 py-3 backdrop-blur-xl md:hidden">
         <div className="flex items-center gap-3">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-purple-500 to-violet-600">
-            <Image src="/logoo.png" alt="STM" width={20} height={20} />
+            <Image src="https://res.cloudinary.com/dqiuwzvfb/image/upload/v1774434332/logoo_bho6qe.png" alt="STM" width={20} height={20} />
           </div>
           <div>
             <h2 className="text-sm font-bold text-white">STM Events</h2>
@@ -73,7 +73,7 @@ export default function AdminShell({ children, user }: { children: React.ReactNo
         <div className="hidden border-b border-white/[0.06] px-5 py-5 md:block">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500 to-violet-600 shadow-lg shadow-purple-500/20">
-              <Image src="/logoo.png" alt="STM" width={24} height={24} />
+              <Image src="https://res.cloudinary.com/dqiuwzvfb/image/upload/v1774434332/logoo_bho6qe.png" alt="STM" width={24} height={24} />
             </div>
             <div>
               <h2 className="text-sm font-bold text-white">STM Events</h2>

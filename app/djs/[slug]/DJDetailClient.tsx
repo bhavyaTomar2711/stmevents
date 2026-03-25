@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import type { DJData } from "@/lib/djs";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 function InstagramIcon() {
   return (
@@ -22,6 +23,9 @@ function SoundCloudIcon() {
 }
 
 export default function DJDetailClient({ dj }: { dj: DJData }) {
+  const { locale } = useLanguage();
+  const displayBio = (locale === "de" && dj.bio_de) ? dj.bio_de : dj.bio;
+
   return (
     <main className="relative min-h-screen bg-black">
       {/* Background */}
@@ -112,10 +116,11 @@ export default function DJDetailClient({ dj }: { dj: DJData }) {
             <div className="my-8 h-px bg-white/[0.06]" />
 
             {/* Bio */}
-            {dj.bio && (
-              <p className="text-[15px] leading-relaxed text-white/50">
-                {dj.bio}
-              </p>
+            {displayBio && (
+              <div
+                className="prose prose-invert max-w-none text-[15px] leading-relaxed text-white/50"
+                dangerouslySetInnerHTML={{ __html: displayBio }}
+              />
             )}
 
             {/* Social Links */}

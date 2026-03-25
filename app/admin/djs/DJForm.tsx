@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import AdminFormField from "../_components/AdminFormField";
 import ImageUpload from "../_components/ImageUpload";
+import RichTextEditor from "../_components/RichTextEditor";
 import type { DbDJ } from "@/lib/supabase/types";
 
 function slugify(text: string) {
@@ -21,6 +22,7 @@ export default function DJForm({ dj }: { dj?: DbDJ }) {
     photo_url: dj?.photo_url || "",
     genre: dj?.genre || "",
     bio: dj?.bio || "",
+    bio_de: dj?.bio_de || "",
     instagram_url: dj?.instagram_url || "",
     soundcloud_url: dj?.soundcloud_url || "",
     resident: dj?.resident ?? false,
@@ -47,6 +49,7 @@ export default function DJForm({ dj }: { dj?: DbDJ }) {
       photo_url: form.photo_url || null,
       genre: form.genre,
       bio: form.bio || null,
+      bio_de: form.bio_de || null,
       instagram_url: form.instagram_url || null,
       soundcloud_url: form.soundcloud_url || null,
       resident: form.resident,
@@ -64,7 +67,7 @@ export default function DJForm({ dj }: { dj?: DbDJ }) {
   };
 
   return (
-    <div className="mx-auto max-w-3xl">
+    <div className="mx-auto max-w-4xl">
       <h1 className="mb-8 text-2xl font-bold uppercase tracking-wider text-white">{isNew ? "Add DJ" : "Edit DJ"}</h1>
       <form onSubmit={handleSubmit} className="space-y-6 rounded-xl border border-white/[0.08] bg-white/[0.02] p-8">
         <div className="grid gap-6 sm:grid-cols-2">
@@ -76,7 +79,10 @@ export default function DJForm({ dj }: { dj?: DbDJ }) {
           <AdminFormField label="Display Order" name="display_order" type="number" value={form.display_order} onChange={(v) => update("display_order", v)} />
         </div>
         <ImageUpload label="DJ Photo" value={form.photo_url} onChange={(v) => update("photo_url", v)} folder="djs" />
-        <AdminFormField label="Bio" name="bio" value={form.bio} onChange={(v) => update("bio", v)} textarea placeholder="DJ bio..." />
+        <div className="grid gap-6 sm:grid-cols-2">
+          <RichTextEditor label="Bio (English)" value={form.bio} onChange={(v) => update("bio", v)} placeholder="Write DJ bio in English..." />
+          <RichTextEditor label="Bio (German)" value={form.bio_de} onChange={(v) => update("bio_de", v)} placeholder="DJ-Biografie auf Deutsch..." />
+        </div>
         <div className="grid gap-6 sm:grid-cols-2">
           <AdminFormField label="Instagram URL" name="instagram_url" value={form.instagram_url} onChange={(v) => update("instagram_url", v)} placeholder="https://instagram.com/..." />
           <AdminFormField label="SoundCloud URL" name="soundcloud_url" value={form.soundcloud_url} onChange={(v) => update("soundcloud_url", v)} placeholder="https://soundcloud.com/..." />

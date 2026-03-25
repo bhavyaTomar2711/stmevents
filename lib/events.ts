@@ -18,11 +18,14 @@ export type TicketStatus = "available" | "sold-out" | "limited" | "final-release
 export interface EventData {
   slug: string;
   title: string;
+  title_de: string;
   date: string;
   rawDate: string;
   location: string;
+  location_de: string;
   lineup: string[];
   description: string;
+  description_de: string;
   image: string;
   eventbriteLink: string;
   ticketStatus: TicketStatus;
@@ -46,11 +49,14 @@ function transformEvent(row: DbEvent): EventData {
   return {
     slug: row.slug,
     title: row.title,
+    title_de: row.title_de || "",
     date: row.date ? formatDate(row.date) : "TBA",
     rawDate: row.date || "",
     location: row.location || "TBA",
+    location_de: row.location_de || "",
     lineup: row.lineup || [],
     description: row.description || "",
+    description_de: row.description_de || "",
     image: row.image_url || "",
     eventbriteLink: row.eventbrite_link || "",
     ticketStatus: row.ticket_status || "available",

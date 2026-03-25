@@ -17,8 +17,11 @@ const statusBadge: Record<string, { labelKey: TranslationKey; color: string; bor
 };
 
 export default function EventDetailClient({ event }: { event: EventData }) {
-  const { t } = useLanguage();
+  const { locale, t } = useLanguage();
   const [bookingOpen, setBookingOpen] = useState(false);
+  const title = (locale === "de" && event.title_de) ? event.title_de : event.title;
+  const location = (locale === "de" && event.location_de) ? event.location_de : event.location;
+  const description = (locale === "de" && event.description_de) ? event.description_de : event.description;
   const isExpired = event.rawDate ? new Date(event.rawDate).getTime() < Date.now() : false;
   const isSoldOut = event.ticketStatus === "sold-out";
   const hasTicketUrl = !!event.eventbriteLink;
@@ -87,14 +90,22 @@ export default function EventDetailClient({ event }: { event: EventData }) {
           >
             <div className="glass-card relative overflow-hidden rounded-2xl">
               <div className="relative aspect-[3/4] w-full sm:aspect-[4/5]">
-                <Image
-                  src={event.image}
-                  alt={event.title}
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  className="object-cover"
-                  priority
-                />
+                {event.image ? (
+                  <Image
+                    src={event.image}
+                    alt={title}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    className="object-cover"
+                    priority
+                  />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center bg-white/[0.03]">
+                    <svg className="h-16 w-16 text-white/10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0 0 22.5 18.75V5.25A2.25 2.25 0 0 0 20.25 3H3.75A2.25 2.25 0 0 0 1.5 5.25v13.5A2.25 2.25 0 0 0 3.75 21Z" />
+                    </svg>
+                  </div>
+                )}
               </div>
 
               {/* Subtle gradient at bottom */}
@@ -137,7 +148,7 @@ export default function EventDetailClient({ event }: { event: EventData }) {
           >
             {/* Title */}
             <h1 className="text-[clamp(2.5rem,5vw,4.5rem)] font-bold uppercase leading-[0.95] tracking-[-0.02em] text-white">
-              {event.title}
+              {title}
             </h1>
 
             {/* Date */}
@@ -158,16 +169,16 @@ export default function EventDetailClient({ event }: { event: EventData }) {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
                 </svg>
               </span>
-              <span className="text-base font-medium text-white/70">{event.location}</span>
+              <span className="text-base font-medium text-white/70">{location}</span>
             </div>
 
             {/* Divider */}
             <div className="my-8 h-px bg-white/[0.06]" />
 
             {/* Description */}
-            <p className="text-[15px] leading-relaxed text-white/45">
-              {event.description}
-            </p>
+            {description && (
+              <div className="text-[15px] leading-relaxed text-white/45" dangerouslySetInnerHTML={{ __html: description }} />
+            )}
 
             {/* Lineup */}
             {event.lineup.length > 0 && (

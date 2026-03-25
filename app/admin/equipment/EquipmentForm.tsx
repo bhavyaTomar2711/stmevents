@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import AdminFormField from "../_components/AdminFormField";
 import ImageUpload from "../_components/ImageUpload";
+import RichTextEditor from "../_components/RichTextEditor";
 import type { DbEquipment } from "@/lib/supabase/types";
 
 function slugify(text: string) {
@@ -17,12 +18,15 @@ export default function EquipmentForm({ item }: { item?: DbEquipment }) {
 
   const [form, setForm] = useState({
     name: item?.name || "",
+    name_de: item?.name_de || "",
     slug: item?.slug || "",
     images: item?.images?.join(", ") || "",
     price: item?.price || "",
     price_per: item?.price_per || "/ day",
     short_description: item?.short_description || "",
+    short_description_de: item?.short_description_de || "",
     full_description: item?.full_description || "",
+    full_description_de: item?.full_description_de || "",
     category: item?.category || "dj-gear",
     category_label: item?.category_label || "DJ Gear",
     available: item?.available ?? true,
@@ -54,12 +58,15 @@ export default function EquipmentForm({ item }: { item?: DbEquipment }) {
     const supabase = createClient();
     const payload = {
       name: form.name,
+      name_de: form.name_de || null,
       slug: form.slug,
       images: form.images ? form.images.split(",").map((s) => s.trim()).filter(Boolean) : [],
       price: form.price,
       price_per: form.price_per,
       short_description: form.short_description,
+      short_description_de: form.short_description_de || null,
       full_description: form.full_description || null,
+      full_description_de: form.full_description_de || null,
       category: form.category,
       category_label: categoryLabels[form.category] || form.category,
       available: form.available,
@@ -79,18 +86,19 @@ export default function EquipmentForm({ item }: { item?: DbEquipment }) {
   };
 
   return (
-    <div className="mx-auto max-w-3xl">
+    <div className="mx-auto max-w-4xl">
       <h1 className="mb-8 text-2xl font-bold uppercase tracking-wider text-white">{isNew ? "Add Equipment" : "Edit Equipment"}</h1>
       <form onSubmit={handleSubmit} className="space-y-6 rounded-xl border border-white/[0.08] bg-white/[0.02] p-8">
         <div className="grid gap-6 sm:grid-cols-2">
-          <AdminFormField label="Name" name="name" value={form.name} onChange={(v) => update("name", v)} required placeholder="Pioneer CDJ-3000" />
-          <AdminFormField label="Slug" name="slug" value={form.slug} onChange={(v) => update("slug", v)} required />
+          <AdminFormField label="Name (English) *" name="name" value={form.name} onChange={(v) => update("name", v)} required placeholder="Pioneer CDJ-3000" />
+          <AdminFormField label="Name (German)" name="name_de" value={form.name_de} onChange={(v) => update("name_de", v)} placeholder="Pioneer CDJ-3000" />
         </div>
+        <AdminFormField label="Slug" name="slug" value={form.slug} onChange={(v) => update("slug", v)} required />
         <div className="grid gap-6 sm:grid-cols-3">
-          <AdminFormField label="Price" name="price" value={form.price} onChange={(v) => update("price", v)} required placeholder="€120" />
+          <AdminFormField label="Price (EUR) *" name="price" value={form.price} onChange={(v) => update("price", v)} required placeholder="€120" />
           <AdminFormField label="Price Per" name="price_per" value={form.price_per} onChange={(v) => update("price_per", v)} placeholder="/ day" />
           <div>
-            <label className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.25em] text-purple-400">Category</label>
+            <label className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.25em] text-purple-400">Category *</label>
             <select value={form.category} onChange={(e) => update("category", e.target.value)} className="w-full rounded-lg border border-white/[0.1] bg-white/[0.06] px-4 py-3 text-sm text-white outline-none focus:border-purple-500/50">
               <option value="dj-gear" className="bg-zinc-900 text-white">DJ Gear</option>
               <option value="sound" className="bg-zinc-900 text-white">Sound System</option>
@@ -114,8 +122,17 @@ export default function EquipmentForm({ item }: { item?: DbEquipment }) {
           }}
           folder="equipment"
         />
-        <AdminFormField label="Short Description" name="short_description" value={form.short_description} onChange={(v) => update("short_description", v)} required textarea />
-        <AdminFormField label="Full Description" name="full_description" value={form.full_description} onChange={(v) => update("full_description", v)} textarea />
+
+        <div className="grid gap-6 sm:grid-cols-2">
+          <RichTextEditor label="Short Description (English)" value={form.short_description} onChange={(v) => update("short_description", v)} placeholder="Brief description in English..." />
+          <RichTextEditor label="Short Description (German)" value={form.short_description_de} onChange={(v) => update("short_description_de", v)} placeholder="Kurze Beschreibung auf Deutsch..." />
+        </div>
+
+        <div className="grid gap-6 sm:grid-cols-2">
+          <RichTextEditor label="Full Description (English)" value={form.full_description} onChange={(v) => update("full_description", v)} placeholder="Detailed description in English..." />
+          <RichTextEditor label="Full Description (German)" value={form.full_description_de} onChange={(v) => update("full_description_de", v)} placeholder="Detaillierte Beschreibung auf Deutsch..." />
+        </div>
+
         <div>
           <label className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.25em] text-purple-400">Specs (JSON)</label>
           <textarea value={form.specs} onChange={(e) => update("specs", e.target.value)} rows={6} className="w-full resize-none rounded-lg border border-white/[0.1] bg-white/[0.06] px-4 py-3 font-mono text-sm text-white placeholder-white/30 outline-none focus:border-purple-500/50" />

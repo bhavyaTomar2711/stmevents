@@ -11,12 +11,15 @@ export interface EquipmentSpec {
 export interface EquipmentData {
   id: string;
   name: string;
+  name_de: string;
   slug: string;
   images: string[];
   price: string;
   pricePer: string;
   shortDescription: string;
+  shortDescription_de: string;
   fullDescription: string;
+  fullDescription_de: string;
   category: string;
   categoryLabel: string;
   available: boolean;
@@ -39,12 +42,15 @@ function transformEquipment(row: DbEquipment): EquipmentData {
   return {
     id: row.id,
     name: row.name,
+    name_de: row.name_de || "",
     slug: row.slug,
     images: row.images?.length > 0 ? row.images : [],
     price: row.price || "€0",
     pricePer: row.price_per || "/ day",
     shortDescription: row.short_description || "",
+    shortDescription_de: row.short_description_de || "",
     fullDescription: row.full_description || row.short_description || "",
+    fullDescription_de: row.full_description_de || "",
     category: row.category || "dj-gear",
     categoryLabel: CATEGORY_LABELS[row.category] || row.category_label || "Equipment",
     available: row.available !== false,
