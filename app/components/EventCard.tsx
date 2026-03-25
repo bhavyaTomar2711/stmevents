@@ -1,11 +1,13 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import type { TicketStatus } from "@/lib/events";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 import type { TranslationKey } from "@/lib/i18n/translations";
+import { createClient } from "@/lib/supabase/client";
 
 interface EventCardProps {
   title: string;
@@ -59,6 +61,62 @@ export default function EventCard({
   const { t } = useLanguage();
   const isSoldOut = ticketStatus === "sold-out";
   const badge = statusConfig[ticketStatus];
+  const [isSaved, setIsSaved] = useState(false);
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    async function checkSaved() {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { data } = await supabase
+        .from("saved_events")
+        .select("id")
+        .eq("user_id", user.id)
+        .eq("event_slug", slug)
+        .maybeSingle();
+
+      if (data) setIsSaved(true);
+    }
+    checkSaved();
+  }, [slug]);
+
+  const toggleSave = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+    if (saving) return;
+    setSaving(true);
+
+    const supabase = createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+      router.push("/account/login");
+      return;
+    }
+
+    if (isSaved) {
+      await supabase
+        .from("saved_events")
+        .delete()
+        .eq("user_id", user.id)
+        .eq("event_slug", slug);
+      setIsSaved(false);
+    } else {
+      await supabase.from("saved_events").insert({
+        user_id: user.id,
+        event_id: slug,
+        event_title: title,
+        event_slug: slug,
+        event_date: date,
+        event_location: location,
+        event_image: image || null,
+      });
+      setIsSaved(true);
+    }
+    setSaving(false);
+  };
 
   return (
     <motion.div
@@ -110,9 +168,30 @@ export default function EventCard({
               </span>
             </div>
 
+            {/* Save / Heart button */}
+            <button
+              onClick={toggleSave}
+              className={`absolute top-4 right-4 z-10 flex h-9 w-9 items-center justify-center rounded-full border backdrop-blur-xl transition-all duration-300 ${
+                isSaved
+                  ? "border-pink-500/40 bg-pink-500/20 text-pink-400 shadow-lg shadow-pink-500/20"
+                  : "border-white/[0.08] bg-black/40 text-white/50 hover:border-pink-500/30 hover:bg-pink-500/10 hover:text-pink-400"
+              }`}
+              aria-label={isSaved ? "Unsave event" : "Save event"}
+            >
+              <svg
+                className="h-4 w-4"
+                fill={isSaved ? "currentColor" : "none"}
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={isSaved ? 0 : 2}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+              </svg>
+            </button>
+
             {/* Ticket status badge */}
             {badge && (
-              <div className="absolute top-4 right-4 z-10">
+              <div className="absolute bottom-4 left-4 z-10">
                 <span
                   className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.2em] ${badge.color} ${badge.border} ${badge.bg}`}
                 >

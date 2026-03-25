@@ -140,16 +140,16 @@ export default function Navbar() {
             </button>
           </div>
 
-          {/* Admin */}
+          {/* Account */}
           <div className="h-4 w-px bg-white/15" />
           <Link
-            href="/admin/login"
-            className="flex items-center gap-1.5 rounded-full border border-purple-500/20 bg-purple-500/5 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.15em] text-purple-400 transition-all duration-300 hover:border-purple-500/40 hover:bg-purple-500/10"
+            href="/account"
+            className="flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.15em] text-white/70 transition-all duration-300 hover:border-white/30 hover:bg-white/10 hover:text-white"
           >
             <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
             </svg>
-            Admin
+            My Account
           </Link>
         </div>
 
@@ -242,9 +242,9 @@ export default function Navbar() {
         </div>
 
         <Link
-          href="/admin/login"
+          href="/account"
           onClick={() => setMenuOpen(false)}
-          className="mt-6 flex items-center gap-2 rounded-full border border-purple-500/30 bg-purple-500/10 px-5 py-2.5 text-sm font-semibold uppercase tracking-[0.15em] text-purple-400 transition-all duration-300 hover:border-purple-500/50 hover:bg-purple-500/20"
+          className="mt-6 flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-5 py-2.5 text-sm font-semibold uppercase tracking-[0.15em] text-white/80 transition-all duration-300 hover:border-white/40 hover:bg-white/20"
           style={{
             transitionProperty: "opacity, transform",
             transitionDuration: "0.4s",
@@ -257,7 +257,7 @@ export default function Navbar() {
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
           </svg>
-          Admin
+          My Account
         </Link>
       </div>
     </div>

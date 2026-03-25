@@ -10,7 +10,7 @@ export default function AdminLayoutRouter({ children, user }: { children: React.
   const router = useRouter();
   const isLoginPage = pathname === "/admin/login";
 
-  // If logged in and on login page, redirect to dashboard
+  // If logged in admin and on login page, redirect to dashboard
   useEffect(() => {
     if (isLoginPage && user) {
       router.replace("/admin");

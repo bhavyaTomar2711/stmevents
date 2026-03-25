@@ -7,30 +7,30 @@ import { usePathname, useRouter } from "next/navigation";
 import type { User } from "@supabase/supabase-js";
 
 const navItems = [
-  { label: "Dashboard", href: "/admin", icon: "M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z", fill: true },
-  { label: "Events", href: "/admin/events", icon: "M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z", color: "purple" },
-  { label: "Equipment", href: "/admin/equipment", icon: "M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z M15 12a3 3 0 11-6 0 3 3 0 016 0z", color: "green" },
-  { label: "Gallery", href: "/admin/gallery", icon: "M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z", color: "cyan" },
-  { label: "Resident DJs", href: "/admin/djs", icon: "M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2z", color: "pink" },
-  { label: "Contacts", href: "/admin/inquiries", icon: "M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z", color: "amber" },
+  { label: "Dashboard", href: "/account", icon: "M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z", fill: true },
+  { label: "My Bookings", href: "/account/bookings", icon: "M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z", color: "purple" },
+  { label: "Saved Events", href: "/account/saved", icon: "M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z", color: "pink" },
+  { label: "My Rentals", href: "/account/rentals", icon: "M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10", color: "cyan" },
+  { label: "Profile", href: "/account/profile", icon: "M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z", color: "emerald" },
 ];
 
 const colorMap: Record<string, { active: string; icon: string }> = {
   purple: { active: "bg-purple-500/15 text-purple-300 border-purple-500/20", icon: "text-purple-400" },
-  green: { active: "bg-emerald-500/15 text-emerald-300 border-emerald-500/20", icon: "text-emerald-400" },
-  cyan: { active: "bg-cyan-500/15 text-cyan-300 border-cyan-500/20", icon: "text-cyan-400" },
   pink: { active: "bg-pink-500/15 text-pink-300 border-pink-500/20", icon: "text-pink-400" },
+  cyan: { active: "bg-cyan-500/15 text-cyan-300 border-cyan-500/20", icon: "text-cyan-400" },
   amber: { active: "bg-amber-500/15 text-amber-300 border-amber-500/20", icon: "text-amber-400" },
+  emerald: { active: "bg-emerald-500/15 text-emerald-300 border-emerald-500/20", icon: "text-emerald-400" },
 };
 
-export default function AdminShell({ children, user }: { children: React.ReactNode; user: User }) {
+export default function AccountShell({ children, user }: { children: React.ReactNode; user: User }) {
   const pathname = usePathname();
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const userName = user.user_metadata?.full_name || user.email?.split("@")[0] || "User";
 
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
-    router.push("/admin/login");
+    router.push("/");
     router.refresh();
   };
 
@@ -39,12 +39,12 @@ export default function AdminShell({ children, user }: { children: React.ReactNo
       {/* Mobile top bar */}
       <div className="fixed inset-x-0 top-0 z-50 flex items-center justify-between border-b border-white/[0.06] bg-[#0b0b14]/95 px-4 py-3 backdrop-blur-xl md:hidden">
         <div className="flex items-center gap-3">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-purple-500 to-violet-600">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 to-purple-600">
             <Image src="/logoo.png" alt="STM" width={20} height={20} />
           </div>
           <div>
-            <h2 className="text-sm font-bold text-white">STM Events</h2>
-            <p className="text-[9px] font-medium uppercase tracking-wider text-purple-400">Admin Panel</p>
+            <h2 className="text-sm font-bold text-white">My Account</h2>
+            <p className="text-[9px] font-medium uppercase tracking-wider text-purple-400">{userName}</p>
           </div>
         </div>
         <button
@@ -69,26 +69,26 @@ export default function AdminShell({ children, user }: { children: React.ReactNo
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        {/* Logo section - desktop */}
+        {/* User info - desktop */}
         <div className="hidden border-b border-white/[0.06] px-5 py-5 md:block">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500 to-violet-600 shadow-lg shadow-purple-500/20">
-              <Image src="/logoo.png" alt="STM" width={24} height={24} />
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500/30 to-violet-500/30 text-[15px] font-bold text-purple-300 shadow-lg shadow-purple-500/10">
+              {userName[0]?.toUpperCase()}
             </div>
-            <div>
-              <h2 className="text-sm font-bold text-white">STM Events</h2>
-              <p className="text-[10px] font-medium uppercase tracking-wider text-purple-400/80">Admin Panel</p>
+            <div className="min-w-0 flex-1">
+              <h2 className="truncate text-sm font-bold text-white">{userName}</h2>
+              <p className="truncate text-[10px] text-white/30">{user.email}</p>
             </div>
           </div>
         </div>
 
-        {/* View Website link */}
+        {/* Back to site */}
         <div className="hidden border-b border-white/[0.06] px-5 py-3 md:block">
           <Link href="/" className="flex items-center gap-2 text-[11px] font-medium text-white/40 transition-colors hover:text-white/70">
-            View Website
             <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
+            Back to Website
           </Link>
         </div>
 
@@ -99,7 +99,7 @@ export default function AdminShell({ children, user }: { children: React.ReactNo
         <nav className="flex-1 overflow-y-auto px-3 py-4">
           <div className="space-y-1">
             {navItems.map((item) => {
-              const isActive = pathname === item.href || (item.href !== "/admin" && pathname.startsWith(item.href));
+              const isActive = pathname === item.href || (item.href !== "/account" && pathname.startsWith(item.href));
               const colors = item.color ? colorMap[item.color] : null;
               return (
                 <Link
@@ -133,17 +133,8 @@ export default function AdminShell({ children, user }: { children: React.ReactNo
           </div>
         </nav>
 
-        {/* User / Logout */}
+        {/* Logout */}
         <div className="border-t border-white/[0.06] p-4">
-          <div className="mb-3 flex items-center gap-3 rounded-xl bg-white/[0.03] p-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-purple-500/30 to-violet-500/30 text-[12px] font-bold text-purple-300">
-              {user.email?.[0]?.toUpperCase() || "A"}
-            </div>
-            <div className="min-w-0 flex-1">
-              <p className="text-[11px] font-medium text-white/50">Logged in as</p>
-              <p className="truncate text-[12px] font-semibold text-white/80">{user.email}</p>
-            </div>
-          </div>
           <button
             onClick={handleLogout}
             className="flex w-full items-center justify-center gap-2 rounded-xl border border-red-500/15 bg-red-500/[0.06] py-2.5 text-[11px] font-semibold uppercase tracking-wider text-red-400/70 transition-all hover:border-red-500/25 hover:bg-red-500/10 hover:text-red-400"
