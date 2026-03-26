@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import type { GalleryItem } from "@/lib/gallery-shared";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { useSiteContent } from "@/lib/hooks/useSiteContent";
 
 interface GallerySectionProps {
   items: GalleryItem[];
@@ -212,6 +213,7 @@ function MediaBlock({
 /* ── Main Section ── */
 export default function GallerySection({ items }: GallerySectionProps) {
   const { t } = useLanguage();
+  const { tc } = useSiteContent();
   const sectionRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const headerInView = useInView(headerRef, { once: true, margin: "-100px" });
@@ -257,7 +259,7 @@ export default function GallerySection({ items }: GallerySectionProps) {
             className="mb-4 inline-flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.3em] text-purple-400"
           >
             <span className="inline-block h-px w-10 bg-gradient-to-r from-purple-500 to-transparent" />
-            {t("gallery.label")}
+            {tc("gallery", "label", "gallery.label")}
           </motion.span>
 
           <motion.h2
@@ -266,8 +268,8 @@ export default function GallerySection({ items }: GallerySectionProps) {
             transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             className="mt-3 text-[clamp(2.5rem,5.5vw,5.5rem)] font-bold uppercase leading-[0.88] tracking-[-0.03em]"
           >
-            <span className="block text-white">{t("gallery.heading1")}</span>
-            <span className="block text-white">{t("gallery.heading2")}</span>
+            <span className="block text-white">{tc("gallery", "heading1", "gallery.heading1")}</span>
+            <span className="block text-white">{tc("gallery", "heading2", "gallery.heading2")}</span>
           </motion.h2>
 
           <motion.p
@@ -276,7 +278,7 @@ export default function GallerySection({ items }: GallerySectionProps) {
             transition={{ duration: 0.5, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
             className="mt-5 max-w-lg text-[15px] leading-relaxed text-white/30"
           >
-            {t("gallery.description")}
+            {tc("gallery", "description", "gallery.description")}
           </motion.p>
         </div>
 

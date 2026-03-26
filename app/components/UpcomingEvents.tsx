@@ -7,6 +7,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import type { EventData, TicketStatus } from "@/lib/events";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { useSiteContent } from "@/lib/hooks/useSiteContent";
 import type { TranslationKey } from "@/lib/i18n/translations";
 import { createClient } from "@/lib/supabase/client";
 
@@ -45,6 +46,7 @@ const AUTO_SLIDE_INTERVAL = 2000;
 
 export default function UpcomingEvents({ events }: UpcomingEventsProps) {
   const { t } = useLanguage();
+  const { tc } = useSiteContent();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [slidesPerView, setSlidesPerView] = useState(4);
@@ -137,7 +139,7 @@ export default function UpcomingEvents({ events }: UpcomingEventsProps) {
               className="mb-4 inline-flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.3em] text-purple-400"
             >
               <span className="inline-block h-px w-10 bg-gradient-to-r from-purple-500 to-transparent" />
-              {t("events.label")}
+              {tc("events", "label", "events.label")}
             </motion.span>
 
             <motion.h2
@@ -147,9 +149,9 @@ export default function UpcomingEvents({ events }: UpcomingEventsProps) {
               transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
               className="mt-3 text-[clamp(2.5rem,5.5vw,5.5rem)] font-bold uppercase leading-[0.88] tracking-[-0.03em] text-white"
             >
-              {t("events.heading1")}
+              {tc("events", "heading1", "events.heading1")}
               <br />
-              {t("events.heading2")}
+              {tc("events", "heading2", "events.heading2")}
             </motion.h2>
 
             <motion.p
@@ -159,7 +161,7 @@ export default function UpcomingEvents({ events }: UpcomingEventsProps) {
               transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
               className="mt-5 max-w-lg text-[15px] leading-relaxed text-white/30"
             >
-              {t("events.description")}
+              {tc("events", "description", "events.description")}
             </motion.p>
           </div>
 

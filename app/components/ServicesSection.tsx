@@ -3,6 +3,7 @@
 import { useRef, useState, useCallback } from "react";
 import { motion, useInView } from "framer-motion";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { useSiteContent } from "@/lib/hooks/useSiteContent";
 import type { TranslationKey } from "@/lib/i18n/translations";
 
 /* ───────────────────── Service Data ───────────────────── */
@@ -170,6 +171,7 @@ function ServiceCard({
 
 export default function ServicesSection() {
   const { t } = useLanguage();
+  const { tc } = useSiteContent();
   const headingRef = useRef<HTMLDivElement>(null);
   const headingInView = useInView(headingRef, { once: true, margin: "-80px" });
 
@@ -255,7 +257,7 @@ export default function ServicesSection() {
               }}
             />
             <span className="text-[11px] font-semibold uppercase tracking-[0.3em] text-purple-400">
-              {t("services.label")}
+              {tc("services", "label", "services.label")}
             </span>
             <motion.span
               className="inline-block h-px bg-gradient-to-r from-purple-500 to-transparent"
@@ -280,9 +282,9 @@ export default function ServicesSection() {
             }}
             className="mt-5 text-[clamp(1.8rem,3.5vw,3.2rem)] font-bold uppercase leading-[1.05] tracking-[-0.02em] text-white"
           >
-            {t("services.heading1")}{" "}
+            {tc("services", "heading1", "services.heading1")}{" "}
             <span className="bg-gradient-to-r from-purple-400 to-violet-400 bg-clip-text text-transparent">
-              {t("services.heading2")}
+              {tc("services", "heading2", "services.heading2")}
             </span>
           </motion.h2>
 
@@ -297,7 +299,7 @@ export default function ServicesSection() {
             }}
             className="mx-auto mt-5 max-w-md text-[14px] leading-[1.7] text-white/35"
           >
-            {t("services.description")}
+            {tc("services", "description", "services.description")}
           </motion.p>
         </div>
 

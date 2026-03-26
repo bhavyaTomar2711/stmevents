@@ -2,6 +2,7 @@
 
 import CountdownTimer from "./CountdownTimer";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { useSiteContent } from "@/lib/hooks/useSiteContent";
 import type { HeroEvent } from "@/lib/events";
 
 interface HeroSectionProps {
@@ -10,6 +11,7 @@ interface HeroSectionProps {
 
 export default function HeroSection({ nextEvent }: HeroSectionProps) {
   const { t } = useLanguage();
+  const { tc } = useSiteContent();
 
   const hasEvent = !!nextEvent;
   const isSoldOut = nextEvent?.ticketStatus === "sold-out";
@@ -51,9 +53,9 @@ export default function HeroSection({ nextEvent }: HeroSectionProps) {
           <div className="flex max-w-2xl flex-col items-start gap-7 md:gap-8">
             {/* Main Heading */}
             <h1 className="animate-fade-in-up text-[clamp(2.8rem,8vw,7rem)] font-semibold uppercase leading-[0.92] tracking-[-0.02em] text-white">
-              {t("hero.experience")}
+              {tc("hero", "heading_line1", "hero.experience")}
               <br />
-              {t("hero.theUnderground")}
+              {tc("hero", "heading_line2", "hero.theUnderground")}
             </h1>
 
             {hasEvent ? (
@@ -95,7 +97,7 @@ export default function HeroSection({ nextEvent }: HeroSectionProps) {
                     style={{ animationDelay: "450ms" }}
                   >
                     <span className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                    {t("hero.getTickets")}
+                    {tc("hero", "button_text", "hero.getTickets")}
                   </a>
                 ) : isSoldOut ? (
                   <div
@@ -113,7 +115,7 @@ export default function HeroSection({ nextEvent }: HeroSectionProps) {
                 style={{ animationDelay: "150ms" }}
               >
                 <p className="text-lg font-medium tracking-wide text-white/50">
-                  {t("hero.stayTuned")}
+                  {tc("hero", "stay_tuned", "hero.stayTuned")}
                 </p>
               </div>
             )}

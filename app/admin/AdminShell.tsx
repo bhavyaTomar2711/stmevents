@@ -13,6 +13,7 @@ const navItems = [
   { label: "Gallery", href: "/admin/gallery", icon: "M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z", color: "cyan" },
   { label: "Resident DJs", href: "/admin/djs", icon: "M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2z", color: "pink" },
   { label: "Contacts", href: "/admin/inquiries", icon: "M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z", color: "amber" },
+  { label: "Visual Editor", href: "/admin/visual-editor", icon: "M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z M15 12a3 3 0 11-6 0 3 3 0 016 0z", color: "violet" },
 ];
 
 const colorMap: Record<string, { active: string; icon: string }> = {
@@ -21,6 +22,7 @@ const colorMap: Record<string, { active: string; icon: string }> = {
   cyan: { active: "bg-cyan-500/15 text-cyan-300 border-cyan-500/20", icon: "text-cyan-400" },
   pink: { active: "bg-pink-500/15 text-pink-300 border-pink-500/20", icon: "text-pink-400" },
   amber: { active: "bg-amber-500/15 text-amber-300 border-amber-500/20", icon: "text-amber-400" },
+  violet: { active: "bg-violet-500/15 text-violet-300 border-violet-500/20", icon: "text-violet-400" },
 };
 
 export default function AdminShell({ children, user }: { children: React.ReactNode; user: User }) {
@@ -158,7 +160,11 @@ export default function AdminShell({ children, user }: { children: React.ReactNo
 
       {/* Main content */}
       <main className="min-w-0 flex-1 pt-[53px] md:ml-[260px] md:pt-0">
-        <div className="p-4 sm:p-6 md:p-8">{children}</div>
+        {pathname.startsWith("/admin/visual-editor") ? (
+          <>{children}</>
+        ) : (
+          <div className="p-4 sm:p-6 md:p-8">{children}</div>
+        )}
       </main>
     </div>
   );

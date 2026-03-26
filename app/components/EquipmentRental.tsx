@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { EquipmentData } from "@/lib/equipment";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { useSiteContent } from "@/lib/hooks/useSiteContent";
 
 /* ── Product Card — lightweight, no tilt/glow/perspective ── */
 function ProductCard({ item, index }: { item: EquipmentData; index: number }) {
@@ -86,6 +87,7 @@ function ProductCard({ item, index }: { item: EquipmentData; index: number }) {
 /* ── Main Section ── */
 export default function EquipmentRental({ equipment }: { equipment: EquipmentData[] }) {
   const { t } = useLanguage();
+  const { tc } = useSiteContent();
   const headerRef = useRef<HTMLDivElement>(null);
   const headerInView = useInView(headerRef, { once: true, margin: "-100px" });
 
@@ -115,7 +117,7 @@ export default function EquipmentRental({ equipment }: { equipment: EquipmentDat
             className="inline-flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.3em] text-purple-400"
           >
             <span className="inline-block h-px w-10 bg-gradient-to-r from-purple-500 to-transparent" />
-            {t("equipment.label")}
+            {tc("equipment", "label", "equipment.label")}
           </motion.span>
 
           <motion.h2
@@ -124,8 +126,8 @@ export default function EquipmentRental({ equipment }: { equipment: EquipmentDat
             transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             className="mt-4 text-[clamp(2rem,4.5vw,4.5rem)] font-bold uppercase leading-[0.9] tracking-[-0.03em]"
           >
-            <span className="block text-white">{t("equipment.heading1")}</span>
-            <span className="block text-white">{t("equipment.heading2")}</span>
+            <span className="block text-white">{tc("equipment", "heading1", "equipment.heading1")}</span>
+            <span className="block text-white">{tc("equipment", "heading2", "equipment.heading2")}</span>
           </motion.h2>
 
           <motion.p
@@ -134,7 +136,7 @@ export default function EquipmentRental({ equipment }: { equipment: EquipmentDat
             transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className="mt-5 max-w-lg text-[15px] leading-relaxed text-white/35"
           >
-            {t("equipment.description")}
+            {tc("equipment", "description", "equipment.description")}
           </motion.p>
         </div>
 

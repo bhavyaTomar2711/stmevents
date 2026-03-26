@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { DJData } from "@/lib/djs";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { useSiteContent } from "@/lib/hooks/useSiteContent";
 
 const AUTO_SLIDE_INTERVAL = 2000;
 
@@ -57,6 +58,7 @@ function DJCard({ dj }: { dj: DJData }) {
 /* ── Main Section ── */
 export default function ResidentDJs({ djs }: { djs: DJData[] }) {
   const { t } = useLanguage();
+  const { tc } = useSiteContent();
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -131,17 +133,17 @@ export default function ResidentDJs({ djs }: { djs: DJData[] }) {
           >
             <span className="mb-4 inline-flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.3em] text-purple-400">
               <span className="inline-block h-px w-10 bg-gradient-to-r from-purple-500 to-transparent" />
-              {t("djs.label")}
+              {tc("djs", "label", "djs.label")}
             </span>
 
             <h2 className="mt-3 text-[clamp(2.5rem,5.5vw,5.5rem)] font-bold uppercase leading-[0.88] tracking-[-0.03em] text-white">
-              {t("djs.heading1")}
+              {tc("djs", "heading1", "djs.heading1")}
               <br />
-              {t("djs.heading2")}
+              {tc("djs", "heading2", "djs.heading2")}
             </h2>
 
             <p className="mt-5 max-w-lg text-[15px] leading-relaxed text-white/30">
-              {t("djs.description")}
+              {tc("djs", "description", "djs.description")}
             </p>
           </motion.div>
 

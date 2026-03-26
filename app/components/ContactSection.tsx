@@ -3,10 +3,12 @@
 import { useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { useSiteContent } from "@/lib/hooks/useSiteContent";
 import type { TranslationKey } from "@/lib/i18n/translations";
 
 export default function ContactSection() {
   const { t } = useLanguage();
+  const { tc } = useSiteContent();
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
   const [formData, setFormData] = useState({ name: "", email: "", subject: "", message: "" });
@@ -92,7 +94,7 @@ export default function ContactSection() {
             className="inline-flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.3em] text-purple-400"
           >
             <span className="inline-block h-px w-10 bg-gradient-to-r from-purple-500 to-transparent" />
-            {t("contact.label")}
+            {tc("contact", "label", "contact.label")}
           </motion.span>
 
           <motion.h2
@@ -101,8 +103,8 @@ export default function ContactSection() {
             transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             className="mt-4 text-[clamp(2rem,4.5vw,4.5rem)] font-bold uppercase leading-[0.9] tracking-[-0.03em]"
           >
-            <span className="block text-white">{t("contact.heading1")}</span>
-            <span className="block text-white">{t("contact.heading2")}</span>
+            <span className="block text-white">{tc("contact", "heading1", "contact.heading1")}</span>
+            <span className="block text-white">{tc("contact", "heading2", "contact.heading2")}</span>
           </motion.h2>
 
           <motion.p
@@ -111,7 +113,7 @@ export default function ContactSection() {
             transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className="mt-5 max-w-lg text-[15px] leading-relaxed text-white/50"
           >
-            {t("contact.description")}
+            {tc("contact", "description", "contact.description")}
           </motion.p>
         </div>
 

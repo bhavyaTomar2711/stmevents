@@ -129,9 +129,18 @@ export default function Footer() {
           <p className="text-[11px] tracking-wider text-white/20">
             &copy; {currentYear} STM Events. {t("footer.rights")}
           </p>
-          <p className="text-[11px] tracking-wider text-white/15">
-            {t("footer.madeWith")}
-          </p>
+          <div className="flex items-center gap-4">
+            <Link
+              href="/impressum"
+              className="text-[11px] tracking-wider text-white/20 transition-colors hover:text-purple-400/60"
+            >
+              Impressum
+            </Link>
+            <span className="text-white/10">|</span>
+            <p className="text-[11px] tracking-wider text-white/15">
+              {t("footer.madeWith")}
+            </p>
+          </div>
         </div>
       </div>
     </footer>

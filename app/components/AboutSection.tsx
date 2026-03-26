@@ -3,9 +3,11 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { useSiteContent } from "@/lib/hooks/useSiteContent";
 
 export default function AboutSection() {
   const { t } = useLanguage();
+  const { tc } = useSiteContent();
   const sectionRef = useRef<HTMLElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
@@ -46,7 +48,7 @@ export default function AboutSection() {
                 animate={textInView ? { width: 40 } : {}}
                 transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
               />
-              {t("about.label")}
+              {tc("about", "label", "about.label")}
             </motion.span>
 
             {/* Heading */}
@@ -56,8 +58,8 @@ export default function AboutSection() {
               transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
               className="mt-4 text-[clamp(1.8rem,3.5vw,3.2rem)] font-bold uppercase leading-[1] tracking-[-0.02em] text-white"
             >
-              {t("about.heading")}{" "}
-              <span className="text-purple-400">{t("about.headingHighlight")}</span> {t("about.headingEnd")}
+              {tc("about", "heading", "about.heading")}{" "}
+              <span className="text-purple-400">{tc("about", "heading_highlight", "about.headingHighlight")}</span> {t("about.headingEnd")}
             </motion.h2>
 
             {/* Description */}
@@ -68,10 +70,10 @@ export default function AboutSection() {
               className="mt-6 space-y-4"
             >
               <p className="text-[15px] leading-[1.75] text-white/40">
-                {t("about.p1")}
+                {tc("about", "p1", "about.p1")}
               </p>
               <p className="text-[15px] leading-[1.75] text-white/40">
-                {t("about.p2")}
+                {tc("about", "p2", "about.p2")}
               </p>
             </motion.div>
 

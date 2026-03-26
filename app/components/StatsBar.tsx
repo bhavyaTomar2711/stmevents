@@ -3,13 +3,14 @@
 import { useRef, useState, useEffect, useCallback } from "react";
 import { useInView } from "framer-motion";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { useSiteContent } from "@/lib/hooks/useSiteContent";
 import type { TranslationKey } from "@/lib/i18n/translations";
 
-const STATS: { value: number; suffix: string; labelKey: TranslationKey }[] = [
-  { value: 50, suffix: "+", labelKey: "stats.eventsProduced" },
-  { value: 10, suffix: "K+", labelKey: "stats.peopleMoved" },
-  { value: 30, suffix: "+", labelKey: "stats.artistsFeatured" },
-  { value: 15, suffix: "+", labelKey: "stats.venues" },
+const STATS: { value: number; suffix: string; labelKey: TranslationKey; fieldKey: string }[] = [
+  { value: 50, suffix: "+", labelKey: "stats.eventsProduced", fieldKey: "events_produced" },
+  { value: 10, suffix: "K+", labelKey: "stats.peopleMoved", fieldKey: "people_moved" },
+  { value: 30, suffix: "+", labelKey: "stats.artistsFeatured", fieldKey: "artists_featured" },
+  { value: 15, suffix: "+", labelKey: "stats.venues", fieldKey: "venues" },
 ];
 
 function CountUpNumber({ target, suffix, triggered }: { target: number; suffix: string; triggered: boolean }) {
@@ -48,6 +49,7 @@ function CountUpNumber({ target, suffix, triggered }: { target: number; suffix: 
 
 export default function StatsBar() {
   const { t } = useLanguage();
+  const { tc } = useSiteContent();
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-50px" });
   const [triggered, setTriggered] = useState(false);
@@ -75,7 +77,7 @@ export default function StatsBar() {
               <CountUpNumber target={stat.value} suffix={stat.suffix} triggered={triggered} />
             </span>
             <span className="mt-2 text-[10px] font-medium uppercase tracking-[0.25em] text-purple-400/70 transition-colors duration-300 group-hover:text-purple-400">
-              {t(stat.labelKey)}
+              {tc("stats", stat.fieldKey, stat.labelKey)}
             </span>
           </div>
         ))}

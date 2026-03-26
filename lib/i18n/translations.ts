@@ -7,6 +7,7 @@ const translations = {
   "nav.services": { en: "SERVICES", de: "LEISTUNGEN" },
   "nav.djs": { en: "DJS", de: "DJS" },
   "nav.contact": { en: "CONTACT", de: "KONTAKT" },
+  "nav.myAccount": { en: "My Account", de: "Mein Konto" },
 
   // ── Hero ──
   "hero.nextEvent": { en: "NEXT EVENT", de: "NÄCHSTES EVENT" },
