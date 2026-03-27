@@ -18,13 +18,9 @@ export const metadata: Metadata = {
   title: "STM Events",
   description: "Nightlife & Event Production",
   icons: {
-    icon: [
-      { url: "/logoo.png", type: "image/png" },
-      { url: "/logoo.png", sizes: "32x32", type: "image/png" },
-      { url: "/logoo.png", sizes: "16x16", type: "image/png" },
-    ],
-    shortcut: "/logoo.png",
-    apple: "/logoo.png",
+    icon: { url: "/icon.svg", type: "image/svg+xml" },
+    shortcut: "/icon.svg",
+    apple: "/icon.svg",
   },
 };
 

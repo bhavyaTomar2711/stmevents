@@ -36,13 +36,21 @@ function EquipmentCard({ item, index }: { item: EquipmentData; index: number }) 
           {/* Image */}
           <div className="relative overflow-hidden">
             <div className="relative aspect-[16/10] w-full transition-transform duration-700 group-hover:scale-105">
-              <Image
-                src={coverImage}
-                alt={item.name}
-                fill
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                className="object-cover"
-              />
+              {coverImage ? (
+                <Image
+                  src={coverImage}
+                  alt={item.name}
+                  fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  className="object-cover"
+                />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-purple-500/10 to-violet-500/5">
+                  <svg className="h-16 w-16 text-purple-500/20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0022.5 18.75V5.25A2.25 2.25 0 0020.25 3H3.75A2.25 2.25 0 001.5 5.25v13.5A2.25 2.25 0 003.75 21z" />
+                  </svg>
+                </div>
+              )}
             </div>
 
             {/* Hover gradient overlay */}
@@ -66,9 +74,10 @@ function EquipmentCard({ item, index }: { item: EquipmentData; index: number }) 
               {displayName}
             </h3>
 
-            <p className="mt-2 line-clamp-2 text-[13px] leading-relaxed text-white/35">
-              {displayShortDesc}
-            </p>
+            <div
+              className="mt-2 line-clamp-2 text-[13px] leading-relaxed text-white/35 [&_p]:m-0"
+              dangerouslySetInnerHTML={{ __html: displayShortDesc || "" }}
+            />
 
             <div className="mt-5 flex items-end justify-between">
               <div>

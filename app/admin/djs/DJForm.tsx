@@ -6,6 +6,8 @@ import { createClient } from "@/lib/supabase/client";
 import AdminFormField from "../_components/AdminFormField";
 import ImageUpload from "../_components/ImageUpload";
 import RichTextEditor from "../_components/RichTextEditor";
+import TranslateButton from "../_components/TranslateButton";
+import ToggleSwitch from "../_components/ToggleSwitch";
 import type { DbDJ } from "@/lib/supabase/types";
 
 function slugify(text: string) {
@@ -26,7 +28,7 @@ export default function DJForm({ dj }: { dj?: DbDJ }) {
     instagram_url: dj?.instagram_url || "",
     soundcloud_url: dj?.soundcloud_url || "",
     resident: dj?.resident ?? false,
-    display_order: dj?.display_order?.toString() || "0",
+    display_order: dj?.display_order?.toString() || "1",
     published: dj?.published ?? true,
   });
   const [saving, setSaving] = useState(false);
@@ -53,7 +55,7 @@ export default function DJForm({ dj }: { dj?: DbDJ }) {
       instagram_url: form.instagram_url || null,
       soundcloud_url: form.soundcloud_url || null,
       resident: form.resident,
-      display_order: parseInt(form.display_order) || 0,
+      display_order: Math.max(1, parseInt(form.display_order) || 1),
       published: form.published,
     };
 
@@ -76,26 +78,27 @@ export default function DJForm({ dj }: { dj?: DbDJ }) {
         </div>
         <div className="grid gap-6 sm:grid-cols-2">
           <AdminFormField label="Genre" name="genre" value={form.genre} onChange={(v) => update("genre", v)} required placeholder="Dark Techno" />
-          <AdminFormField label="Display Order" name="display_order" type="number" value={form.display_order} onChange={(v) => update("display_order", v)} />
+          {/* Bug 3: Display order - positive only, no stepper */}
+          <AdminFormField label="Display Order" name="display_order" type="number" value={form.display_order} onChange={(v) => update("display_order", v)} min="1" hideSpinner />
         </div>
         <ImageUpload label="DJ Photo" value={form.photo_url} onChange={(v) => update("photo_url", v)} folder="djs" />
+        {/* Bug 1: Bio with translate button */}
         <div className="grid gap-6 sm:grid-cols-2">
           <RichTextEditor label="Bio (English)" value={form.bio} onChange={(v) => update("bio", v)} placeholder="Write DJ bio in English..." />
-          <RichTextEditor label="Bio (German)" value={form.bio_de} onChange={(v) => update("bio_de", v)} placeholder="DJ-Biografie auf Deutsch..." />
+          <div>
+            <RichTextEditor label="Bio (German)" value={form.bio_de} onChange={(v) => update("bio_de", v)} placeholder="DJ-Biografie auf Deutsch..." />
+            <div className="mt-2">
+              <TranslateButton sourceText={form.bio_de} onTranslated={(v) => update("bio", v)} from="de" to="en" />
+            </div>
+          </div>
         </div>
         <div className="grid gap-6 sm:grid-cols-2">
           <AdminFormField label="Instagram URL" name="instagram_url" value={form.instagram_url} onChange={(v) => update("instagram_url", v)} placeholder="https://instagram.com/..." />
           <AdminFormField label="SoundCloud URL" name="soundcloud_url" value={form.soundcloud_url} onChange={(v) => update("soundcloud_url", v)} placeholder="https://soundcloud.com/..." />
         </div>
-        <div className="flex gap-6">
-          <label className="flex cursor-pointer items-center gap-3">
-            <input type="checkbox" checked={form.resident} onChange={(e) => update("resident", e.target.checked)} className="h-5 w-5 accent-purple-500" />
-            <span className="text-sm text-white/70">Resident DJ</span>
-          </label>
-          <label className="flex cursor-pointer items-center gap-3">
-            <input type="checkbox" checked={form.published} onChange={(e) => update("published", e.target.checked)} className="h-5 w-5 accent-purple-500" />
-            <span className="text-sm text-white/70">Published</span>
-          </label>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <ToggleSwitch checked={form.resident} onChange={(v) => update("resident", v)} label="Resident DJ" description="Mark as resident artist" color="emerald" />
+          <ToggleSwitch checked={form.published} onChange={(v) => update("published", v)} label="Published" description="Visible to users" color="purple" />
         </div>
         {error && <p className="rounded-lg border border-red-500/20 bg-red-500/10 px-4 py-2.5 text-[12px] text-red-400">{error}</p>}
         <div className="flex gap-3 pt-4">

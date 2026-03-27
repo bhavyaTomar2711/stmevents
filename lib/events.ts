@@ -5,6 +5,7 @@ import type { DbEvent } from "@/lib/supabase/types";
 export interface HeroEvent {
   title: string;
   date: string;
+  time: string;
   rawDate: string;
   slug: string;
   image: string;
@@ -20,6 +21,7 @@ export interface EventData {
   title: string;
   title_de: string;
   date: string;
+  time: string;
   rawDate: string;
   location: string;
   location_de: string;
@@ -44,6 +46,16 @@ function formatDate(dateStr: string): string {
     .replace(",", "");
 }
 
+function formatTime(dateStr: string): string {
+  const d = new Date(dateStr);
+  const h = d.getUTCHours();
+  const m = d.getUTCMinutes();
+  if (h === 0 && m === 0) return "";
+  const period = h >= 12 ? "PM" : "AM";
+  const hour12 = h % 12 || 12;
+  return `${hour12}:${String(m).padStart(2, "0")} ${period}`;
+}
+
 // ─── Transform DB row → EventData ──────────────────────────────────
 function transformEvent(row: DbEvent): EventData {
   return {
@@ -51,6 +63,7 @@ function transformEvent(row: DbEvent): EventData {
     title: row.title,
     title_de: row.title_de || "",
     date: row.date ? formatDate(row.date) : "TBA",
+    time: row.date ? formatTime(row.date) : "",
     rawDate: row.date || "",
     location: row.location || "TBA",
     location_de: row.location_de || "",
@@ -143,6 +156,7 @@ export async function getNextEvent(): Promise<HeroEvent | null> {
     return {
       title: data.title,
       date: data.date ? formatDate(data.date) : "TBA",
+      time: data.date ? formatTime(data.date) : "",
       rawDate: data.date || "",
       slug: data.slug,
       image: data.image_url || "",

@@ -72,7 +72,7 @@ export default function HeroSection({ nextEvent }: HeroSectionProps) {
                     {nextEvent.title}
                   </h2>
                   <span className="text-[13px] font-normal tracking-wider text-white/50">
-                    {nextEvent.date}
+                    {nextEvent.date}{nextEvent.time ? ` · ${nextEvent.time}` : ""}
                   </span>
                 </div>
 

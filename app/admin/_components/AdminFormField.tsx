@@ -9,6 +9,8 @@ interface AdminFormFieldProps {
   required?: boolean;
   placeholder?: string;
   textarea?: boolean;
+  min?: string;
+  hideSpinner?: boolean;
 }
 
 export default function AdminFormField({
@@ -20,9 +22,15 @@ export default function AdminFormField({
   required = false,
   placeholder,
   textarea = false,
+  min,
+  hideSpinner = false,
 }: AdminFormFieldProps) {
   const inputClasses =
     "w-full rounded-lg border border-white/[0.1] bg-white/[0.06] px-4 py-3 text-sm text-white placeholder-white/30 outline-none transition-colors focus:border-purple-500/50";
+
+  const spinnerHideClasses = hideSpinner
+    ? " [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+    : "";
 
   return (
     <div>
@@ -50,10 +58,24 @@ export default function AdminFormField({
           name={name}
           type={type}
           value={value}
-          onChange={(e) => onChange(e.target.value)}
+          onChange={(e) => {
+            if (type === "number" && min !== undefined) {
+              const num = parseInt(e.target.value);
+              if (e.target.value !== "" && !isNaN(num) && num < parseInt(min)) return;
+            }
+            onChange(e.target.value);
+          }}
+          onKeyDown={(e) => {
+            if (type === "number" && min !== undefined && parseInt(min) >= 0) {
+              if (e.key === "-" || e.key === "e" || e.key === "E") {
+                e.preventDefault();
+              }
+            }
+          }}
           required={required}
           placeholder={placeholder}
-          className={inputClasses}
+          min={min}
+          className={`${inputClasses}${spinnerHideClasses}`}
         />
       )}
     </div>

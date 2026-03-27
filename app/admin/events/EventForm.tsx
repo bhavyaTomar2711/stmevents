@@ -6,6 +6,10 @@ import { createClient } from "@/lib/supabase/client";
 import AdminFormField from "../_components/AdminFormField";
 import ImageUpload from "../_components/ImageUpload";
 import RichTextEditor from "../_components/RichTextEditor";
+import TranslateButton from "../_components/TranslateButton";
+import ToggleSwitch from "../_components/ToggleSwitch";
+import DatePicker from "../_components/DatePicker";
+import CustomSelect from "../_components/CustomSelect";
 import type { DbEvent } from "@/lib/supabase/types";
 
 function slugify(text: string) {
@@ -87,56 +91,63 @@ export default function EventForm({ event }: { event?: DbEvent }) {
       </h1>
 
       <form onSubmit={handleSubmit} className="space-y-6 rounded-xl border border-white/[0.08] bg-white/[0.02] p-8">
+        {/* Bug 1: Title fields with translate button */}
         <div className="grid gap-6 sm:grid-cols-2">
           <AdminFormField label="Title (English) *" name="title" value={form.title} onChange={(v) => update("title", v)} required placeholder="Techno Night Berlin" />
-          <AdminFormField label="Title (German)" name="title_de" value={form.title_de} onChange={(v) => update("title_de", v)} placeholder="Techno Nacht Berlin" />
+          <div>
+            <AdminFormField label="Title (German)" name="title_de" value={form.title_de} onChange={(v) => update("title_de", v)} placeholder="Techno Nacht Berlin" />
+            <div className="mt-2">
+              <TranslateButton sourceText={form.title_de} onTranslated={(v) => update("title", v)} from="de" to="en" />
+            </div>
+          </div>
         </div>
 
         <AdminFormField label="Slug" name="slug" value={form.slug} onChange={(v) => update("slug", v)} required placeholder="techno-night-berlin" />
 
         <div className="grid gap-6 sm:grid-cols-2">
-          <AdminFormField label="Date & Time" name="date" type="datetime-local" value={form.date} onChange={(v) => update("date", v)} required />
+          <DatePicker label="Date & Time" value={form.date} onChange={(v) => update("date", v)} required includeTime disablePast />
           <div className="grid gap-6 sm:grid-cols-2">
             <AdminFormField label="Location (English) *" name="location" value={form.location} onChange={(v) => update("location", v)} required placeholder="Warehouse 23, Berlin" />
-            <AdminFormField label="Location (German)" name="location_de" value={form.location_de} onChange={(v) => update("location_de", v)} placeholder="Lager 23, Berlin" />
+            <div>
+              <AdminFormField label="Location (German)" name="location_de" value={form.location_de} onChange={(v) => update("location_de", v)} placeholder="Lager 23, Berlin" />
+              <div className="mt-2">
+                <TranslateButton sourceText={form.location_de} onTranslated={(v) => update("location", v)} from="de" to="en" />
+              </div>
+            </div>
           </div>
         </div>
 
         <AdminFormField label="Lineup (comma-separated)" name="lineup" value={form.lineup} onChange={(v) => update("lineup", v)} placeholder="DJ Name 1, DJ Name 2, DJ Name 3" />
 
+        {/* Bug 1: Description fields with translate button */}
         <div className="grid gap-6 sm:grid-cols-2">
           <RichTextEditor label="Description (English)" value={form.description} onChange={(v) => update("description", v)} placeholder="Enter description in English..." />
-          <RichTextEditor label="Description (German)" value={form.description_de} onChange={(v) => update("description_de", v)} placeholder="Enter description in German..." />
+          <div>
+            <RichTextEditor label="Description (German)" value={form.description_de} onChange={(v) => update("description_de", v)} placeholder="Enter description in German..." />
+            <div className="mt-2">
+              <TranslateButton sourceText={form.description_de} onTranslated={(v) => update("description", v)} from="de" to="en" />
+            </div>
+          </div>
         </div>
 
         <ImageUpload label="Event Image" value={form.image_url} onChange={(v) => update("image_url", v)} folder="events" />
         <AdminFormField label="Eventbrite Link" name="eventbrite_link" value={form.eventbrite_link} onChange={(v) => update("eventbrite_link", v)} placeholder="https://eventbrite.com/..." />
 
         <div className="grid gap-6 sm:grid-cols-2">
-          <div>
-            <label className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.25em] text-purple-400">Ticket Status</label>
-            <select
-              value={form.ticket_status}
-              onChange={(e) => update("ticket_status", e.target.value)}
-              className="w-full rounded-lg border border-white/[0.1] bg-white/[0.06] px-4 py-3 text-sm text-white outline-none focus:border-purple-500/50"
-            >
-              <option value="available" className="bg-zinc-900 text-white">Available</option>
-              <option value="limited" className="bg-zinc-900 text-white">Limited</option>
-              <option value="final-release" className="bg-zinc-900 text-white">Final Release</option>
-              <option value="sold-out" className="bg-zinc-900 text-white">Sold Out</option>
-            </select>
-          </div>
+          <CustomSelect
+            label="Ticket Status"
+            value={form.ticket_status}
+            onChange={(v) => update("ticket_status", v)}
+            options={[
+              { value: "available", label: "Available" },
+              { value: "limited", label: "Limited" },
+              { value: "final-release", label: "Final Release" },
+              { value: "sold-out", label: "Sold Out" },
+            ]}
+          />
 
           <div className="flex items-end">
-            <label className="flex cursor-pointer items-center gap-3">
-              <input
-                type="checkbox"
-                checked={form.published}
-                onChange={(e) => update("published", e.target.checked)}
-                className="h-5 w-5 rounded border-white/20 bg-white/[0.06] text-purple-500 accent-purple-500"
-              />
-              <span className="text-sm font-medium text-white/70">Published (visible to users)</span>
-            </label>
+            <ToggleSwitch checked={form.published} onChange={(v) => update("published", v)} label="Published" description="Visible to users" color="purple" />
           </div>
         </div>
 

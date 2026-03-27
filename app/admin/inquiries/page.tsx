@@ -142,6 +142,17 @@ export default function AdminInquiriesPage() {
                           Mark Replied
                         </button>
                       )}
+                      {/* Bug 7: Reply via Gmail button */}
+                      {inq.email && (
+                        <a
+                          href={`https://mail.google.com/mail/?view=cm&to=${encodeURIComponent(inq.email)}&su=${encodeURIComponent(`Re: ${inq.subject || inq.type + " inquiry"} - STM Events`)}&body=${encodeURIComponent(`Hi ${inq.name},\n\nThank you for your ${inq.type} inquiry.\n\n---\nOriginal message:\n${inq.message || ""}\n`)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="rounded-lg bg-blue-500/10 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-blue-400/70 transition-all hover:bg-blue-500/20 hover:text-blue-400"
+                        >
+                          Reply via Gmail
+                        </a>
+                      )}
                       <button onClick={() => deleteInquiry(inq.id)} className="rounded-lg border border-red-500/15 bg-red-500/[0.06] px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-red-400/60 transition-all hover:bg-red-500/10 hover:text-red-400">
                         Delete
                       </button>

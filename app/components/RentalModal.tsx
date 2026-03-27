@@ -3,6 +3,7 @@
 import { useState, useEffect, type FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
+import DatePickerField from "./DatePickerField";
 
 interface RentalModalProps {
   isOpen: boolean;
@@ -169,12 +170,11 @@ export default function RentalModal({ isOpen, onClose, equipmentName }: RentalMo
 
                     {/* Rental Date & Duration — side by side */}
                     <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.2em] text-white/35">
-                          {t("rental.date")}
-                        </label>
-                        <input type="date" value={form.rentalDate} onChange={(e) => updateField("rentalDate", e.target.value)} className={`${inputClass} [color-scheme:dark]`} />
-                      </div>
+                      <DatePickerField
+                        label={t("rental.date")}
+                        value={form.rentalDate}
+                        onChange={(v) => updateField("rentalDate", v)}
+                      />
                       <div>
                         <label className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.2em] text-white/35">
                           {t("rental.duration")}

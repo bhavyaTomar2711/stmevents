@@ -58,9 +58,10 @@ function Lightbox({ item, onClose }: { item: GalleryItem; onClose: () => void })
             {item.title}
           </h3>
           {item.description && (
-            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-white/50">
-              {item.description}
-            </p>
+            <div
+              className="mt-3 max-w-2xl text-sm leading-relaxed text-white/50 [&_p]:m-0 [&_strong]:font-semibold [&_strong]:text-white/70"
+              dangerouslySetInnerHTML={{ __html: item.description }}
+            />
           )}
           <div className="mt-4 flex flex-wrap items-center gap-3">
             {item.category && (

@@ -6,6 +6,10 @@ import { createClient } from "@/lib/supabase/client";
 import AdminFormField from "../_components/AdminFormField";
 import ImageUpload from "../_components/ImageUpload";
 import RichTextEditor from "../_components/RichTextEditor";
+import TranslateButton from "../_components/TranslateButton";
+import ToggleSwitch from "../_components/ToggleSwitch";
+import DatePicker from "../_components/DatePicker";
+import CustomSelect from "../_components/CustomSelect";
 import type { DbGalleryItem } from "@/lib/supabase/types";
 
 export default function GalleryForm({ item }: { item?: DbGalleryItem }) {
@@ -36,6 +40,13 @@ export default function GalleryForm({ item }: { item?: DbGalleryItem }) {
     setSaving(true);
     setError("");
 
+    // Bug 6: Validate at least one image or video is uploaded
+    if (!form.image_url && !form.video_url) {
+      setError("Please upload at least one image or video to proceed.");
+      setSaving(false);
+      return;
+    }
+
     const supabase = createClient();
     const payload = {
       title: form.title,
@@ -65,54 +76,71 @@ export default function GalleryForm({ item }: { item?: DbGalleryItem }) {
     <div className="mx-auto max-w-4xl">
       <h1 className="mb-8 text-2xl font-bold uppercase tracking-wider text-white">{isNew ? "New Gallery Item" : "Edit Gallery Item"}</h1>
       <form onSubmit={handleSubmit} className="space-y-6 rounded-xl border border-white/[0.08] bg-white/[0.02] p-8">
+        {/* Bug 1: Title fields with translate button */}
         <div className="grid gap-6 sm:grid-cols-2">
           <AdminFormField label="Title (English) *" name="title" value={form.title} onChange={(v) => update("title", v)} required placeholder="Photo/Video title" />
-          <AdminFormField label="Title (German)" name="title_de" value={form.title_de} onChange={(v) => update("title_de", v)} placeholder="Foto/Video Titel" />
+          <div>
+            <AdminFormField label="Title (German)" name="title_de" value={form.title_de} onChange={(v) => update("title_de", v)} placeholder="Foto/Video Titel" />
+            <div className="mt-2">
+              <TranslateButton sourceText={form.title_de} onTranslated={(v) => update("title", v)} from="de" to="en" />
+            </div>
+          </div>
         </div>
 
+        {/* Bug 1: Description fields with translate button */}
         <div className="grid gap-6 sm:grid-cols-2">
           <RichTextEditor label="Description (English)" value={form.description} onChange={(v) => update("description", v)} placeholder="Enter description in English..." />
-          <RichTextEditor label="Description (German)" value={form.description_de} onChange={(v) => update("description_de", v)} placeholder="Enter description in German..." />
+          <div>
+            <RichTextEditor label="Description (German)" value={form.description_de} onChange={(v) => update("description_de", v)} placeholder="Enter description in German..." />
+            <div className="mt-2">
+              <TranslateButton sourceText={form.description_de} onTranslated={(v) => update("description", v)} from="de" to="en" />
+            </div>
+          </div>
         </div>
 
         <div className="grid gap-6 sm:grid-cols-2">
-          <div>
-            <label className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.25em] text-purple-400">Media Type *</label>
-            <select value={form.media_type} onChange={(e) => update("media_type", e.target.value)} className="w-full rounded-lg border border-white/[0.1] bg-white/[0.06] px-4 py-3 text-sm text-white outline-none focus:border-purple-500/50">
-              <option value="image" className="bg-zinc-900 text-white">Image</option>
-              <option value="video" className="bg-zinc-900 text-white">Video</option>
-            </select>
-          </div>
-          <div>
-            <label className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.25em] text-purple-400">Category</label>
-            <select value={form.category} onChange={(e) => update("category", e.target.value)} className="w-full rounded-lg border border-white/[0.1] bg-white/[0.06] px-4 py-3 text-sm text-white outline-none focus:border-purple-500/50">
-              <option value="event" className="bg-zinc-900 text-white">Event Photos</option>
-              <option value="aftermovie" className="bg-zinc-900 text-white">Aftermovies</option>
-              <option value="djset" className="bg-zinc-900 text-white">DJ Sets</option>
-              <option value="bts" className="bg-zinc-900 text-white">Behind the Scenes</option>
-              <option value="promo" className="bg-zinc-900 text-white">Promo</option>
-            </select>
-          </div>
+          <CustomSelect
+            label="Media Type"
+            value={form.media_type}
+            onChange={(v) => update("media_type", v)}
+            required
+            options={[
+              { value: "image", label: "Image" },
+              { value: "video", label: "Video" },
+            ]}
+          />
+          <CustomSelect
+            label="Category"
+            value={form.category}
+            onChange={(v) => update("category", v)}
+            options={[
+              { value: "event", label: "Event Photos" },
+              { value: "aftermovie", label: "Aftermovies" },
+              { value: "djset", label: "DJ Sets" },
+              { value: "bts", label: "Behind the Scenes" },
+              { value: "promo", label: "Promo" },
+            ]}
+          />
         </div>
 
-        <ImageUpload label="Gallery Image" value={form.image_url} onChange={(v) => update("image_url", v)} folder="gallery" />
+        {/* Bug 6: Image/video upload with validation message */}
+        <ImageUpload label="Gallery Image *" value={form.image_url} onChange={(v) => update("image_url", v)} folder="gallery" />
         {form.media_type === "video" && (
           <>
             <ImageUpload label="Video" value={form.video_url} onChange={(v) => update("video_url", v)} folder="gallery" accept="video/*" />
             <ImageUpload label="Video Thumbnail" value={form.thumbnail_url} onChange={(v) => update("thumbnail_url", v)} folder="gallery" />
           </>
         )}
+        {!form.image_url && !form.video_url && (
+          <p className="rounded-lg border border-amber-500/20 bg-amber-500/10 px-4 py-2.5 text-[12px] text-amber-400">
+            Please upload at least one image or video to proceed.
+          </p>
+        )}
 
-        <AdminFormField label="Date" name="date" type="date" value={form.date} onChange={(v) => update("date", v)} />
-        <div className="flex gap-6">
-          <label className="flex cursor-pointer items-center gap-3">
-            <input type="checkbox" checked={form.featured} onChange={(e) => update("featured", e.target.checked)} className="h-5 w-5 accent-purple-500" />
-            <span className="text-sm text-white/70">Featured</span>
-          </label>
-          <label className="flex cursor-pointer items-center gap-3">
-            <input type="checkbox" checked={form.published} onChange={(e) => update("published", e.target.checked)} className="h-5 w-5 accent-purple-500" />
-            <span className="text-sm text-white/70">Published</span>
-          </label>
+        <DatePicker label="Date" value={form.date} onChange={(v) => update("date", v)} disablePast />
+        <div className="grid gap-3 sm:grid-cols-2">
+          <ToggleSwitch checked={form.featured} onChange={(v) => update("featured", v)} label="Show on Homepage" description="Display in homepage gallery" color="amber" />
+          <ToggleSwitch checked={form.published} onChange={(v) => update("published", v)} label="Published" description="Visible to users" color="purple" />
         </div>
         {error && <p className="rounded-lg border border-red-500/20 bg-red-500/10 px-4 py-2.5 text-[12px] text-red-400">{error}</p>}
         <div className="flex gap-3 pt-4">

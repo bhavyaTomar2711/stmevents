@@ -46,7 +46,7 @@ function transformEquipment(row: DbEquipment): EquipmentData {
     slug: row.slug,
     images: row.images?.length > 0 ? row.images : [],
     price: row.price || "€0",
-    pricePer: row.price_per || "/ day",
+    pricePer: row.price_per ? `/ ${row.price_per.replace(/^\/\s*/, "")}` : "/ day",
     shortDescription: row.short_description || "",
     shortDescription_de: row.short_description_de || "",
     fullDescription: row.full_description || row.short_description || "",

@@ -102,6 +102,7 @@ export default function EventsPageClient({ events }: { events: EventData[] }) {
               title={event.title}
               title_de={event.title_de}
               date={event.date}
+              time={event.time}
               location={event.location}
               location_de={event.location_de}
               image={event.image}

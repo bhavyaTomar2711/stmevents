@@ -33,35 +33,36 @@ export default async function AdminEventsPage() {
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {events.map((event) => (
             <div key={event.id} className="group relative overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.03] transition-all duration-300 hover:border-purple-500/20 hover:bg-white/[0.05]">
-              {/* Image */}
-              {event.image_url && (
-                <div className="relative h-44 overflow-hidden">
-                  <img src={event.image_url} alt={event.title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#07070d] via-[#07070d]/40 to-transparent" />
-                  <div className="absolute bottom-3 left-3 flex gap-2">
-                    <span className={`rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider backdrop-blur-sm ${
-                      event.ticket_status === "sold-out" ? "bg-red-500/20 text-red-300" :
-                      event.ticket_status === "limited" ? "bg-amber-500/20 text-amber-300" :
-                      "bg-emerald-500/20 text-emerald-300"
-                    }`}>
-                      {event.ticket_status}
-                    </span>
-                    {event.published && (
-                      <span className="rounded-full bg-emerald-500/20 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-emerald-300 backdrop-blur-sm">Live</span>
-                    )}
-                    {!event.published && (
-                      <span className="rounded-full bg-white/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white/50 backdrop-blur-sm">Draft</span>
-                    )}
+              {/* Bug 5: Always show status badges regardless of image */}
+              <div className="relative h-44 overflow-hidden">
+                {event.image_url ? (
+                  <>
+                    <img src={event.image_url} alt={event.title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#07070d] via-[#07070d]/40 to-transparent" />
+                  </>
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-purple-500/10 to-violet-500/5">
+                    <svg className="h-10 w-10 text-purple-500/20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0022.5 18.75V5.25A2.25 2.25 0 0020.25 3H3.75A2.25 2.25 0 001.5 5.25v13.5A2.25 2.25 0 003.75 21z" />
+                    </svg>
                   </div>
+                )}
+                <div className="absolute bottom-3 left-3 flex gap-2">
+                  <span className={`rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider backdrop-blur-sm ${
+                    event.ticket_status === "sold-out" ? "bg-red-500/20 text-red-300" :
+                    event.ticket_status === "limited" ? "bg-amber-500/20 text-amber-300" :
+                    "bg-emerald-500/20 text-emerald-300"
+                  }`}>
+                    {event.ticket_status}
+                  </span>
+                  {event.published && (
+                    <span className="rounded-full bg-emerald-500/20 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-emerald-300 backdrop-blur-sm">Live</span>
+                  )}
+                  {!event.published && (
+                    <span className="rounded-full bg-white/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white/50 backdrop-blur-sm">Draft</span>
+                  )}
                 </div>
-              )}
-              {!event.image_url && (
-                <div className="flex h-32 items-center justify-center bg-gradient-to-br from-purple-500/10 to-violet-500/5">
-                  <svg className="h-10 w-10 text-purple-500/20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                </div>
-              )}
+              </div>
               {/* Content */}
               <div className="p-4">
                 <h3 className="mb-2 text-[15px] font-bold text-white">{event.title}</h3>
@@ -71,6 +72,7 @@ export default async function AdminEventsPage() {
                       <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
                     {new Date(event.date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                    {(() => { const d = new Date(event.date); const h = d.getUTCHours(); const m = d.getUTCMinutes(); if (h === 0 && m === 0) return ""; const p = h >= 12 ? "PM" : "AM"; return ` · ${h % 12 || 12}:${String(m).padStart(2, "0")} ${p}`; })()}
                   </span>
                   <span className="flex items-center gap-1.5 text-[11px] text-white/40">
                     <svg className="h-3.5 w-3.5 text-purple-400/60" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>

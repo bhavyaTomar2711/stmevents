@@ -13,6 +13,7 @@ interface EventCardProps {
   title: string;
   title_de?: string;
   date: string;
+  time?: string;
   location: string;
   location_de?: string;
   image?: string;
@@ -53,6 +54,7 @@ export default function EventCard({
   title,
   title_de,
   date,
+  time,
   location,
   location_de,
   image,
@@ -177,7 +179,7 @@ export default function EventCard({
             <div className="absolute top-4 left-4 z-10">
               <span className="inline-flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-black/60 px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/80 backdrop-blur-xl">
                 <span className="h-1 w-1 rounded-full bg-purple-400 shadow-sm shadow-purple-400/50" />
-                {date}
+                {date}{time ? ` · ${time}` : ""}
               </span>
             </div>
 

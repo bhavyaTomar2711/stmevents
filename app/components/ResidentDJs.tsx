@@ -16,13 +16,21 @@ function DJCard({ dj }: { dj: DJData }) {
     <Link href={`/djs/${dj.slug}`} className="group block h-full">
       <div className="glass-card relative flex h-full flex-col overflow-hidden rounded-2xl transition-all duration-500 ease-out hover:-translate-y-3 hover:shadow-[0_0_40px_rgba(124,58,237,0.15),0_20px_50px_-20px_rgba(0,0,0,0.6)]">
         <div className="relative w-full flex-shrink-0 overflow-hidden" style={{ aspectRatio: "3 / 4" }}>
-          <Image
-            src={dj.photo}
-            alt={dj.name}
-            fill
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-            className="object-cover transition-all duration-700 ease-out group-hover:scale-105 group-hover:brightness-110"
-          />
+          {dj.photo ? (
+            <Image
+              src={dj.photo}
+              alt={dj.name}
+              fill
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+              className="object-cover transition-all duration-700 ease-out group-hover:scale-105 group-hover:brightness-110"
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-purple-500/10 to-violet-500/5">
+              <svg className="h-16 w-16 text-purple-500/20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+              </svg>
+            </div>
+          )}
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
           <div className="absolute inset-0 bg-purple-900/15 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 

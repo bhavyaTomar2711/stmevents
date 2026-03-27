@@ -25,31 +25,33 @@ export default async function AdminEquipmentPage() {
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {items.map((item) => (
             <div key={item.id} className="group relative overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.03] transition-all duration-300 hover:border-emerald-500/20 hover:bg-white/[0.05]">
-              {item.images?.[0] && (
-                <div className="relative h-44 overflow-hidden">
-                  <img src={item.images[0]} alt={item.name} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#07070d] via-[#07070d]/40 to-transparent" />
-                  <div className="absolute bottom-3 left-3">
-                    <span className={`rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider backdrop-blur-sm ${
-                      item.available ? "bg-emerald-500/25 text-emerald-300" : "bg-red-500/25 text-red-300"
-                    }`}>
-                      {item.available ? "Available" : "Unavailable"}
-                    </span>
+              {/* Bug 5: Always show price & available tag regardless of image */}
+              <div className="relative h-44 overflow-hidden">
+                {item.images?.[0] ? (
+                  <>
+                    <img src={item.images[0]} alt={item.name} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#07070d] via-[#07070d]/40 to-transparent" />
+                  </>
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-emerald-500/10 to-green-500/5">
+                    <svg className="h-10 w-10 text-emerald-500/20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0022.5 18.75V5.25A2.25 2.25 0 0020.25 3H3.75A2.25 2.25 0 001.5 5.25v13.5A2.25 2.25 0 003.75 21z" />
+                    </svg>
                   </div>
-                  {item.price && (
-                    <div className="absolute top-3 right-3 rounded-full bg-black/50 px-3 py-1 text-[11px] font-bold text-emerald-300 backdrop-blur-sm">
-                      {item.price} / {item.price_per}
-                    </div>
-                  )}
+                )}
+                <div className="absolute bottom-3 left-3">
+                  <span className={`rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider backdrop-blur-sm ${
+                    item.available ? "bg-emerald-500/25 text-emerald-300" : "bg-red-500/25 text-red-300"
+                  }`}>
+                    {item.available ? "Available" : "Unavailable"}
+                  </span>
                 </div>
-              )}
-              {!item.images?.[0] && (
-                <div className="flex h-32 items-center justify-center bg-gradient-to-br from-emerald-500/10 to-green-500/5">
-                  <svg className="h-10 w-10 text-emerald-500/20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35" />
-                  </svg>
-                </div>
-              )}
+                {item.price && (
+                  <div className="absolute top-3 right-3 rounded-full bg-black/50 px-3 py-1 text-[11px] font-bold text-emerald-300 backdrop-blur-sm">
+                    {item.price}/{item.price_per ? item.price_per.replace(/^\/\s*/, "") : "day"}
+                  </div>
+                )}
+              </div>
               <div className="p-4">
                 <h3 className="mb-1 text-[15px] font-bold text-white">{item.name}</h3>
                 <p className="mb-3 text-[12px] text-white/35">{item.category_label}</p>

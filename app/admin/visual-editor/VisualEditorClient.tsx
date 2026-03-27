@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { sections, type SectionConfig } from "./sections";
+import CustomSelect from "../_components/CustomSelect";
 import translations from "@/lib/i18n/translations";
 import type { TranslationKey } from "@/lib/i18n/translations";
 
@@ -58,11 +59,23 @@ export default function VisualEditorClient() {
     loadSection(activeSection);
   }, [activeSection, loadSection]);
 
-  // Scroll iframe to section
+  // Hide scrollbar inside iframe + scroll to section
   useEffect(() => {
     const iframe = iframeRef.current;
     if (!iframe) return;
     const handleLoad = () => {
+      // Inject CSS to hide scrollbar inside iframe
+      try {
+        const doc = iframe.contentDocument;
+        if (doc) {
+          const style = doc.createElement("style");
+          style.textContent = `
+            ::-webkit-scrollbar { display: none !important; }
+            html { scrollbar-width: none !important; -ms-overflow-style: none !important; }
+          `;
+          doc.head.appendChild(style);
+        }
+      } catch { /* cross-origin */ }
       iframe.contentWindow?.postMessage(
         { type: "scrollToSection", anchor: activeSection.anchorId },
         "*"
@@ -172,20 +185,15 @@ export default function VisualEditorClient() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
           </div>
-          <select
+          <CustomSelect
+            label=""
             value={activeSection.sectionId}
-            onChange={(e) => {
-              const s = sections.find((s) => s.sectionId === e.target.value);
+            onChange={(v) => {
+              const s = sections.find((s) => s.sectionId === v);
               if (s) setActiveSection(s);
             }}
-            className="rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm font-medium text-white outline-none transition-colors focus:border-violet-500/40"
-          >
-            {sections.map((s) => (
-              <option key={s.sectionId} value={s.sectionId} className="bg-[#0c0c14] text-white">
-                {s.label}
-              </option>
-            ))}
-          </select>
+            options={sections.map((s) => ({ value: s.sectionId, label: s.label }))}
+          />
         </div>
 
         {/* Center: Device Switcher */}
@@ -269,10 +277,16 @@ export default function VisualEditorClient() {
         </div>
       )}
 
+      {/* Bug 8: Hide scrollbars for cleaner UI */}
+      <style>{`
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      `}</style>
+
       {/* Main: Preview + Fields Panel */}
       <div className="flex flex-1 overflow-hidden">
         {/* Preview */}
-        <div className="flex flex-1 items-start justify-center overflow-auto bg-[#060609] p-4">
+        <div className="hide-scrollbar flex flex-1 items-start justify-center overflow-auto bg-[#060609] p-4">
           <div
             className={`overflow-hidden rounded-xl border border-white/[0.06] shadow-2xl shadow-black/50 transition-all duration-500 ${
               device !== "desktop" ? "h-[85vh]" : "h-full w-full"
@@ -300,7 +314,7 @@ export default function VisualEditorClient() {
           </div>
 
           {/* Fields */}
-          <div className="flex-1 overflow-y-auto px-5 py-4">
+          <div className="hide-scrollbar flex-1 overflow-y-auto px-5 py-4">
             <div className="space-y-6">
               {activeSection.fields.map((field) => (
                 <div key={field.key} className="group">
