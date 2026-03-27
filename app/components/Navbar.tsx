@@ -126,17 +126,17 @@ export default function Navbar() {
           {/* Language Switch */}
           <div className="flex items-center gap-1.5 text-[12px] tracking-[0.15em]">
             <button
-              onClick={() => setLocale("en")}
-              className={`font-medium transition-colors ${locale === "en" ? "text-white" : "text-white/40 hover:text-white"}`}
-            >
-              EN
-            </button>
-            <span className="text-white/25">|</span>
-            <button
               onClick={() => setLocale("de")}
               className={`font-medium transition-colors ${locale === "de" ? "text-white" : "text-white/40 hover:text-white"}`}
             >
               DE
+            </button>
+            <span className="text-white/25">|</span>
+            <button
+              onClick={() => setLocale("en")}
+              className={`font-medium transition-colors ${locale === "en" ? "text-white" : "text-white/40 hover:text-white"}`}
+            >
+              EN
             </button>
           </div>
 
@@ -227,17 +227,17 @@ export default function Navbar() {
           }}
         >
           <button
-            onClick={() => setLocale("en")}
-            className={`font-medium transition-colors ${locale === "en" ? "text-white" : "text-white/40 hover:text-white"}`}
-          >
-            EN
-          </button>
-          <span className="text-white/25">|</span>
-          <button
             onClick={() => setLocale("de")}
             className={`font-medium transition-colors ${locale === "de" ? "text-white" : "text-white/40 hover:text-white"}`}
           >
             DE
+          </button>
+          <span className="text-white/25">|</span>
+          <button
+            onClick={() => setLocale("en")}
+            className={`font-medium transition-colors ${locale === "en" ? "text-white" : "text-white/40 hover:text-white"}`}
+          >
+            EN
           </button>
         </div>
 

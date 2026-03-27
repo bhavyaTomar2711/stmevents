@@ -4,7 +4,6 @@ import {
   createContext,
   useContext,
   useState,
-  useEffect,
   useCallback,
   type ReactNode,
 } from "react";
@@ -20,26 +19,11 @@ interface LanguageContextValue {
 const LanguageContext = createContext<LanguageContextValue | null>(null);
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [locale, setLocaleState] = useState<Locale>("de");
-  const [mounted, setMounted] = useState(false);
-
-  // Read from localStorage on mount
-  useEffect(() => {
-    const stored = localStorage.getItem("stm-lang") as Locale | null;
-    if (stored === "en" || stored === "de") {
-      setLocaleState(stored);
-    }
-    setMounted(true);
-  }, []);
-
-  const setLocale = useCallback((newLocale: Locale) => {
-    setLocaleState(newLocale);
-    localStorage.setItem("stm-lang", newLocale);
-  }, []);
+  const [locale, setLocale] = useState<Locale>("de");
 
   const toggleLocale = useCallback(() => {
-    setLocale(locale === "en" ? "de" : "en");
-  }, [locale, setLocale]);
+    setLocale((prev) => (prev === "de" ? "en" : "de"));
+  }, []);
 
   const t = useCallback(
     (key: TranslationKey): string => {
@@ -50,10 +34,8 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     [locale]
   );
 
-  // Prevent hydration mismatch — render children only after mount
-  // but still provide context immediately with default "en"
   const value: LanguageContextValue = {
-    locale: mounted ? locale : "de",
+    locale,
     setLocale,
     toggleLocale,
     t,

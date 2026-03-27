@@ -52,7 +52,7 @@ export default function HeroSection({ nextEvent }: HeroSectionProps) {
         <div className="w-full pl-6 pr-6 sm:pl-10 md:pl-16 lg:pl-24 xl:pl-32">
           <div className="flex max-w-2xl flex-col items-start gap-7 md:gap-8">
             {/* Main Heading */}
-            <h1 className="animate-fade-in-up text-[clamp(2.8rem,8vw,7rem)] font-semibold uppercase leading-[0.92] tracking-[-0.02em] text-white">
+            <h1 className="animate-fade-in-up text-[clamp(2.8rem,8vw,7rem)] font-semibold leading-[0.92] tracking-[-0.02em] text-white">
               {tc("hero", "heading_line1", "hero.experience")}
               <br />
               {tc("hero", "heading_line2", "hero.theUnderground")}

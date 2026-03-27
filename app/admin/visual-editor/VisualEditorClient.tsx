@@ -161,7 +161,7 @@ export default function VisualEditorClient() {
   };
 
   return (
-    <div className="flex h-[calc(100vh-0px)] flex-col bg-[#08080e]">
+    <div className="flex h-[calc(100vh-0px)] min-w-[1100px] flex-col bg-[#08080e]">
       {/* Top Bar */}
       <div className="flex flex-shrink-0 items-center justify-between border-b border-white/[0.06] bg-[#0c0c14]/80 px-4 py-3 backdrop-blur-xl">
         {/* Left: Section dropdown */}

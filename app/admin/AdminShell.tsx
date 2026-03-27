@@ -37,7 +37,7 @@ export default function AdminShell({ children, user }: { children: React.ReactNo
   };
 
   return (
-    <div className="flex min-h-screen overflow-x-hidden bg-[#07070d]">
+    <div className={`flex min-h-screen bg-[#07070d] ${pathname.startsWith("/admin/visual-editor") ? "overflow-x-auto" : "overflow-x-hidden"}`}>
       {/* Mobile top bar */}
       <div className="fixed inset-x-0 top-0 z-50 flex items-center justify-between border-b border-white/[0.06] bg-[#0b0b14]/95 px-4 py-3 backdrop-blur-xl md:hidden">
         <div className="flex items-center gap-3">
