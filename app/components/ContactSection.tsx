@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { useState } from "react";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 import { useSiteContent } from "@/lib/hooks/useSiteContent";
 import type { TranslationKey } from "@/lib/i18n/translations";
@@ -9,8 +8,6 @@ import type { TranslationKey } from "@/lib/i18n/translations";
 export default function ContactSection() {
   const { t } = useLanguage();
   const { tc } = useSiteContent();
-  const sectionRef = useRef<HTMLElement>(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
   const [formData, setFormData] = useState({ name: "", email: "", subject: "", message: "" });
   const [focusedField, setFocusedField] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
@@ -49,7 +46,6 @@ export default function ContactSection() {
 
   return (
     <section
-      ref={sectionRef}
       id="contact"
       className="relative overflow-hidden bg-black py-28 sm:py-32 md:py-40"
     >
@@ -87,43 +83,31 @@ export default function ContactSection() {
       <div className="relative z-10 mx-auto w-full px-6 sm:px-8 md:px-12 lg:px-16 xl:px-20">
         {/* Header */}
         <div className="mb-16 md:mb-20">
-          <motion.span
-            initial={{ opacity: 0, x: -20 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          <span
             className="inline-flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.3em] text-purple-400"
           >
             <span className="inline-block h-px w-10 bg-gradient-to-r from-purple-500 to-transparent" />
             {tc("contact", "label", "contact.label")}
-          </motion.span>
+          </span>
 
-          <motion.h2
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          <h2
             className="mt-4 text-[clamp(2rem,4.5vw,4.5rem)] font-bold uppercase leading-[0.9] tracking-[-0.03em]"
           >
             <span className="block text-white">{tc("contact", "heading1", "contact.heading1")}</span>
             <span className="block text-white">{tc("contact", "heading2", "contact.heading2")}</span>
-          </motion.h2>
+          </h2>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          <p
             className="mt-5 max-w-lg text-[15px] leading-relaxed text-white/50"
           >
             {tc("contact", "description", "contact.description")}
-          </motion.p>
+          </p>
         </div>
 
         {/* Content grid */}
         <div className="grid items-start gap-12 lg:grid-cols-5 lg:gap-16">
           {/* Form — left side */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.3 }}
+          <div
             className="lg:col-span-3"
           >
             <form onSubmit={handleSubmit}>
@@ -237,13 +221,10 @@ export default function ContactSection() {
                 </div>
               </div>
             </form>
-          </motion.div>
+          </div>
 
           {/* Right sidebar */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.4 }}
+          <div
             className="space-y-6 lg:col-span-2"
           >
             {/* Contact info cards */}
@@ -372,21 +353,18 @@ export default function ContactSection() {
                 </span>
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
 
         {/* Footer */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.5, delay: 0.6 }}
+        <div
           className="mt-24 flex flex-col items-center gap-5 text-center md:mt-28"
         >
           <div className="h-px w-24 bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
           <p className="text-[11px] tracking-[0.25em] text-white/20 uppercase">
             STM Events &copy; {new Date().getFullYear()}. {t("footer.rights")}
           </p>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

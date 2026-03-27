@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, useCallback } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 import { useSiteContent } from "@/lib/hooks/useSiteContent";
 import type { TranslationKey } from "@/lib/i18n/translations";
@@ -76,16 +76,8 @@ function ServiceCard({
   );
 
   return (
-    <motion.div
+    <div
       ref={cardRef}
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{
-        duration: 0.7,
-        delay: index * 0.12,
-        ease: [0.16, 1, 0.3, 1],
-      }}
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -132,10 +124,8 @@ function ServiceCard({
         </h3>
 
         {/* Divider */}
-        <motion.div
+        <div
           className="mt-4 h-px w-8 bg-gradient-to-r from-purple-500/40 to-transparent"
-          whileInView={{ width: "2rem" }}
-          viewport={{ once: true }}
         />
 
         {/* Description */}
@@ -163,7 +153,7 @@ function ServiceCard({
           </svg>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
@@ -172,8 +162,6 @@ function ServiceCard({
 export default function ServicesSection() {
   const { t } = useLanguage();
   const { tc } = useSiteContent();
-  const headingRef = useRef<HTMLDivElement>(null);
-  const headingInView = useInView(headingRef, { once: true, margin: "-80px" });
 
   return (
     <section
@@ -238,69 +226,40 @@ export default function ServicesSection() {
       {/* ── Content ── */}
       <div className="relative z-10 mx-auto w-full px-6 sm:px-8 md:px-12 lg:px-16">
         {/* ── Heading cluster ── */}
-        <div ref={headingRef} className="mb-16 text-center sm:mb-20 md:mb-24">
+        <div className="mb-16 text-center sm:mb-20 md:mb-24">
           {/* Label */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={headingInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          <div
             className="flex items-center justify-center gap-3"
           >
-            <motion.span
+            <span
               className="inline-block h-px bg-gradient-to-r from-transparent to-purple-500"
-              initial={{ width: 0 }}
-              animate={headingInView ? { width: 32 } : {}}
-              transition={{
-                duration: 0.8,
-                delay: 0.2,
-                ease: [0.16, 1, 0.3, 1],
-              }}
+              style={{ width: 32 }}
             />
             <span className="text-[11px] font-semibold uppercase tracking-[0.3em] text-purple-400">
               {tc("services", "label", "services.label")}
             </span>
-            <motion.span
+            <span
               className="inline-block h-px bg-gradient-to-r from-purple-500 to-transparent"
-              initial={{ width: 0 }}
-              animate={headingInView ? { width: 32 } : {}}
-              transition={{
-                duration: 0.8,
-                delay: 0.2,
-                ease: [0.16, 1, 0.3, 1],
-              }}
+              style={{ width: 32 }}
             />
-          </motion.div>
+          </div>
 
           {/* Main heading */}
-          <motion.h2
-            initial={{ opacity: 0, y: 30 }}
-            animate={headingInView ? { opacity: 1, y: 0 } : {}}
-            transition={{
-              duration: 0.7,
-              delay: 0.15,
-              ease: [0.16, 1, 0.3, 1],
-            }}
+          <h2
             className="mt-5 text-[clamp(1.8rem,3.5vw,3.2rem)] font-bold uppercase leading-[1.05] tracking-[-0.02em] text-white"
           >
             {tc("services", "heading1", "services.heading1")}{" "}
             <span className="bg-gradient-to-r from-purple-400 to-violet-400 bg-clip-text text-transparent">
               {tc("services", "heading2", "services.heading2")}
             </span>
-          </motion.h2>
+          </h2>
 
           {/* Subtext */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={headingInView ? { opacity: 1, y: 0 } : {}}
-            transition={{
-              duration: 0.6,
-              delay: 0.3,
-              ease: [0.16, 1, 0.3, 1],
-            }}
+          <p
             className="mx-auto mt-5 max-w-md text-[14px] leading-[1.7] text-white/35"
           >
             {tc("services", "description", "services.description")}
-          </motion.p>
+          </p>
         </div>
 
         {/* ── Card grid ── */}
@@ -311,11 +270,7 @@ export default function ServicesSection() {
         </div>
 
         {/* ── Bottom accent ── */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1, delay: 0.6 }}
+        <div
           className="mt-16 flex items-center justify-center gap-4 sm:mt-20"
         >
           <div className="h-px w-16 bg-gradient-to-r from-transparent to-white/[0.06]" />
@@ -323,7 +278,7 @@ export default function ServicesSection() {
             {t("services.tagline")}
           </span>
           <div className="h-px w-16 bg-gradient-to-r from-white/[0.06] to-transparent" />
-        </motion.div>
+        </div>
       </div>
     </section>
   );

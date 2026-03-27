@@ -52,7 +52,7 @@ export default function HeroSection({ nextEvent }: HeroSectionProps) {
         <div className="w-full pl-6 pr-6 sm:pl-10 md:pl-16 lg:pl-24 xl:pl-32">
           <div className="flex max-w-2xl flex-col items-start gap-7 md:gap-8">
             {/* Main Heading */}
-            <h1 className="animate-fade-in-up text-[clamp(2.8rem,8vw,7rem)] font-semibold leading-[0.92] tracking-[-0.02em] text-white">
+            <h1 className="text-[clamp(2.8rem,8vw,7rem)] font-semibold leading-[0.92] tracking-[-0.02em] text-white">
               {tc("hero", "heading_line1", "hero.experience")}
               <br />
               {tc("hero", "heading_line2", "hero.theUnderground")}
@@ -62,8 +62,7 @@ export default function HeroSection({ nextEvent }: HeroSectionProps) {
               <>
                 {/* Event Info Card */}
                 <div
-                  className="animate-fade-in-up flex flex-col gap-1.5 rounded-xl border border-white/[0.08] bg-white/[0.04] px-6 py-4 shadow-2xl shadow-purple-500/5 backdrop-blur-xl"
-                  style={{ animationDelay: "150ms" }}
+                  className="flex flex-col gap-1.5 rounded-xl border border-white/[0.08] bg-white/[0.04] px-6 py-4 shadow-2xl shadow-purple-500/5 backdrop-blur-xl"
                 >
                   <span className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-purple-400">
                     <span className="inline-block h-1.5 w-1.5 rounded-full bg-purple-400 shadow-sm shadow-purple-400/50" />
@@ -79,10 +78,7 @@ export default function HeroSection({ nextEvent }: HeroSectionProps) {
 
                 {/* Countdown */}
                 {nextEvent.rawDate && (
-                  <div
-                    className="animate-fade-in-up"
-                    style={{ animationDelay: "300ms" }}
-                  >
+                  <div>
                     <CountdownTimer targetDate={new Date(nextEvent.rawDate)} />
                   </div>
                 )}
@@ -93,16 +89,14 @@ export default function HeroSection({ nextEvent }: HeroSectionProps) {
                     href={nextEvent.ticketUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="animate-fade-in-up group relative inline-flex items-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-[#7B2CBF] to-[#9D4EDD] px-8 py-3.5 text-[13px] font-semibold uppercase tracking-[0.2em] text-white shadow-xl shadow-purple-700/20 transition-all duration-300 hover:scale-[1.03] hover:shadow-purple-600/30"
-                    style={{ animationDelay: "450ms" }}
+                    className="group relative inline-flex items-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-[#7B2CBF] to-[#9D4EDD] px-8 py-3.5 text-[13px] font-semibold uppercase tracking-[0.2em] text-white shadow-xl shadow-purple-700/20 transition-all duration-300 hover:scale-[1.03] hover:shadow-purple-600/30"
                   >
                     <span className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                     {tc("hero", "button_text", "hero.getTickets")}
                   </a>
                 ) : isSoldOut ? (
                   <div
-                    className="animate-fade-in-up inline-flex cursor-not-allowed items-center gap-2 rounded-lg border border-red-500/20 bg-red-500/5 px-8 py-3.5 text-[13px] font-semibold uppercase tracking-[0.2em] text-red-400/60"
-                    style={{ animationDelay: "450ms" }}
+                    className="inline-flex cursor-not-allowed items-center gap-2 rounded-lg border border-red-500/20 bg-red-500/5 px-8 py-3.5 text-[13px] font-semibold uppercase tracking-[0.2em] text-red-400/60"
                   >
                     {t("eventDetail.soldOut")}
                   </div>
@@ -111,8 +105,7 @@ export default function HeroSection({ nextEvent }: HeroSectionProps) {
             ) : (
               /* No upcoming event fallback */
               <div
-                className="animate-fade-in-up flex flex-col gap-3"
-                style={{ animationDelay: "150ms" }}
+                className="flex flex-col gap-3"
               >
                 <p className="text-lg font-medium tracking-wide text-white/50">
                   {tc("hero", "stay_tuned", "hero.stayTuned")}

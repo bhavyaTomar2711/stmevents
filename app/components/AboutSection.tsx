@@ -1,22 +1,15 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 import { useSiteContent } from "@/lib/hooks/useSiteContent";
 
 export default function AboutSection() {
   const { t } = useLanguage();
   const { tc } = useSiteContent();
-  const sectionRef = useRef<HTMLElement>(null);
-  const imageRef = useRef<HTMLDivElement>(null);
-  const textRef = useRef<HTMLDivElement>(null);
-  const textInView = useInView(textRef, { once: true, margin: "-100px" });
 
   return (
     <section
       id="about"
-      ref={sectionRef}
       className="relative overflow-hidden bg-black py-28 sm:py-32 md:py-40"
     >
       {/* Noise only — no orbs */}
@@ -34,39 +27,28 @@ export default function AboutSection() {
         <div className="grid grid-cols-1 items-center gap-12 md:gap-16 lg:grid-cols-2 lg:gap-20 xl:gap-28">
 
           {/* ── Left — Text ── */}
-          <div ref={textRef} className="max-w-xl">
+          <div className="max-w-xl">
             {/* Label */}
-            <motion.span
-              initial={{ opacity: 0, x: -20 }}
-              animate={textInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            <span
               className="inline-flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.3em] text-purple-400"
             >
-              <motion.span
+              <span
                 className="inline-block h-px bg-gradient-to-r from-purple-500 to-transparent"
-                initial={{ width: 0 }}
-                animate={textInView ? { width: 40 } : {}}
-                transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                style={{ width: 40 }}
               />
               {tc("about", "label", "about.label")}
-            </motion.span>
+            </span>
 
             {/* Heading */}
-            <motion.h2
-              initial={{ opacity: 0, y: 30 }}
-              animate={textInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+            <h2
               className="mt-4 text-[clamp(1.8rem,3.5vw,3.2rem)] font-bold uppercase leading-[1] tracking-[-0.02em] text-white"
             >
               {tc("about", "heading", "about.heading")}{" "}
               <span className="text-purple-400">{tc("about", "heading_highlight", "about.headingHighlight")}</span> {t("about.headingEnd")}
-            </motion.h2>
+            </h2>
 
             {/* Description */}
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              animate={textInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            <div
               className="mt-6 space-y-4"
             >
               <p className="text-[15px] leading-[1.75] text-white/40">
@@ -75,30 +57,21 @@ export default function AboutSection() {
               <p className="text-[15px] leading-[1.75] text-white/40">
                 {tc("about", "p2", "about.p2")}
               </p>
-            </motion.div>
+            </div>
 
 
           </div>
 
           {/* ── Right — Visual ── */}
-          <motion.div
-            ref={imageRef}
-            initial={{ opacity: 0, x: 60 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+          <div
             className="relative"
           >
             {/* Accent line (left edge) */}
-            <motion.div
+            <div
               className="absolute -left-3 top-8 bottom-8 hidden w-px lg:block"
               style={{
                 background: "linear-gradient(to bottom, transparent, rgba(157,78,221,0.3) 30%, rgba(157,78,221,0.3) 70%, transparent)",
               }}
-              initial={{ scaleY: 0 }}
-              whileInView={{ scaleY: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
             />
 
             <div className="glass-card relative overflow-hidden rounded-2xl">
@@ -121,13 +94,8 @@ export default function AboutSection() {
               {/* Corner accent */}
               <div className="absolute bottom-6 left-6 right-6">
                 <div className="flex items-center gap-3">
-                  <motion.div
+                  <div
                     className="h-px flex-1 bg-gradient-to-r from-purple-500/40 to-transparent"
-                    initial={{ scaleX: 0 }}
-                    whileInView={{ scaleX: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 1, delay: 0.5 }}
-                    style={{ transformOrigin: "left" }}
                   />
                   <span className="text-[10px] font-medium uppercase tracking-[0.3em] text-white/30">
                     {t("about.est")}
@@ -135,7 +103,7 @@ export default function AboutSection() {
                 </div>
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

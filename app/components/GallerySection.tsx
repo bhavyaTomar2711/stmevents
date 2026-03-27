@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef, useState, useCallback } from "react";
-import { motion, useInView, AnimatePresence } from "framer-motion";
+import { useState, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import type { GalleryItem } from "@/lib/gallery-shared";
@@ -144,11 +144,7 @@ function MediaBlock({
   const handleLoad = useCallback(() => setLoaded(true), []);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.6, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
+    <div
       className={`group relative cursor-pointer overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.02] backdrop-blur-sm ${aspect} ${className ?? ""}`}
       onClick={onClick}
     >
@@ -206,7 +202,7 @@ function MediaBlock({
           {item.title}
         </span>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
@@ -214,9 +210,6 @@ function MediaBlock({
 export default function GallerySection({ items }: GallerySectionProps) {
   const { t } = useLanguage();
   const { tc } = useSiteContent();
-  const sectionRef = useRef<HTMLElement>(null);
-  const headerRef = useRef<HTMLDivElement>(null);
-  const headerInView = useInView(headerRef, { once: true, margin: "-100px" });
   const [lightboxItem, setLightboxItem] = useState<GalleryItem | null>(null);
 
   const video = items.find((i) => i.mediaType === "video") || items[0];
@@ -235,7 +228,6 @@ export default function GallerySection({ items }: GallerySectionProps) {
   return (
     <section
       id="gallery"
-      ref={sectionRef}
       className="relative overflow-hidden bg-black pt-12 pb-28 sm:pt-16 sm:pb-32 md:pt-20 md:pb-40"
     >
       {/* Noise texture — lightweight, no animated orbs */}
@@ -251,35 +243,26 @@ export default function GallerySection({ items }: GallerySectionProps) {
       {/* Content */}
       <div className="relative z-10 mx-auto w-full px-6 sm:px-8 md:px-12 lg:px-16 xl:px-20">
         {/* Header */}
-        <div ref={headerRef} className="mb-14 md:mb-20">
-          <motion.span
-            initial={{ opacity: 0, x: -20 }}
-            animate={headerInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        <div className="mb-14 md:mb-20">
+          <span
             className="mb-4 inline-flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.3em] text-purple-400"
           >
             <span className="inline-block h-px w-10 bg-gradient-to-r from-purple-500 to-transparent" />
             {tc("gallery", "label", "gallery.label")}
-          </motion.span>
+          </span>
 
-          <motion.h2
-            initial={{ opacity: 0, y: 30 }}
-            animate={headerInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          <h2
             className="mt-3 text-[clamp(2.5rem,5.5vw,5.5rem)] font-bold uppercase leading-[0.88] tracking-[-0.03em]"
           >
             <span className="block text-white">{tc("gallery", "heading1", "gallery.heading1")}</span>
             <span className="block text-white">{tc("gallery", "heading2", "gallery.heading2")}</span>
-          </motion.h2>
+          </h2>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={headerInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+          <p
             className="mt-5 max-w-lg text-[15px] leading-relaxed text-white/30"
           >
             {tc("gallery", "description", "gallery.description")}
-          </motion.p>
+          </p>
         </div>
 
         {/* Gallery Grid — with skeleton fallback */}
@@ -347,11 +330,7 @@ export default function GallerySection({ items }: GallerySectionProps) {
         )}
 
         {/* View Full Gallery Link */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.4 }}
+        <div
           className="mt-14 flex justify-center md:mt-16"
         >
           <Link
@@ -371,7 +350,7 @@ export default function GallerySection({ items }: GallerySectionProps) {
               </svg>
             </span>
           </Link>
-        </motion.div>
+        </div>
       </div>
 
       {/* Lightbox */}

@@ -1,7 +1,5 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import type { EquipmentData } from "@/lib/equipment";
@@ -16,12 +14,7 @@ function ProductCard({ item, index }: { item: EquipmentData; index: number }) {
   const displayShortDesc = (locale === "de" && item.shortDescription_de) ? item.shortDescription_de : item.shortDescription;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.5, delay: index * 0.06, ease: [0.22, 1, 0.36, 1] }}
-    >
+    <div>
       <Link href={`/equipment/${item.slug}`} className="group block h-full">
         <div className="glass-card relative flex h-full flex-col overflow-hidden rounded-2xl transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_8px_35px_rgba(124,58,237,0.1)]">
           {/* Image — fixed aspect ratio for uniform cards */}
@@ -80,7 +73,7 @@ function ProductCard({ item, index }: { item: EquipmentData; index: number }) {
           <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-purple-500 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
         </div>
       </Link>
-    </motion.div>
+    </div>
   );
 }
 
@@ -88,8 +81,6 @@ function ProductCard({ item, index }: { item: EquipmentData; index: number }) {
 export default function EquipmentRental({ equipment }: { equipment: EquipmentData[] }) {
   const { t } = useLanguage();
   const { tc } = useSiteContent();
-  const headerRef = useRef<HTMLDivElement>(null);
-  const headerInView = useInView(headerRef, { once: true, margin: "-100px" });
 
   return (
     <section
@@ -109,35 +100,26 @@ export default function EquipmentRental({ equipment }: { equipment: EquipmentDat
       {/* Content */}
       <div className="relative z-10 mx-auto w-full px-6 sm:px-8 md:px-12 lg:px-16 xl:px-20">
         {/* Header */}
-        <div ref={headerRef} className="mb-16 md:mb-20">
-          <motion.span
-            initial={{ opacity: 0, x: -20 }}
-            animate={headerInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        <div className="mb-16 md:mb-20">
+          <span
             className="inline-flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.3em] text-purple-400"
           >
             <span className="inline-block h-px w-10 bg-gradient-to-r from-purple-500 to-transparent" />
             {tc("equipment", "label", "equipment.label")}
-          </motion.span>
+          </span>
 
-          <motion.h2
-            initial={{ opacity: 0, y: 30 }}
-            animate={headerInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          <h2
             className="mt-4 text-[clamp(2rem,4.5vw,4.5rem)] font-bold uppercase leading-[0.9] tracking-[-0.03em]"
           >
             <span className="block text-white">{tc("equipment", "heading1", "equipment.heading1")}</span>
             <span className="block text-white">{tc("equipment", "heading2", "equipment.heading2")}</span>
-          </motion.h2>
+          </h2>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={headerInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          <p
             className="mt-5 max-w-lg text-[15px] leading-relaxed text-white/35"
           >
             {tc("equipment", "description", "equipment.description")}
-          </motion.p>
+          </p>
         </div>
 
         {/* Product Grid — uniform height via flex */}
@@ -148,11 +130,7 @@ export default function EquipmentRental({ equipment }: { equipment: EquipmentDat
         </div>
 
         {/* Bottom CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.3 }}
+        <div
           className="mt-16 flex flex-col items-center gap-6 md:mt-20"
         >
           <div className="h-px w-24 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
@@ -186,7 +164,7 @@ export default function EquipmentRental({ equipment }: { equipment: EquipmentDat
               </span>
             </a>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

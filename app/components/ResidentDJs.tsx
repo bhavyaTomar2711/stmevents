@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef, useState, useEffect, useCallback } from "react";
-import { motion, useInView } from "framer-motion";
+import { useState, useEffect, useCallback } from "react";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import type { DJData } from "@/lib/djs";
@@ -59,8 +59,6 @@ function DJCard({ dj }: { dj: DJData }) {
 export default function ResidentDJs({ djs }: { djs: DJData[] }) {
   const { t } = useLanguage();
   const { tc } = useSiteContent();
-  const sectionRef = useRef<HTMLElement>(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [slidesPerView, setSlidesPerView] = useState(4);
@@ -106,7 +104,6 @@ export default function ResidentDJs({ djs }: { djs: DJData[] }) {
   return (
     <section
       id="djs"
-      ref={sectionRef}
       className="relative overflow-hidden bg-black py-24 sm:py-28 md:py-32"
     >
       {/* Noise */}
@@ -126,11 +123,7 @@ export default function ResidentDJs({ djs }: { djs: DJData[] }) {
       <div className="relative z-10 mx-auto w-full px-6 sm:px-8 md:px-12 lg:px-16 xl:px-20">
         {/* Section Header + Arrow Controls */}
         <div className="mb-14 flex items-end justify-between md:mb-20">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          >
+          <div>
             <span className="mb-4 inline-flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.3em] text-purple-400">
               <span className="inline-block h-px w-10 bg-gradient-to-r from-purple-500 to-transparent" />
               {tc("djs", "label", "djs.label")}
@@ -145,14 +138,11 @@ export default function ResidentDJs({ djs }: { djs: DJData[] }) {
             <p className="mt-5 max-w-lg text-[15px] leading-relaxed text-white/30">
               {tc("djs", "description", "djs.description")}
             </p>
-          </motion.div>
+          </div>
 
           {/* Arrow Controls */}
           {djs.length > slidesPerView && (
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={isInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.3 }}
+            <div
               className="hidden items-center gap-3 sm:flex"
             >
               <button
@@ -173,7 +163,7 @@ export default function ResidentDJs({ djs }: { djs: DJData[] }) {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                 </svg>
               </button>
-            </motion.div>
+            </div>
           )}
         </div>
 
@@ -250,11 +240,7 @@ export default function ResidentDJs({ djs }: { djs: DJData[] }) {
         )}
 
         {/* View All Link */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.6 }}
+        <div
           className="mt-16 flex justify-center md:mt-20"
         >
           <Link
@@ -274,7 +260,7 @@ export default function ResidentDJs({ djs }: { djs: DJData[] }) {
               </svg>
             </span>
           </Link>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

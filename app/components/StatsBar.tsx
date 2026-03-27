@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef, useState, useEffect, useCallback } from "react";
-import { useInView } from "framer-motion";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 import { useSiteContent } from "@/lib/hooks/useSiteContent";
 import type { TranslationKey } from "@/lib/i18n/translations";
@@ -51,14 +50,23 @@ export default function StatsBar() {
   const { t } = useLanguage();
   const { tc } = useSiteContent();
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-50px" });
   const [triggered, setTriggered] = useState(false);
 
-  const onView = useCallback(() => {
-    if (isInView && !triggered) setTriggered(true);
-  }, [isInView, triggered]);
-
-  useEffect(() => { onView(); }, [onView]);
+  // Use IntersectionObserver directly instead of framer-motion useInView
+  useEffect(() => {
+    if (!ref.current || triggered) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setTriggered(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "-50px" }
+    );
+    observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [triggered]);
 
   return (
     <div
