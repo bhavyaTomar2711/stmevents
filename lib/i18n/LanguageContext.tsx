@@ -20,7 +20,7 @@ interface LanguageContextValue {
 const LanguageContext = createContext<LanguageContextValue | null>(null);
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [locale, setLocaleState] = useState<Locale>("en");
+  const [locale, setLocaleState] = useState<Locale>("de");
   const [mounted, setMounted] = useState(false);
 
   // Read from localStorage on mount
@@ -45,7 +45,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     (key: TranslationKey): string => {
       const entry = translations[key];
       if (!entry) return key;
-      return entry[locale] || entry.en;
+      return entry[locale] || entry.de;
     },
     [locale]
   );
@@ -53,7 +53,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   // Prevent hydration mismatch — render children only after mount
   // but still provide context immediately with default "en"
   const value: LanguageContextValue = {
-    locale: mounted ? locale : "en",
+    locale: mounted ? locale : "de",
     setLocale,
     toggleLocale,
     t,
