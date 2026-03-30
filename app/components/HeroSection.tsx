@@ -30,19 +30,19 @@ export default function HeroSection({ nextEvent }: HeroSectionProps) {
         className="absolute inset-0 h-full w-full object-cover"
       >
         <source
-          src="https://res.cloudinary.com/dqiuwzvfb/video/upload/v1774589028/web_dancing_6.0_zk3wnk.mp4"
+          src="https://res.cloudinary.com/dqiuwzvfb/video/upload/v1774847979/web_dancing_8.0_epnol4.mp4"
           type="video/mp4"
         />
       </video>
 
       {/* Dark Overlay */}
-      <div className="absolute inset-0 bg-black/50" />
+      <div className="absolute inset-0 bg-black/30" />
 
       {/* Purple Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-purple-950/50 via-black/10 to-violet-900/30" />
 
       {/* Vignette */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(0,0,0,0.7)_100%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(0,0,0,0.4)_100%)]" />
 
       {/* Bottom Gradient Fade */}
       <div className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-black via-black/60 to-transparent" />
