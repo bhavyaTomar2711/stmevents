@@ -15,11 +15,9 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     // Invalid or expired token — treat as logged out
   }
 
-  // Not logged in — redirect to the single login page
+  // Not logged in — redirect to login
   if (!user) {
-    // Allow the /admin/login page to render (it will redirect client-side)
-    // But for all other admin pages, redirect to login
-    return <>{children}</>;
+    redirect("/account/login");
   }
 
   // Logged in but NOT admin — block access, redirect to user account

@@ -1,16 +1,25 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 type Mode = "login" | "signup" | "forgot";
 
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const { t } = useLanguage();
   const [mode, setMode] = useState<Mode>("login");
+
+  useEffect(() => {
+    if (searchParams.get("mode") === "signup") {
+      setMode("signup");
+    }
+  }, [searchParams]);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -40,7 +49,7 @@ export default function LoginPage() {
         if (resetError) {
           setError(resetError.message);
         } else {
-          setSuccess("Password reset link sent! Check your email inbox.");
+          setSuccess(t("account.login.resetSent"));
         }
         return;
       }
@@ -57,12 +66,12 @@ export default function LoginPage() {
 
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error || "Something went wrong");
+        setError(data.error || t("account.login.error"));
         return;
       }
 
       if (mode === "signup") {
-        setSuccess("Account created! You can now sign in.");
+        setSuccess(t("account.login.accountCreated"));
         setMode("login");
         setPassword("");
         return;
@@ -75,7 +84,7 @@ export default function LoginPage() {
       }
       router.refresh();
     } catch {
-      setError("Something went wrong");
+      setError(t("account.login.error"));
     } finally {
       setLoading(false);
     }
@@ -119,17 +128,21 @@ export default function LoginPage() {
     forgot: "bg-gradient-to-r from-amber-500 to-orange-500",
   }[mode];
 
-  const heading = { login: "Welcome Back", signup: "Create Account", forgot: "Forgot Password" }[mode];
+  const heading = {
+    login: t("account.login.welcomeBack"),
+    signup: t("account.login.createAccount"),
+    forgot: t("account.login.forgotPassword"),
+  }[mode];
   const subheading = {
-    login: "Sign in to your account",
-    signup: "Join the STM Events community",
-    forgot: "Enter your email to receive a reset link",
+    login: t("account.login.signInSub"),
+    signup: t("account.login.createSub"),
+    forgot: t("account.login.forgotSub"),
   }[mode];
 
   const btnLabel = {
-    login: loading ? "Signing in..." : "Sign In",
-    signup: loading ? "Creating..." : "Create Account",
-    forgot: loading ? "Sending..." : "Send Reset Link",
+    login: loading ? t("account.login.signingIn") : t("account.login.signIn"),
+    signup: loading ? t("account.login.creating") : t("account.login.create"),
+    forgot: loading ? t("account.login.sending") : t("account.login.sendReset"),
   }[mode];
 
   return (
@@ -147,7 +160,7 @@ export default function LoginPage() {
             <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
-            Back to Site
+            {t("account.login.backToSite")}
           </Link>
         </div>
       </nav>
@@ -210,7 +223,7 @@ export default function LoginPage() {
               {mode === "signup" && (
                 <div>
                   <label className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.25em] text-pink-400/80">
-                    Full Name
+                    {t("account.login.fullName")}
                   </label>
                   <div className="relative">
                     <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
@@ -223,7 +236,7 @@ export default function LoginPage() {
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       className={`w-full rounded-xl border border-white/[0.08] bg-white/[0.04] py-3 pl-10 pr-4 text-sm text-white placeholder-white/25 outline-none transition-all duration-300 ${focusClass}`}
-                      placeholder="Your name"
+                      placeholder={t("account.login.namePlaceholder")}
                     />
                   </div>
                 </div>
@@ -232,7 +245,7 @@ export default function LoginPage() {
               {/* Email field — all modes */}
               <div>
                 <label className={`mb-2 block text-[10px] font-semibold uppercase tracking-[0.25em] ${labelColor}`}>
-                  Email
+                  {t("account.login.email")}
                 </label>
                 <div className="relative">
                   <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
@@ -246,7 +259,7 @@ export default function LoginPage() {
                     onChange={(e) => setEmail(e.target.value)}
                     required
                     className={`w-full rounded-xl border border-white/[0.08] bg-white/[0.04] py-3 pl-10 pr-4 text-sm text-white placeholder-white/25 outline-none transition-all duration-300 ${focusClass}`}
-                    placeholder="you@example.com"
+                    placeholder={t("account.login.emailPlaceholder")}
                   />
                 </div>
               </div>
@@ -256,7 +269,7 @@ export default function LoginPage() {
                 <div>
                   <div className="mb-2 flex items-center justify-between">
                     <label className={`text-[10px] font-semibold uppercase tracking-[0.25em] ${labelColor}`}>
-                      Password
+                      {t("account.login.password")}
                     </label>
                     {mode === "login" && (
                       <button
@@ -264,7 +277,7 @@ export default function LoginPage() {
                         onClick={() => switchMode("forgot")}
                         className="text-[10px] font-medium text-white/30 transition-colors hover:text-amber-400"
                       >
-                        Forgot password?
+                        {t("account.login.forgotLink")}
                       </button>
                     )}
                   </div>
@@ -326,14 +339,16 @@ export default function LoginPage() {
                   onClick={() => switchMode("login")}
                   className="text-[12px] font-medium text-white/35 transition-colors hover:text-purple-400"
                 >
-                  Back to sign in
+                  {t("account.login.backToSignIn")}
                 </button>
               ) : (
                 <button
                   onClick={() => switchMode(mode === "login" ? "signup" : "login")}
                   className="text-[12px] font-medium text-white/35 transition-colors hover:text-purple-400"
                 >
-                  {mode === "login" ? "Don\u2019t have an account? Sign up" : "Already have an account? Sign in"}
+                  {mode === "login"
+                    ? `${t("account.login.noAccount")} ${t("account.login.signUp")}`
+                    : `${t("account.login.haveAccount")} ${t("account.login.signInLink")}`}
                 </button>
               )}
               <div className="h-px flex-1 bg-white/[0.06]" />
@@ -346,19 +361,19 @@ export default function LoginPage() {
               <svg className="h-3.5 w-3.5 text-purple-500/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
               </svg>
-              <span className="text-[10px] text-white/20">Book Events</span>
+              <span className="text-[10px] text-white/20">{t("account.login.bookEvents")}</span>
             </div>
             <div className="flex items-center gap-1.5">
               <svg className="h-3.5 w-3.5 text-pink-500/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
               </svg>
-              <span className="text-[10px] text-white/20">Save Favorites</span>
+              <span className="text-[10px] text-white/20">{t("account.login.saveFavorites")}</span>
             </div>
             <div className="flex items-center gap-1.5">
               <svg className="h-3.5 w-3.5 text-cyan-500/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
               </svg>
-              <span className="text-[10px] text-white/20">Rent Gear</span>
+              <span className="text-[10px] text-white/20">{t("account.login.rentGear")}</span>
             </div>
           </div>
         </div>
@@ -372,9 +387,9 @@ export default function LoginPage() {
             <span className="text-[11px] tracking-wider text-white/15">&copy; {new Date().getFullYear()} STM Events</span>
           </div>
           <div className="flex items-center gap-4">
-            <Link href="/" className="text-[11px] text-white/20 transition-colors hover:text-white/40">Home</Link>
-            <Link href="/#events" className="text-[11px] text-white/20 transition-colors hover:text-white/40">Events</Link>
-            <Link href="/#contact" className="text-[11px] text-white/20 transition-colors hover:text-white/40">Contact</Link>
+            <Link href="/" className="text-[11px] text-white/20 transition-colors hover:text-white/40">{t("common.home")}</Link>
+            <Link href="/#events" className="text-[11px] text-white/20 transition-colors hover:text-white/40">{t("nav.events")}</Link>
+            <Link href="/#contact" className="text-[11px] text-white/20 transition-colors hover:text-white/40">{t("nav.contact")}</Link>
           </div>
         </div>
       </footer>

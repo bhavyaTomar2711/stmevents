@@ -26,7 +26,6 @@ export default function HeroSection({ nextEvent }: HeroSectionProps) {
         loop
         playsInline
         preload="metadata"
-        poster="/video/poster.jpg"
         className="absolute inset-0 h-full w-full object-cover"
       >
         <source

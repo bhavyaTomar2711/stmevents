@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import EventCard from "@/app/components/EventCard";
@@ -8,6 +9,21 @@ import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 export default function EventsPageClient({ events }: { events: EventData[] }) {
   const { t } = useLanguage();
+  const [query, setQuery] = useState("");
+
+  const filtered = query.trim()
+    ? events.filter((e) => {
+        const q = query.toLowerCase();
+        return (
+          e.title.toLowerCase().includes(q) ||
+          (e.title_de && e.title_de.toLowerCase().includes(q)) ||
+          (e.location && e.location.toLowerCase().includes(q)) ||
+          (e.location_de && e.location_de.toLowerCase().includes(q)) ||
+          (e.date && e.date.toLowerCase().includes(q))
+        );
+      })
+    : events;
+
   return (
     <main className="relative min-h-screen bg-black">
       {/* Background effects */}
@@ -15,16 +31,14 @@ export default function EventsPageClient({ events }: { events: EventData[] }) {
         <div
           className="absolute top-0 left-1/4 h-[800px] w-[800px] rounded-full"
           style={{
-            background:
-              "radial-gradient(circle, rgba(157,78,221,0.08) 0%, rgba(123,44,191,0.04) 40%, transparent 70%)",
+            background: "radial-gradient(circle, rgba(157,78,221,0.08) 0%, rgba(123,44,191,0.04) 40%, transparent 70%)",
             filter: "blur(140px)",
           }}
         />
         <div
           className="absolute right-0 bottom-1/4 h-[600px] w-[600px] rounded-full"
           style={{
-            background:
-              "radial-gradient(circle, rgba(123,44,191,0.06) 0%, transparent 70%)",
+            background: "radial-gradient(circle, rgba(123,44,191,0.06) 0%, transparent 70%)",
             filter: "blur(120px)",
           }}
         />
@@ -50,13 +64,7 @@ export default function EventsPageClient({ events }: { events: EventData[] }) {
             href="/"
             className="group mb-12 inline-flex items-center gap-2 text-[11px] font-medium tracking-[0.2em] text-white/40 uppercase transition-colors duration-300 hover:text-purple-400"
           >
-            <svg
-              className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={1.5}
-            >
+            <svg className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
             </svg>
             {t("common.backToHome")}
@@ -64,7 +72,7 @@ export default function EventsPageClient({ events }: { events: EventData[] }) {
         </motion.div>
 
         {/* Header */}
-        <div className="mb-16 md:mb-20">
+        <div className="mb-10 md:mb-12">
           <motion.span
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
@@ -94,25 +102,60 @@ export default function EventsPageClient({ events }: { events: EventData[] }) {
           </motion.p>
         </div>
 
-        {/* Events Grid */}
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {events.map((event, i) => (
-            <EventCard
-              key={event.slug}
-              title={event.title}
-              title_de={event.title_de}
-              date={event.date}
-              time={event.time}
-              location={event.location}
-              location_de={event.location_de}
-              image={event.image}
-              slug={event.slug}
-              index={i}
-              eventbriteLink={event.eventbriteLink}
-              ticketStatus={event.ticketStatus}
+        {/* Search */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="mb-10"
+        >
+          <div className="relative max-w-md">
+            <svg className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-white/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+            </svg>
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder={t("search.eventsPlaceholder")}
+              className="w-full rounded-xl border border-white/[0.08] bg-white/[0.04] py-3 pl-11 pr-4 text-sm text-white placeholder-white/25 outline-none transition-all focus:border-purple-500/40 focus:bg-white/[0.06]"
             />
-          ))}
-        </div>
+            {query && (
+              <button
+                onClick={() => setQuery("")}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/60"
+              >
+                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            )}
+          </div>
+        </motion.div>
+
+        {/* Events Grid */}
+        {filtered.length === 0 ? (
+          <p className="text-white/30">{t("search.noResults")}</p>
+        ) : (
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {filtered.map((event, i) => (
+              <EventCard
+                key={event.slug}
+                title={event.title}
+                title_de={event.title_de}
+                date={event.date}
+                time={event.time}
+                location={event.location}
+                location_de={event.location_de}
+                image={event.image}
+                slug={event.slug}
+                index={i}
+                eventbriteLink={event.eventbriteLink}
+                ticketStatus={event.ticketStatus}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </main>
   );

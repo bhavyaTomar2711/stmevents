@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 interface RentalInquiry {
   id: string;
@@ -20,6 +21,7 @@ interface RentalInquiry {
 }
 
 export default function RentalsPage() {
+  const { t, locale } = useLanguage();
   const [rentals, setRentals] = useState<RentalInquiry[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -42,17 +44,17 @@ export default function RentalsPage() {
     load();
   }, []);
 
-  const statusStyles: Record<string, { bg: string; text: string; label: string }> = {
-    new: { bg: "bg-amber-500/15", text: "text-amber-400", label: "Pending" },
-    read: { bg: "bg-blue-500/15", text: "text-blue-400", label: "Reviewed" },
-    replied: { bg: "bg-emerald-500/15", text: "text-emerald-400", label: "Replied" },
+  const statusStyles: Record<string, { bg: string; text: string; labelKey: "account.status.pending" | "account.status.reviewed" | "account.status.replied" }> = {
+    new: { bg: "bg-amber-500/15", text: "text-amber-400", labelKey: "account.status.pending" },
+    read: { bg: "bg-blue-500/15", text: "text-blue-400", labelKey: "account.status.reviewed" },
+    replied: { bg: "bg-emerald-500/15", text: "text-emerald-400", labelKey: "account.status.replied" },
   };
 
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-white">My Rentals</h1>
-        <p className="mt-1 text-sm text-white/40">Your equipment rental requests</p>
+        <h1 className="text-3xl font-bold text-white">{t("account.rentals.title")}</h1>
+        <p className="mt-1 text-sm text-white/40">{t("account.rentals.subtitle")}</p>
       </div>
 
       {loading ? (
@@ -66,10 +68,10 @@ export default function RentalsPage() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
             </svg>
           </div>
-          <p className="mb-1 text-sm font-medium text-white/50">No rental requests</p>
-          <p className="mb-5 text-[12px] text-white/25">Inquire about equipment to see your requests here</p>
+          <p className="mb-1 text-sm font-medium text-white/50">{t("account.rentals.empty")}</p>
+          <p className="mb-5 text-[12px] text-white/25">{t("account.rentals.emptyDesc")}</p>
           <Link href="/#services" className="rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 px-6 py-2.5 text-[11px] font-bold uppercase tracking-wider text-white shadow-lg shadow-cyan-500/20">
-            Browse Equipment
+            {t("account.rentals.browse")}
           </Link>
         </div>
       ) : (
@@ -78,11 +80,9 @@ export default function RentalsPage() {
             const style = statusStyles[rental.status] || statusStyles.new;
             return (
               <div key={rental.id} className="group relative overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.03] transition-all duration-300 hover:border-cyan-500/20 hover:bg-white/[0.05]">
-                {/* Colored top bar */}
                 <div className="h-1 w-full bg-gradient-to-r from-cyan-500 to-teal-500" />
 
                 <div className="p-5">
-                  {/* Icon + Status */}
                   <div className="mb-4 flex items-start justify-between">
                     <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500 to-teal-500 shadow-lg shadow-cyan-500/20">
                       <svg className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -90,17 +90,15 @@ export default function RentalsPage() {
                       </svg>
                     </div>
                     <span className={`rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider ${style.bg} ${style.text}`}>
-                      {style.label}
+                      {t(style.labelKey)}
                     </span>
                   </div>
 
-                  {/* Title */}
-                  <h3 className="mb-1 text-[16px] font-bold text-white">{rental.equipment_name || "Equipment Rental"}</h3>
+                  <h3 className="mb-1 text-[16px] font-bold text-white">{rental.equipment_name || t("account.rentals.fallback")}</h3>
                   <p className="mb-4 text-[11px] text-white/25">
-                    Submitted {new Date(rental.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                    {t("account.status.submitted")} {new Date(rental.created_at).toLocaleDateString(locale === "de" ? "de-DE" : "en-US", { month: "short", day: "numeric", year: "numeric" })}
                   </p>
 
-                  {/* Detail chips */}
                   <div className="mb-4 flex flex-wrap gap-2">
                     {rental.rental_date && (
                       <div className="flex items-center gap-1.5 rounded-lg border border-white/[0.06] bg-white/[0.03] px-2.5 py-1.5">
@@ -128,16 +126,14 @@ export default function RentalsPage() {
                     )}
                   </div>
 
-                  {/* Requirements */}
                   {rental.requirements && (
                     <div className="rounded-xl border border-white/[0.04] bg-white/[0.02] p-3">
-                      <p className="text-[9px] font-semibold uppercase tracking-[0.2em] text-white/20">Requirements</p>
+                      <p className="text-[9px] font-semibold uppercase tracking-[0.2em] text-white/20">{t("account.rentals.requirements")}</p>
                       <p className="mt-1 line-clamp-3 text-[12px] leading-relaxed text-white/45">{rental.requirements}</p>
                     </div>
                   )}
                 </div>
 
-                {/* Glow on hover */}
                 <div className="pointer-events-none absolute -bottom-8 -right-8 h-24 w-24 rounded-full bg-gradient-to-br from-cyan-500 to-teal-500 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-15" />
               </div>
             );

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 interface SavedEvent {
   id: string;
@@ -16,6 +17,7 @@ interface SavedEvent {
 }
 
 export default function SavedEventsPage() {
+  const { t, locale } = useLanguage();
   const [saved, setSaved] = useState<SavedEvent[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -46,8 +48,8 @@ export default function SavedEventsPage() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-white">Saved Events</h1>
-        <p className="mt-1 text-sm text-white/40">Events you&apos;re interested in</p>
+        <h1 className="text-3xl font-bold text-white">{t("account.saved.title")}</h1>
+        <p className="mt-1 text-sm text-white/40">{t("account.saved.subtitle")}</p>
       </div>
 
       {loading ? (
@@ -61,10 +63,10 @@ export default function SavedEventsPage() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
             </svg>
           </div>
-          <p className="mb-1 text-sm font-medium text-white/50">No saved events</p>
-          <p className="mb-5 text-[12px] text-white/25">Save events you&apos;re interested in</p>
+          <p className="mb-1 text-sm font-medium text-white/50">{t("account.saved.empty")}</p>
+          <p className="mb-5 text-[12px] text-white/25">{t("account.saved.emptyDesc")}</p>
           <Link href="/#events" className="rounded-xl bg-gradient-to-r from-pink-600 to-rose-600 px-6 py-2.5 text-[11px] font-bold uppercase tracking-wider text-white shadow-lg shadow-pink-500/20">
-            Discover Events
+            {t("account.saved.discover")}
           </Link>
         </div>
       ) : (
@@ -92,7 +94,7 @@ export default function SavedEventsPage() {
                     <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
-                    {item.event_date ? new Date(item.event_date).toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" }) : "TBA"}
+                    {item.event_date ? new Date(item.event_date).toLocaleDateString(locale === "de" ? "de-DE" : "en-US", { weekday: "short", month: "short", day: "numeric" }) : "TBA"}
                   </p>
                   <p className="flex items-center gap-1 text-[11px] text-white/35">
                     <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -103,10 +105,10 @@ export default function SavedEventsPage() {
                 </div>
                 <div className="flex gap-2">
                   <Link href={`/events/${item.event_slug}`} className="flex-1 rounded-xl bg-white/[0.06] py-2 text-center text-[10px] font-semibold uppercase tracking-wider text-white/60 transition-all hover:bg-white/[0.1] hover:text-white">
-                    View Event
+                    {t("account.saved.viewEvent")}
                   </Link>
                   <button onClick={() => removeSaved(item.id)} className="rounded-xl border border-red-500/15 bg-red-500/[0.06] px-4 py-2 text-[10px] font-semibold uppercase tracking-wider text-red-400/60 transition-all hover:border-red-500/25 hover:bg-red-500/10 hover:text-red-400">
-                    Remove
+                    {t("account.saved.remove")}
                   </button>
                 </div>
               </div>

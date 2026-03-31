@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
@@ -55,6 +56,18 @@ function DJCard({ dj, index }: { dj: DJData; index: number }) {
 
 export default function DJsPageClient({ djs }: { djs: DJData[] }) {
   const { t } = useLanguage();
+  const [query, setQuery] = useState("");
+
+  const filtered = query.trim()
+    ? djs.filter((dj) => {
+        const q = query.toLowerCase();
+        return (
+          dj.name.toLowerCase().includes(q) ||
+          (dj.genre && dj.genre.toLowerCase().includes(q))
+        );
+      })
+    : djs;
+
   return (
     <main className="relative min-h-screen bg-black">
       {/* Background */}
@@ -95,7 +108,7 @@ export default function DJsPageClient({ djs }: { djs: DJData[] }) {
         </motion.div>
 
         {/* Header */}
-        <div className="mb-16 md:mb-20">
+        <div className="mb-10 md:mb-12">
           <motion.span
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
@@ -125,12 +138,44 @@ export default function DJsPageClient({ djs }: { djs: DJData[] }) {
           </motion.p>
         </div>
 
+        {/* Search */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="mb-10"
+        >
+          <div className="relative max-w-md">
+            <svg className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-white/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+            </svg>
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder={t("search.djsPlaceholder")}
+              className="w-full rounded-xl border border-white/[0.08] bg-white/[0.04] py-3 pl-11 pr-4 text-sm text-white placeholder-white/25 outline-none transition-all focus:border-purple-500/40 focus:bg-white/[0.06]"
+            />
+            {query && (
+              <button onClick={() => setQuery("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/60">
+                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            )}
+          </div>
+        </motion.div>
+
         {/* Grid */}
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {djs.map((dj, i) => (
-            <DJCard key={dj.id} dj={dj} index={i} />
-          ))}
-        </div>
+        {filtered.length === 0 ? (
+          <p className="text-white/30">{t("search.noResults")}</p>
+        ) : (
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {filtered.map((dj, i) => (
+              <DJCard key={dj.id} dj={dj} index={i} />
+            ))}
+          </div>
+        )}
       </div>
     </main>
   );

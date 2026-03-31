@@ -5,28 +5,30 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import type { User } from "@supabase/supabase-js";
-
-const navItems = [
-  { label: "Dashboard", href: "/account", icon: "M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z", fill: true },
-  { label: "My Bookings", href: "/account/bookings", icon: "M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z", color: "purple" },
-  { label: "Saved Events", href: "/account/saved", icon: "M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z", color: "pink" },
-  { label: "My Rentals", href: "/account/rentals", icon: "M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10", color: "cyan" },
-  { label: "Profile", href: "/account/profile", icon: "M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z", color: "emerald" },
-];
-
-const colorMap: Record<string, { active: string; icon: string }> = {
-  purple: { active: "bg-purple-500/15 text-purple-300 border-purple-500/20", icon: "text-purple-400" },
-  pink: { active: "bg-pink-500/15 text-pink-300 border-pink-500/20", icon: "text-pink-400" },
-  cyan: { active: "bg-cyan-500/15 text-cyan-300 border-cyan-500/20", icon: "text-cyan-400" },
-  amber: { active: "bg-amber-500/15 text-amber-300 border-amber-500/20", icon: "text-amber-400" },
-  emerald: { active: "bg-emerald-500/15 text-emerald-300 border-emerald-500/20", icon: "text-emerald-400" },
-};
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 export default function AccountShell({ children, user }: { children: React.ReactNode; user: User }) {
   const pathname = usePathname();
   const router = useRouter();
+  const { t } = useLanguage();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const userName = user.user_metadata?.full_name || user.email?.split("@")[0] || "User";
+
+  const navItems = [
+    { labelKey: "account.shell.dashboard" as const, href: "/account", icon: "M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z", fill: true },
+    { labelKey: "account.shell.myBookings" as const, href: "/account/bookings", icon: "M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z", color: "purple" },
+    { labelKey: "account.shell.savedEvents" as const, href: "/account/saved", icon: "M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z", color: "pink" },
+    { labelKey: "account.shell.myRentals" as const, href: "/account/rentals", icon: "M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10", color: "cyan" },
+    { labelKey: "account.shell.profile" as const, href: "/account/profile", icon: "M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z", color: "emerald" },
+  ];
+
+  const colorMap: Record<string, { active: string; icon: string }> = {
+    purple: { active: "bg-purple-500/15 text-purple-300 border-purple-500/20", icon: "text-purple-400" },
+    pink: { active: "bg-pink-500/15 text-pink-300 border-pink-500/20", icon: "text-pink-400" },
+    cyan: { active: "bg-cyan-500/15 text-cyan-300 border-cyan-500/20", icon: "text-cyan-400" },
+    amber: { active: "bg-amber-500/15 text-amber-300 border-amber-500/20", icon: "text-amber-400" },
+    emerald: { active: "bg-emerald-500/15 text-emerald-300 border-emerald-500/20", icon: "text-emerald-400" },
+  };
 
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
@@ -43,7 +45,7 @@ export default function AccountShell({ children, user }: { children: React.React
             <Image src="https://res.cloudinary.com/dqiuwzvfb/image/upload/v1774434332/logoo_bho6qe.png" alt="STM" width={20} height={20} />
           </div>
           <div>
-            <h2 className="text-sm font-bold text-white">My Account</h2>
+            <h2 className="text-sm font-bold text-white">{t("account.shell.title")}</h2>
             <p className="text-[9px] font-medium uppercase tracking-wider text-purple-400">{userName}</p>
           </div>
         </div>
@@ -88,7 +90,7 @@ export default function AccountShell({ children, user }: { children: React.React
             <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
-            Back to Website
+            {t("account.shell.backToWebsite")}
           </Link>
         </div>
 
@@ -121,7 +123,7 @@ export default function AccountShell({ children, user }: { children: React.React
                       <path strokeLinecap="round" strokeLinejoin="round" d={item.icon} />
                     </svg>
                   </div>
-                  {item.label}
+                  {t(item.labelKey)}
                   {isActive && (
                     <svg className="ml-auto h-4 w-4 text-white/20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
@@ -142,7 +144,7 @@ export default function AccountShell({ children, user }: { children: React.React
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
             </svg>
-            Logout
+            {t("account.shell.logout")}
           </button>
         </div>
       </aside>

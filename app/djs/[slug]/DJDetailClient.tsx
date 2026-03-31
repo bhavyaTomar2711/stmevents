@@ -23,7 +23,7 @@ function SoundCloudIcon() {
 }
 
 export default function DJDetailClient({ dj }: { dj: DJData }) {
-  const { locale } = useLanguage();
+  const { locale, t } = useLanguage();
   const displayBio = (locale === "de" && dj.bio_de) ? dj.bio_de : dj.bio;
 
   return (
@@ -60,7 +60,7 @@ export default function DJDetailClient({ dj }: { dj: DJData }) {
           <svg className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
           </svg>
-          All DJs
+          {t("djDetail.allDJs")}
         </Link>
       </motion.div>
 
@@ -102,7 +102,7 @@ export default function DJDetailClient({ dj }: { dj: DJData }) {
               </span>
               {dj.resident && (
                 <span className="inline-flex items-center rounded-full border border-emerald-500/20 bg-emerald-500/5 px-4 py-1.5 text-[10px] font-semibold uppercase tracking-[0.25em] text-emerald-400">
-                  Resident
+                  {t("common.resident")}
                 </span>
               )}
             </div>
@@ -127,7 +127,7 @@ export default function DJDetailClient({ dj }: { dj: DJData }) {
             {(dj.instagramUrl || dj.soundcloudUrl) && (
               <div className="mt-10">
                 <h2 className="mb-4 text-[11px] font-semibold uppercase tracking-[0.2em] text-white/30">
-                  Follow
+                  {t("djDetail.follow")}
                 </h2>
                 <div className="flex gap-3">
                   {dj.instagramUrl && (
@@ -162,7 +162,7 @@ export default function DJDetailClient({ dj }: { dj: DJData }) {
                 href="/events"
                 className="group relative inline-flex items-center gap-3 overflow-hidden rounded-lg bg-gradient-to-r from-[#7B2CBF] to-[#9D4EDD] px-7 py-4 text-sm font-semibold tracking-[0.12em] text-white uppercase transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_40px_rgba(157,78,221,0.3)]"
               >
-                <span className="relative z-10">View Events</span>
+                <span className="relative z-10">{t("djDetail.viewEvents")}</span>
                 <svg className="relative z-10 h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                 </svg>
@@ -176,7 +176,7 @@ export default function DJDetailClient({ dj }: { dj: DJData }) {
                 <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
                 </svg>
-                All Artists
+                {t("djDetail.allArtists")}
               </Link>
             </div>
           </motion.div>

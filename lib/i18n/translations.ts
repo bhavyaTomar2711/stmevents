@@ -8,6 +8,7 @@ const translations = {
   "nav.djs": { en: "DJS", de: "DJS" },
   "nav.contact": { en: "CONTACT", de: "KONTAKT" },
   "nav.myAccount": { en: "My Account", de: "Mein Konto" },
+  "nav.signUp": { en: "Sign Up", de: "Registrieren" },
 
   // ── Hero ──
   "hero.nextEvent": { en: "NEXT EVENT", de: "NÄCHSTES EVENT" },
@@ -203,6 +204,7 @@ const translations = {
   "countdown.seconds": { en: "SECONDS", de: "SEK" },
 
   // ── Shared / Subpages ──
+  "common.home": { en: "Home", de: "Startseite" },
   "common.backToHome": { en: "Back to Home", de: "Zurück zur Startseite" },
   "common.noItems": { en: "No items in this category yet.", de: "Noch keine Einträge in dieser Kategorie." },
   "common.resident": { en: "Resident", de: "Resident" },
@@ -312,6 +314,118 @@ const translations = {
     en: "The sound behind every STM Events experience.",
     de: "Der Sound hinter jedem STM Events Erlebnis.",
   },
+
+  // ── DJ Detail ──
+  "djDetail.allDJs": { en: "All DJs", de: "Alle DJs" },
+  "djDetail.follow": { en: "Follow", de: "Folgen" },
+  "djDetail.viewEvents": { en: "View Events", de: "Events ansehen" },
+  "djDetail.allArtists": { en: "All Artists", de: "Alle Künstler" },
+
+  // ── Search ──
+  "search.eventsPlaceholder": { en: "Search events...", de: "Events suchen..." },
+  "search.galleryPlaceholder": { en: "Search gallery...", de: "Galerie durchsuchen..." },
+  "search.equipmentPlaceholder": { en: "Search equipment...", de: "Equipment suchen..." },
+  "search.djsPlaceholder": { en: "Search artists...", de: "Künstler suchen..." },
+  "search.noResults": { en: "No results found.", de: "Keine Ergebnisse gefunden." },
+
+  // ── Account Shell ──
+  "account.shell.title": { en: "My Account", de: "Mein Konto" },
+  "account.shell.dashboard": { en: "Dashboard", de: "Dashboard" },
+  "account.shell.myBookings": { en: "My Bookings", de: "Meine Buchungen" },
+  "account.shell.savedEvents": { en: "Saved Events", de: "Gespeicherte Events" },
+  "account.shell.myRentals": { en: "My Rentals", de: "Meine Mietanfragen" },
+  "account.shell.profile": { en: "Profile", de: "Profil" },
+  "account.shell.backToWebsite": { en: "Back to Website", de: "Zurück zur Website" },
+  "account.shell.logout": { en: "Logout", de: "Abmelden" },
+
+  // ── Account Dashboard ──
+  "account.dashboard.welcome": { en: "Welcome back,", de: "Willkommen zurück," },
+  "account.dashboard.overview": { en: "Here's your activity overview", de: "Hier ist deine Aktivitätsübersicht" },
+  "account.dashboard.quickLinks": { en: "Quick Links", de: "Schnellzugriff" },
+  "account.dashboard.browseEvents": { en: "Browse Events", de: "Events entdecken" },
+  "account.dashboard.browseEventsDesc": { en: "Discover upcoming experiences", de: "Entdecke kommende Erlebnisse" },
+  "account.dashboard.rentEquipment": { en: "Rent Equipment", de: "Equipment mieten" },
+  "account.dashboard.rentEquipmentDesc": { en: "Professional sound & lighting", de: "Professioneller Sound & Licht" },
+  "account.dashboard.editProfile": { en: "Edit Profile", de: "Profil bearbeiten" },
+  "account.dashboard.editProfileDesc": { en: "Update your info", de: "Info aktualisieren" },
+
+  // ── Account Status ──
+  "account.status.pending": { en: "Pending", de: "Ausstehend" },
+  "account.status.reviewed": { en: "Reviewed", de: "Geprüft" },
+  "account.status.replied": { en: "Replied", de: "Beantwortet" },
+  "account.status.submitted": { en: "Submitted", de: "Eingereicht" },
+
+  // ── Account Bookings ──
+  "account.bookings.title": { en: "My Bookings", de: "Meine Buchungen" },
+  "account.bookings.subtitle": { en: "Your event booking requests", de: "Deine Eventbuchungsanfragen" },
+  "account.bookings.empty": { en: "No booking requests yet", de: "Noch keine Buchungsanfragen" },
+  "account.bookings.emptyDesc": { en: "Book an event to see your requests here", de: "Buche ein Event, um deine Anfragen hier zu sehen" },
+  "account.bookings.browse": { en: "Browse Events", de: "Events entdecken" },
+  "account.bookings.fallback": { en: "Event Booking", de: "Eventbuchung" },
+  "account.bookings.yourMessage": { en: "Your Message", de: "Deine Nachricht" },
+
+  // ── Account Rentals ──
+  "account.rentals.title": { en: "My Rentals", de: "Meine Mietanfragen" },
+  "account.rentals.subtitle": { en: "Your equipment rental requests", de: "Deine Equipment-Mietanfragen" },
+  "account.rentals.empty": { en: "No rental requests", de: "Keine Mietanfragen" },
+  "account.rentals.emptyDesc": { en: "Inquire about equipment to see your requests here", de: "Frage nach Equipment, um deine Anfragen hier zu sehen" },
+  "account.rentals.browse": { en: "Browse Equipment", de: "Equipment entdecken" },
+  "account.rentals.fallback": { en: "Equipment Rental", de: "Equipment-Miete" },
+  "account.rentals.requirements": { en: "Requirements", de: "Anforderungen" },
+
+  // ── Account Saved Events ──
+  "account.saved.title": { en: "Saved Events", de: "Gespeicherte Events" },
+  "account.saved.subtitle": { en: "Events you're interested in", de: "Events, die dich interessieren" },
+  "account.saved.empty": { en: "No saved events", de: "Keine gespeicherten Events" },
+  "account.saved.emptyDesc": { en: "Save events you're interested in", de: "Speichere Events, die dich interessieren" },
+  "account.saved.discover": { en: "Discover Events", de: "Events entdecken" },
+  "account.saved.viewEvent": { en: "View Event", de: "Event ansehen" },
+  "account.saved.remove": { en: "Remove", de: "Entfernen" },
+
+  // ── Account Profile ──
+  "account.profile.title": { en: "Profile", de: "Profil" },
+  "account.profile.subtitle": { en: "Manage your personal information", de: "Verwalte deine persönlichen Daten" },
+  "account.profile.yourName": { en: "Your Name", de: "Dein Name" },
+  "account.profile.fullName": { en: "Full Name", de: "Vollständiger Name" },
+  "account.profile.emailNote": { en: "Email cannot be changed for security reasons.", de: "E-Mail kann aus Sicherheitsgründen nicht geändert werden." },
+  "account.profile.phone": { en: "Phone", de: "Telefon" },
+  "account.profile.bio": { en: "Bio", de: "Bio" },
+  "account.profile.bioPlaceholder": { en: "Tell us about yourself...", de: "Erzähl uns von dir..." },
+  "account.profile.saving": { en: "Saving...", de: "Wird gespeichert..." },
+  "account.profile.saveChanges": { en: "Save Changes", de: "Änderungen speichern" },
+  "account.profile.saved": { en: "Profile updated!", de: "Profil aktualisiert!" },
+
+  // ── Account Login ──
+  "account.login.welcomeBack": { en: "Welcome Back", de: "Willkommen zurück" },
+  "account.login.createAccount": { en: "Create Account", de: "Konto erstellen" },
+  "account.login.forgotPassword": { en: "Forgot Password", de: "Passwort vergessen" },
+  "account.login.signInSub": { en: "Sign in to your account", de: "Melde dich bei deinem Konto an" },
+  "account.login.createSub": { en: "Join the STM Events community", de: "Werde Teil der STM Events Community" },
+  "account.login.forgotSub": { en: "Enter your email to receive a reset link", de: "Gib deine E-Mail ein, um einen Reset-Link zu erhalten" },
+  "account.login.fullName": { en: "Full Name", de: "Vollständiger Name" },
+  "account.login.namePlaceholder": { en: "Your name", de: "Dein Name" },
+  "account.login.email": { en: "Email", de: "E-Mail" },
+  "account.login.emailPlaceholder": { en: "you@example.com", de: "du@beispiel.de" },
+  "account.login.password": { en: "Password", de: "Passwort" },
+  "account.login.forgotLink": { en: "Forgot password?", de: "Passwort vergessen?" },
+  "account.login.signingIn": { en: "Signing in...", de: "Anmelden..." },
+  "account.login.signIn": { en: "Sign In", de: "Anmelden" },
+  "account.login.creating": { en: "Creating...", de: "Erstellen..." },
+  "account.login.create": { en: "Create Account", de: "Konto erstellen" },
+  "account.login.sending": { en: "Sending...", de: "Senden..." },
+  "account.login.sendReset": { en: "Send Reset Link", de: "Reset-Link senden" },
+  "account.login.backToSignIn": { en: "Back to sign in", de: "Zurück zum Anmelden" },
+  "account.login.noAccount": { en: "Don't have an account?", de: "Kein Konto?" },
+  "account.login.signUp": { en: "Sign up", de: "Registrieren" },
+  "account.login.haveAccount": { en: "Already have an account?", de: "Bereits ein Konto?" },
+  "account.login.signInLink": { en: "Sign in", de: "Anmelden" },
+  "account.login.backToSite": { en: "Back to Site", de: "Zurück zur Website" },
+  "account.login.bookEvents": { en: "Book Events", de: "Events buchen" },
+  "account.login.saveFavorites": { en: "Save Favorites", de: "Favoriten speichern" },
+  "account.login.rentGear": { en: "Rent Gear", de: "Equipment mieten" },
+  "account.login.resetSent": { en: "Password reset link sent! Check your email inbox.", de: "Passwort-Reset-Link gesendet! Bitte prüfe dein E-Mail-Postfach." },
+  "account.login.accountCreated": { en: "Account created! You can now sign in.", de: "Konto erstellt! Du kannst dich jetzt anmelden." },
+  "account.login.error": { en: "Something went wrong. Please try again.", de: "Etwas ist schiefgelaufen. Bitte versuche es erneut." },
 } as const;
 
 export type TranslationKey = keyof typeof translations;

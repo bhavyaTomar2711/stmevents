@@ -171,11 +171,20 @@ const FILTER_TABS: { labelKey: TranslationKey; value: string }[] = [
 export default function GalleryPageClient({ items }: { items: GalleryItem[] }) {
   const { t } = useLanguage();
   const [activeFilter, setActiveFilter] = useState("all");
+  const [query, setQuery] = useState("");
   const [lightboxItem, setLightboxItem] = useState<GalleryItem | null>(null);
 
-  const filtered = activeFilter === "all"
-    ? items
-    : items.filter((i) => i.category === activeFilter);
+  const filtered = items
+    .filter((i) => activeFilter === "all" || i.category === activeFilter)
+    .filter((i) => {
+      if (!query.trim()) return true;
+      const q = query.toLowerCase();
+      return (
+        i.title.toLowerCase().includes(q) ||
+        (i.title_de && i.title_de.toLowerCase().includes(q)) ||
+        (i.category && i.category.toLowerCase().includes(q))
+      );
+    });
 
   return (
     <main className="relative min-h-screen bg-black">
@@ -258,6 +267,34 @@ export default function GalleryPageClient({ items }: { items: GalleryItem[] }) {
           </motion.p>
         </div>
 
+        {/* Search */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.28 }}
+          className="mb-6"
+        >
+          <div className="relative max-w-md">
+            <svg className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-white/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+            </svg>
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder={t("search.galleryPlaceholder")}
+              className="w-full rounded-xl border border-white/[0.08] bg-white/[0.04] py-3 pl-11 pr-4 text-sm text-white placeholder-white/25 outline-none transition-all focus:border-purple-500/40 focus:bg-white/[0.06]"
+            />
+            {query && (
+              <button onClick={() => setQuery("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/60">
+                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            )}
+          </div>
+        </motion.div>
+
         {/* Filter Tabs */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -310,7 +347,7 @@ export default function GalleryPageClient({ items }: { items: GalleryItem[] }) {
 
         {filtered.length === 0 && (
           <div className="py-20 text-center">
-            <p className="text-white/30">{t("common.noItems")}</p>
+            <p className="text-white/30">{query ? t("search.noResults") : t("common.noItems")}</p>
           </div>
         )}
       </div>
