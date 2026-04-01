@@ -23,6 +23,7 @@ export default function LoginPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState("");
@@ -31,6 +32,7 @@ export default function LoginPage() {
     setMode(next);
     setError("");
     setSuccess("");
+    setConfirmPassword("");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -40,6 +42,13 @@ export default function LoginPage() {
     setSuccess("");
 
     try {
+      // --- Confirm password check for signup ---
+      if (mode === "signup" && password !== confirmPassword) {
+        setError(t("account.login.passwordMismatch"));
+        setLoading(false);
+        return;
+      }
+
       // --- Forgot password ---
       if (mode === "forgot") {
         const supabase = createClient();
@@ -266,38 +275,65 @@ export default function LoginPage() {
 
               {/* Password field — login & signup only */}
               {mode !== "forgot" && (
-                <div>
-                  <div className="mb-2 flex items-center justify-between">
-                    <label className={`text-[10px] font-semibold uppercase tracking-[0.25em] ${labelColor}`}>
-                      {t("account.login.password")}
-                    </label>
-                    {mode === "login" && (
-                      <button
-                        type="button"
-                        onClick={() => switchMode("forgot")}
-                        className="text-[10px] font-medium text-white/30 transition-colors hover:text-amber-400"
-                      >
-                        {t("account.login.forgotLink")}
-                      </button>
-                    )}
-                  </div>
-                  <div className="relative">
-                    <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
-                      <svg className="h-4 w-4 text-white/20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
-                      </svg>
+                <>
+                  <div>
+                    <div className="mb-2 flex items-center justify-between">
+                      <label className={`text-[10px] font-semibold uppercase tracking-[0.25em] ${labelColor}`}>
+                        {t("account.login.password")}
+                      </label>
+                      {mode === "login" && (
+                        <button
+                          type="button"
+                          onClick={() => switchMode("forgot")}
+                          className="text-[10px] font-medium text-white/30 transition-colors hover:text-amber-400"
+                        >
+                          {t("account.login.forgotLink")}
+                        </button>
+                      )}
                     </div>
-                    <input
-                      type="password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                      minLength={6}
-                      className={`w-full rounded-xl border border-white/[0.08] bg-white/[0.04] py-3 pl-10 pr-4 text-sm text-white placeholder-white/25 outline-none transition-all duration-300 ${focusClass}`}
-                      placeholder="••••••••"
-                    />
+                    <div className="relative">
+                      <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
+                        <svg className="h-4 w-4 text-white/20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+                        </svg>
+                      </div>
+                      <input
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                        minLength={6}
+                        className={`w-full rounded-xl border border-white/[0.08] bg-white/[0.04] py-3 pl-10 pr-4 text-sm text-white placeholder-white/25 outline-none transition-all duration-300 ${focusClass}`}
+                        placeholder="••••••••"
+                      />
+                    </div>
                   </div>
-                </div>
+
+                  {/* Confirm Password — signup only */}
+                  {mode === "signup" && (
+                    <div>
+                      <label className={`mb-2 block text-[10px] font-semibold uppercase tracking-[0.25em] ${labelColor}`}>
+                        {t("account.login.confirmPassword")}
+                      </label>
+                      <div className="relative">
+                        <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
+                          <svg className="h-4 w-4 text-white/20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+                          </svg>
+                        </div>
+                        <input
+                          type="password"
+                          value={confirmPassword}
+                          onChange={(e) => setConfirmPassword(e.target.value)}
+                          required
+                          minLength={6}
+                          className={`w-full rounded-xl border border-white/[0.08] bg-white/[0.04] py-3 pl-10 pr-4 text-sm text-white placeholder-white/25 outline-none transition-all duration-300 ${focusClass}`}
+                          placeholder={t("account.login.confirmPasswordPlaceholder")}
+                        />
+                      </div>
+                    </div>
+                  )}
+                </>
               )}
 
               {/* Error */}

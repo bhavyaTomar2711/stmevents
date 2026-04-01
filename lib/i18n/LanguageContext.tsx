@@ -5,6 +5,7 @@ import {
   useContext,
   useState,
   useCallback,
+  useEffect,
   type ReactNode,
 } from "react";
 import translations, { type Locale, type TranslationKey } from "./translations";
@@ -20,6 +21,10 @@ const LanguageContext = createContext<LanguageContextValue | null>(null);
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [locale, setLocale] = useState<Locale>("de");
+
+  useEffect(() => {
+    document.documentElement.lang = locale;
+  }, [locale]);
 
   const toggleLocale = useCallback(() => {
     setLocale((prev) => (prev === "de" ? "en" : "de"));

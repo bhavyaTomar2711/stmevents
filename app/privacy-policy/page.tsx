@@ -1,5 +1,10 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
+
+export const metadata: Metadata = {
+  title: "Privacy Policy | STM Events",
+};
 
 export default function PrivacyPolicyPage() {
   return (

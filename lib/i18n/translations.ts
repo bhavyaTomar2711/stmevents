@@ -7,6 +7,7 @@ const translations = {
   "nav.services": { en: "SERVICES", de: "LEISTUNGEN" },
   "nav.djs": { en: "DJS", de: "DJS" },
   "nav.contact": { en: "CONTACT", de: "KONTAKT" },
+  "nav.equipment": { en: "EQUIPMENT", de: "EQUIPMENT" },
   "nav.myAccount": { en: "My Account", de: "Mein Konto" },
   "nav.signUp": { en: "Sign Up", de: "Registrieren" },
 
@@ -405,6 +406,9 @@ const translations = {
   "account.login.fullName": { en: "Full Name", de: "Vollständiger Name" },
   "account.login.namePlaceholder": { en: "Your name", de: "Dein Name" },
   "account.login.email": { en: "Email", de: "E-Mail" },
+  "account.login.confirmPassword": { en: "Confirm Password", de: "Passwort bestätigen" },
+  "account.login.confirmPasswordPlaceholder": { en: "Repeat password", de: "Passwort wiederholen" },
+  "account.login.passwordMismatch": { en: "Passwords do not match.", de: "Passwörter stimmen nicht überein." },
   "account.login.emailPlaceholder": { en: "you@example.com", de: "du@beispiel.de" },
   "account.login.password": { en: "Password", de: "Passwort" },
   "account.login.forgotLink": { en: "Forgot password?", de: "Passwort vergessen?" },

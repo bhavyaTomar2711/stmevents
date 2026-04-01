@@ -6,10 +6,11 @@ import Link from "next/link";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 import type { TranslationKey } from "@/lib/i18n/translations";
 
-const navLinks: { key: TranslationKey; href: string }[] = [
-  { key: "nav.events", href: "#events" },
-  { key: "nav.gallery", href: "#gallery" },
-  { key: "nav.djs", href: "#djs" },
+const navLinks: { key: TranslationKey; href: string; page?: boolean }[] = [
+  { key: "nav.events", href: "/events", page: true },
+  { key: "nav.gallery", href: "/gallery", page: true },
+  { key: "nav.djs", href: "/djs", page: true },
+  { key: "nav.equipment", href: "/equipment", page: true },
   { key: "nav.services", href: "#services" },
   { key: "nav.contact", href: "#contact" },
 ];
@@ -39,7 +40,7 @@ export default function Navbar() {
     const onScroll = () => {
       setScrolled(window.scrollY > 40);
 
-      const sections = navLinks.map((l) => l.href.replace("#", ""));
+      const sections = navLinks.filter((l) => !l.page).map((l) => l.href.replace("#", ""));
       let current = "";
       for (const id of sections) {
         const el = document.getElementById(id);
@@ -68,11 +69,6 @@ export default function Navbar() {
     };
   }, [menuOpen]);
 
-  const scrollToTop = (e: React.MouseEvent) => {
-    e.preventDefault();
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
   return (
     <>
       <nav
@@ -83,9 +79,8 @@ export default function Navbar() {
       >
         <div className="mx-auto flex items-center justify-between px-6 py-5 md:px-10 lg:px-16 xl:px-24">
           {/* Logo */}
-          <a
-            href="#"
-            onClick={scrollToTop}
+          <Link
+            href="/"
             className="group select-none transition-opacity hover:opacity-80"
           >
             <Image
@@ -96,29 +91,39 @@ export default function Navbar() {
               className="h-10 w-auto md:h-9"
               priority
             />
-          </a>
+          </Link>
 
           {/* Desktop Nav */}
           <div className="hidden items-center gap-9 md:flex lg:gap-10">
-            {navLinks.map((link) => (
-              <a
-                key={link.key}
-                href={link.href}
-                onClick={(e) => scrollToSection(e, link.href)}
-                className={`relative text-[12px] font-medium tracking-[0.2em] transition-colors duration-300 hover:text-white ${activeSection === link.href.replace("#", "")
-                  ? "text-white"
-                  : "text-white/60"
-                  }`}
-              >
-                {t(link.key)}
-                <span
-                  className={`absolute -bottom-1 left-0 h-px bg-purple-500 transition-all duration-300 ${activeSection === link.href.replace("#", "")
-                    ? "w-full opacity-100"
-                    : "w-0 opacity-0"
+            {navLinks.map((link) =>
+              link.page ? (
+                <Link
+                  key={link.key}
+                  href={link.href}
+                  className="relative text-[12px] font-medium tracking-[0.2em] transition-colors duration-300 hover:text-white text-white/60"
+                >
+                  {t(link.key)}
+                </Link>
+              ) : (
+                <a
+                  key={link.key}
+                  href={link.href}
+                  onClick={(e) => scrollToSection(e, link.href)}
+                  className={`relative text-[12px] font-medium tracking-[0.2em] transition-colors duration-300 hover:text-white ${activeSection === link.href.replace("#", "")
+                    ? "text-white"
+                    : "text-white/60"
                     }`}
-                />
-              </a>
-            ))}
+                >
+                  {t(link.key)}
+                  <span
+                    className={`absolute -bottom-1 left-0 h-px bg-purple-500 transition-all duration-300 ${activeSection === link.href.replace("#", "")
+                      ? "w-full opacity-100"
+                      : "w-0 opacity-0"
+                      }`}
+                  />
+                </a>
+              )
+            )}
 
             {/* Divider */}
             <div className="h-4 w-px bg-white/15" />
@@ -193,27 +198,46 @@ export default function Navbar() {
         </button>
 
         <div className="flex flex-col items-center gap-8">
-          {navLinks.map((link, i) => (
-            <a
-              key={link.key}
-              href={link.href}
-              onClick={(e) => scrollToSection(e, link.href)}
-              className={`text-xl font-medium tracking-[0.25em] hover:text-white ${activeSection === link.href.replace("#", "")
-                ? "text-white"
-                : "text-white/70"
-                }`}
-              style={{
-                transitionProperty: "opacity, transform, color",
-                transitionDuration: "0.4s, 0.4s, 0.2s",
-                transitionTimingFunction: "ease",
-                transitionDelay: menuOpen ? `${i * 50}ms` : "0ms",
-                opacity: menuOpen ? 1 : 0,
-                transform: menuOpen ? "translateY(0)" : "translateY(12px)",
-              }}
-            >
-              {t(link.key)}
-            </a>
-          ))}
+          {navLinks.map((link, i) =>
+            link.page ? (
+              <Link
+                key={link.key}
+                href={link.href}
+                onClick={() => setMenuOpen(false)}
+                className="text-xl font-medium tracking-[0.25em] text-white/70 hover:text-white"
+                style={{
+                  transitionProperty: "opacity, transform, color",
+                  transitionDuration: "0.4s, 0.4s, 0.2s",
+                  transitionTimingFunction: "ease",
+                  transitionDelay: menuOpen ? `${i * 50}ms` : "0ms",
+                  opacity: menuOpen ? 1 : 0,
+                  transform: menuOpen ? "translateY(0)" : "translateY(12px)",
+                }}
+              >
+                {t(link.key)}
+              </Link>
+            ) : (
+              <a
+                key={link.key}
+                href={link.href}
+                onClick={(e) => scrollToSection(e, link.href)}
+                className={`text-xl font-medium tracking-[0.25em] hover:text-white ${activeSection === link.href.replace("#", "")
+                  ? "text-white"
+                  : "text-white/70"
+                  }`}
+                style={{
+                  transitionProperty: "opacity, transform, color",
+                  transitionDuration: "0.4s, 0.4s, 0.2s",
+                  transitionTimingFunction: "ease",
+                  transitionDelay: menuOpen ? `${i * 50}ms` : "0ms",
+                  opacity: menuOpen ? 1 : 0,
+                  transform: menuOpen ? "translateY(0)" : "translateY(12px)",
+                }}
+              >
+                {t(link.key)}
+              </a>
+            )
+          )}
 
           <div
             className="mt-6 flex items-center gap-3 text-base tracking-[0.2em]"

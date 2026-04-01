@@ -1,5 +1,15 @@
+import { createServerSupabase } from "@/lib/supabase/server";
+
 export async function POST(request: Request) {
   try {
+    // Only admins (used in admin panel) may call the translation endpoint
+    const supabase = await createServerSupabase();
+    const { data: { user } } = await supabase.auth.getUser();
+    const adminEmail = process.env.ADMIN_EMAIL?.toLowerCase();
+    if (!user || !adminEmail || user.email?.toLowerCase() !== adminEmail) {
+      return Response.json({ error: "Forbidden" }, { status: 403 });
+    }
+
     const { text, from = "de", to = "en" } = await request.json();
 
     if (!text || !text.trim()) {
