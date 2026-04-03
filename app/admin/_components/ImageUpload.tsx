@@ -24,30 +24,47 @@ export default function ImageUpload({ label, value, onChange, folder = "stmevent
     setProgress(10);
 
     try {
-      // Validate file size (10MB limit)
-      if (file.size > 10 * 1024 * 1024) {
-        setError("File too large. Max 10MB.");
-        setUploading(false);
+      // Step 1: Get a signed upload token from server (no file sent to Vercel)
+      const signRes = await fetch("/api/upload/sign", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ folder }),
+      });
+
+      if (!signRes.ok) {
+        const err = await signRes.json();
+        setError(err.error || "Upload failed");
         setProgress(0);
         return;
       }
 
+      const { signature, timestamp, api_key, cloud_name } = await signRes.json();
       setProgress(30);
 
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("folder", folder);
+      // Step 2: Upload directly from browser to Cloudinary (bypasses Vercel size limit)
+      const isVideo = file.type.startsWith("video/");
+      const resourceType = isVideo ? "video" : "image";
 
-      const res = await fetch("/api/upload", { method: "POST", body: formData });
+      const cloudForm = new FormData();
+      cloudForm.append("file", file);
+      cloudForm.append("folder", folder);
+      cloudForm.append("timestamp", timestamp.toString());
+      cloudForm.append("api_key", api_key);
+      cloudForm.append("signature", signature);
+
+      const res = await fetch(
+        `https://api.cloudinary.com/v1_1/${cloud_name}/${resourceType}/upload`,
+        { method: "POST", body: cloudForm }
+      );
       setProgress(80);
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.error || "Upload failed");
+        setError(data.error?.message || "Upload failed");
         setProgress(0);
       } else {
         setProgress(100);
-        onChange(data.url);
+        onChange(data.secure_url);
         setTimeout(() => setProgress(0), 500);
       }
     } catch {
@@ -188,7 +205,7 @@ export default function ImageUpload({ label, value, onChange, folder = "stmevent
                   {dragOver ? "Drop to upload" : "Click to upload or drag and drop"}
                 </p>
                 <p className="text-[11px] text-white/25">
-                  {isVideo ? "MP4, MOV, WebM" : "PNG, JPG, GIF, WebP"} up to 10MB
+                  {isVideo ? "MP4, MOV, WebM" : "PNG, JPG, GIF, WebP"}
                 </p>
               </>
             )}
