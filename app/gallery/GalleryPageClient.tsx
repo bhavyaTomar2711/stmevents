@@ -8,6 +8,14 @@ import { CATEGORY_LABELS } from "@/lib/gallery-shared";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 import type { TranslationKey } from "@/lib/i18n/translations";
 
+const PAGE_SIZE = 12;
+
+// Inject Cloudinary transformations to serve compressed, resized thumbnails
+function optimizeCloudinaryUrl(url: string, width = 600): string {
+  if (!url || !url.includes("res.cloudinary.com")) return url;
+  return url.replace("/upload/", `/upload/q_auto,f_auto,w_${width},c_fill/`);
+}
+
 /* ── Lightbox ── */
 function Lightbox({ item, onClose }: { item: GalleryItem; onClose: () => void }) {
   return (
@@ -97,13 +105,14 @@ function GalleryCard({
   index: number;
   onClick: () => void;
 }) {
-  const src = item.thumbnailUrl || item.imageUrl || "";
+  const rawSrc = item.thumbnailUrl || item.imageUrl || "";
+  const src = optimizeCloudinaryUrl(rawSrc, 600);
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 25 }}
+      initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay: index * 0.04 }}
+      transition={{ duration: 0.3, delay: Math.min(index * 0.04, 0.25) }}
       className="glass-card group relative cursor-pointer overflow-hidden rounded-2xl"
       onClick={onClick}
     >
@@ -113,6 +122,7 @@ function GalleryCard({
           alt={item.title}
           loading="lazy"
           decoding="async"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
         />
         <div className="absolute inset-0 bg-black/20 transition-colors duration-500 group-hover:bg-black/5" />
@@ -173,6 +183,7 @@ export default function GalleryPageClient({ items }: { items: GalleryItem[] }) {
   const [activeFilter, setActiveFilter] = useState("all");
   const [query, setQuery] = useState("");
   const [lightboxItem, setLightboxItem] = useState<GalleryItem | null>(null);
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   const filtered = items
     .filter((i) => activeFilter === "all" || i.category === activeFilter)
@@ -185,6 +196,9 @@ export default function GalleryPageClient({ items }: { items: GalleryItem[] }) {
         (i.category && i.category.toLowerCase().includes(q))
       );
     });
+
+  const visible = filtered.slice(0, visibleCount);
+  const hasMore = visibleCount < filtered.length;
 
   return (
     <main className="relative min-h-screen bg-black">
@@ -281,7 +295,7 @@ export default function GalleryPageClient({ items }: { items: GalleryItem[] }) {
             <input
               type="text"
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              onChange={(e) => { setQuery(e.target.value); setVisibleCount(PAGE_SIZE); }}
               placeholder={t("search.galleryPlaceholder")}
               className="w-full rounded-xl border border-white/[0.08] bg-white/[0.04] py-3 pl-11 pr-4 text-sm text-white placeholder-white/25 outline-none transition-all focus:border-purple-500/40 focus:bg-white/[0.06]"
             />
@@ -310,7 +324,7 @@ export default function GalleryPageClient({ items }: { items: GalleryItem[] }) {
             return (
               <button
                 key={tab.value}
-                onClick={() => setActiveFilter(tab.value)}
+                onClick={() => { setActiveFilter(tab.value); setVisibleCount(PAGE_SIZE); }}
                 className={`rounded-full border px-4 py-2 text-[11px] font-medium tracking-[0.1em] uppercase transition-all duration-300 ${
                   activeFilter === tab.value
                     ? "border-purple-500/40 bg-purple-500/15 text-purple-300 backdrop-blur-sm"
@@ -334,7 +348,7 @@ export default function GalleryPageClient({ items }: { items: GalleryItem[] }) {
             transition={{ duration: 0.3 }}
             className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
           >
-            {filtered.map((item, i) => (
+            {visible.map((item, i) => (
               <GalleryCard
                 key={item.id}
                 item={item}
@@ -348,6 +362,17 @@ export default function GalleryPageClient({ items }: { items: GalleryItem[] }) {
         {filtered.length === 0 && (
           <div className="py-20 text-center">
             <p className="text-white/30">{query ? t("search.noResults") : t("common.noItems")}</p>
+          </div>
+        )}
+
+        {hasMore && (
+          <div className="mt-12 flex justify-center">
+            <button
+              onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
+              className="rounded-full border border-white/[0.08] bg-white/[0.03] px-8 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-white/50 backdrop-blur-sm transition-all duration-300 hover:border-purple-500/30 hover:bg-purple-500/10 hover:text-white/80"
+            >
+              Load more ({filtered.length - visibleCount} remaining)
+            </button>
           </div>
         )}
       </div>

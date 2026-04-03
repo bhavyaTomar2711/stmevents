@@ -7,9 +7,12 @@ import EventCard from "@/app/components/EventCard";
 import type { EventData } from "@/lib/events";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 
+const PAGE_SIZE = 9;
+
 export default function EventsPageClient({ events }: { events: EventData[] }) {
   const { t } = useLanguage();
   const [query, setQuery] = useState("");
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   const filtered = query.trim()
     ? events.filter((e) => {
@@ -23,6 +26,9 @@ export default function EventsPageClient({ events }: { events: EventData[] }) {
         );
       })
     : events;
+
+  const visible = filtered.slice(0, visibleCount);
+  const hasMore = visibleCount < filtered.length;
 
   return (
     <main className="relative min-h-screen bg-black">
@@ -116,7 +122,7 @@ export default function EventsPageClient({ events }: { events: EventData[] }) {
             <input
               type="text"
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              onChange={(e) => { setQuery(e.target.value); setVisibleCount(PAGE_SIZE); }}
               placeholder={t("search.eventsPlaceholder")}
               className="w-full rounded-xl border border-white/[0.08] bg-white/[0.04] py-3 pl-11 pr-4 text-sm text-white placeholder-white/25 outline-none transition-all focus:border-purple-500/40 focus:bg-white/[0.06]"
             />
@@ -137,24 +143,36 @@ export default function EventsPageClient({ events }: { events: EventData[] }) {
         {filtered.length === 0 ? (
           <p className="text-white/30">{t("search.noResults")}</p>
         ) : (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {filtered.map((event, i) => (
-              <EventCard
-                key={event.slug}
-                title={event.title}
-                title_de={event.title_de}
-                date={event.date}
-                time={event.time}
-                location={event.location}
-                location_de={event.location_de}
-                image={event.image}
-                slug={event.slug}
-                index={i}
-                eventbriteLink={event.eventbriteLink}
-                ticketStatus={event.ticketStatus}
-              />
-            ))}
-          </div>
+          <>
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {visible.map((event, i) => (
+                <EventCard
+                  key={event.slug}
+                  title={event.title}
+                  title_de={event.title_de}
+                  date={event.date}
+                  time={event.time}
+                  location={event.location}
+                  location_de={event.location_de}
+                  image={event.image}
+                  slug={event.slug}
+                  index={i}
+                  eventbriteLink={event.eventbriteLink}
+                  ticketStatus={event.ticketStatus}
+                />
+              ))}
+            </div>
+            {hasMore && (
+              <div className="mt-12 flex justify-center">
+                <button
+                  onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
+                  className="rounded-full border border-white/[0.08] bg-white/[0.03] px-8 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-white/50 backdrop-blur-sm transition-all duration-300 hover:border-purple-500/30 hover:bg-purple-500/10 hover:text-white/80"
+                >
+                  Load more ({filtered.length - visibleCount} remaining)
+                </button>
+              </div>
+            )}
+          </>
         )}
       </div>
     </main>

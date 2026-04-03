@@ -29,7 +29,7 @@ function EquipmentCard({ item, index }: { item: EquipmentData; index: number }) 
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.95 }}
-      transition={{ duration: 0.4, delay: index * 0.05 }}
+      transition={{ duration: 0.3, delay: Math.min(index * 0.05, 0.25) }}
     >
       <Link href={`/equipment/${item.slug}`} className="group block">
         <div className="glass-card relative overflow-hidden rounded-2xl transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(124,58,237,0.08)]">
@@ -104,10 +104,13 @@ function EquipmentCard({ item, index }: { item: EquipmentData; index: number }) 
   );
 }
 
+const PAGE_SIZE = 9;
+
 export default function EquipmentPageClient({ equipment }: { equipment: EquipmentData[] }) {
   const { t } = useLanguage();
   const [activeCategory, setActiveCategory] = useState("all");
   const [query, setQuery] = useState("");
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   const filtered = equipment
     .filter((e) => activeCategory === "all" || e.category === activeCategory)
@@ -120,6 +123,9 @@ export default function EquipmentPageClient({ equipment }: { equipment: Equipmen
         (e.categoryLabel && e.categoryLabel.toLowerCase().includes(q))
       );
     });
+
+  const visible = filtered.slice(0, visibleCount);
+  const hasMore = visibleCount < filtered.length;
 
   const categoryCounts = CATEGORIES.map((cat) => ({
     ...cat,
@@ -218,7 +224,7 @@ export default function EquipmentPageClient({ equipment }: { equipment: Equipmen
             <input
               type="text"
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              onChange={(e) => { setQuery(e.target.value); setVisibleCount(PAGE_SIZE); }}
               placeholder={t("search.equipmentPlaceholder")}
               className="w-full rounded-xl border border-white/[0.08] bg-white/[0.04] py-3 pl-11 pr-4 text-sm text-white placeholder-white/25 outline-none transition-all focus:border-purple-500/40 focus:bg-white/[0.06]"
             />
@@ -242,7 +248,7 @@ export default function EquipmentPageClient({ equipment }: { equipment: Equipmen
           {categoryCounts.map((cat) => (
             <button
               key={cat.value}
-              onClick={() => setActiveCategory(cat.value)}
+              onClick={() => { setActiveCategory(cat.value); setVisibleCount(PAGE_SIZE); }}
               className={`rounded-full border px-5 py-2 text-[10px] font-semibold uppercase tracking-[0.2em] transition-all duration-300 ${
                 activeCategory === cat.value
                   ? "border-purple-500/40 bg-purple-500/10 text-purple-300"
@@ -261,7 +267,7 @@ export default function EquipmentPageClient({ equipment }: { equipment: Equipmen
             layout
             className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
           >
-            {filtered.map((item, i) => (
+            {visible.map((item, i) => (
               <EquipmentCard key={item.id} item={item} index={i} />
             ))}
           </motion.div>
@@ -270,6 +276,17 @@ export default function EquipmentPageClient({ equipment }: { equipment: Equipmen
         {filtered.length === 0 && (
           <div className="py-20 text-center text-white/30">
             <p className="text-lg">{query ? t("search.noResults") : t("equipmentPage.noItems")}</p>
+          </div>
+        )}
+
+        {hasMore && (
+          <div className="mt-12 flex justify-center">
+            <button
+              onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
+              className="rounded-full border border-white/[0.08] bg-white/[0.03] px-8 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-white/50 backdrop-blur-sm transition-all duration-300 hover:border-purple-500/30 hover:bg-purple-500/10 hover:text-white/80"
+            >
+              Load more ({filtered.length - visibleCount} remaining)
+            </button>
           </div>
         )}
       </div>

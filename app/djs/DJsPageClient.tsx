@@ -13,7 +13,7 @@ function DJCard({ dj, index }: { dj: DJData; index: number }) {
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: index * 0.06 }}
+      transition={{ duration: 0.4, delay: Math.min(index * 0.06, 0.25) }}
     >
       <Link href={`/djs/${dj.slug}`} className="group block">
         <div className="glass-card relative overflow-hidden rounded-2xl transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_0_35px_rgba(124,58,237,0.12)]">
@@ -54,9 +54,12 @@ function DJCard({ dj, index }: { dj: DJData; index: number }) {
   );
 }
 
+const PAGE_SIZE = 9;
+
 export default function DJsPageClient({ djs }: { djs: DJData[] }) {
   const { t } = useLanguage();
   const [query, setQuery] = useState("");
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   const filtered = query.trim()
     ? djs.filter((dj) => {
@@ -67,6 +70,9 @@ export default function DJsPageClient({ djs }: { djs: DJData[] }) {
         );
       })
     : djs;
+
+  const visible = filtered.slice(0, visibleCount);
+  const hasMore = visibleCount < filtered.length;
 
   return (
     <main className="relative min-h-screen bg-black">
@@ -152,7 +158,7 @@ export default function DJsPageClient({ djs }: { djs: DJData[] }) {
             <input
               type="text"
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              onChange={(e) => { setQuery(e.target.value); setVisibleCount(PAGE_SIZE); }}
               placeholder={t("search.djsPlaceholder")}
               className="w-full rounded-xl border border-white/[0.08] bg-white/[0.04] py-3 pl-11 pr-4 text-sm text-white placeholder-white/25 outline-none transition-all focus:border-purple-500/40 focus:bg-white/[0.06]"
             />
@@ -170,11 +176,23 @@ export default function DJsPageClient({ djs }: { djs: DJData[] }) {
         {filtered.length === 0 ? (
           <p className="text-white/30">{t("search.noResults")}</p>
         ) : (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {filtered.map((dj, i) => (
-              <DJCard key={dj.id} dj={dj} index={i} />
-            ))}
-          </div>
+          <>
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {visible.map((dj, i) => (
+                <DJCard key={dj.id} dj={dj} index={i} />
+              ))}
+            </div>
+            {hasMore && (
+              <div className="mt-12 flex justify-center">
+                <button
+                  onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
+                  className="rounded-full border border-white/[0.08] bg-white/[0.03] px-8 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-white/50 backdrop-blur-sm transition-all duration-300 hover:border-purple-500/30 hover:bg-purple-500/10 hover:text-white/80"
+                >
+                  Load more ({filtered.length - visibleCount} remaining)
+                </button>
+              </div>
+            )}
+          </>
         )}
       </div>
     </main>
