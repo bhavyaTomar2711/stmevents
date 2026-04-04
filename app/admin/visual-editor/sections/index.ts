@@ -1,6 +1,6 @@
 import type { TranslationKey } from "@/lib/i18n/translations";
 
-export type FieldType = "text" | "textarea";
+export type FieldType = "text" | "textarea" | "image";
 
 export interface FieldConfig {
   key: string;
@@ -26,6 +26,21 @@ export const sections: SectionConfig[] = [
       { key: "heading_line2", label: "Heading Line 2", type: "text", translationKey: "hero.theUnderground" },
       { key: "button_text", label: "Button Text", type: "text", translationKey: "hero.getTickets" },
       { key: "stay_tuned", label: "Stay Tuned Text", type: "text", translationKey: "hero.stayTuned" },
+    ],
+  },
+  {
+    sectionId: "stats",
+    label: "Stats Bar",
+    anchorId: "top",
+    fields: [
+      { key: "events_produced_value", label: "Events Produced — Number", type: "text", translationKey: "stats.eventsProducedValue" },
+      { key: "events_produced", label: "Events Produced — Label", type: "text", translationKey: "stats.eventsProduced" },
+      { key: "people_moved_value", label: "People Moved — Number", type: "text", translationKey: "stats.peopleMovedValue" },
+      { key: "people_moved", label: "People Moved — Label", type: "text", translationKey: "stats.peopleMoved" },
+      { key: "artists_featured_value", label: "Artists Featured — Number", type: "text", translationKey: "stats.artistsFeaturedValue" },
+      { key: "artists_featured", label: "Artists Featured — Label", type: "text", translationKey: "stats.artistsFeatured" },
+      { key: "venues_value", label: "Venues — Number", type: "text", translationKey: "stats.venuesValue" },
+      { key: "venues", label: "Venues — Label", type: "text", translationKey: "stats.venues" },
     ],
   },
   {
@@ -88,6 +103,7 @@ export const sections: SectionConfig[] = [
     label: "About Us",
     anchorId: "about",
     fields: [
+      { key: "about_image", label: "Section Image", type: "image", translationKey: "about.image" },
       { key: "label", label: "Section Label", type: "text", translationKey: "about.label" },
       { key: "heading", label: "Heading", type: "text", translationKey: "about.heading" },
       { key: "heading_highlight", label: "Highlight Word", type: "text", translationKey: "about.headingHighlight" },

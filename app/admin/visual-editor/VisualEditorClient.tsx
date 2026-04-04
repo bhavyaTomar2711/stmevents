@@ -22,6 +22,7 @@ export default function VisualEditorClient() {
   const [restoring, setRestoring] = useState(false);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const [hasChanges, setHasChanges] = useState(false);
+  const [uploadingField, setUploadingField] = useState<string | null>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
   // Load saved values for active section
@@ -91,6 +92,49 @@ export default function VisualEditorClient() {
     } catch { /* cross-origin before load */ }
     return () => iframe.removeEventListener("load", handleLoad);
   }, [activeSection]);
+
+  // Upload image directly to Cloudinary and set both EN + DE to the same URL
+  const handleImageUpload = useCallback(async (fieldKey: string, file: File) => {
+    setUploadingField(fieldKey);
+    try {
+      const signRes = await fetch("/api/upload/sign", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ folder: "stmevents/about" }),
+      });
+      if (!signRes.ok) throw new Error("Sign failed");
+      const { signature, timestamp, api_key, cloud_name } = await signRes.json();
+
+      const cloudForm = new FormData();
+      cloudForm.append("file", file);
+      cloudForm.append("folder", "stmevents/about");
+      cloudForm.append("timestamp", timestamp.toString());
+      cloudForm.append("api_key", api_key);
+      cloudForm.append("signature", signature);
+
+      const res = await fetch(`https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`, {
+        method: "POST",
+        body: cloudForm,
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error?.message || "Upload failed");
+
+      const url: string = data.secure_url;
+      // Image is locale-agnostic — set same URL for both EN and DE
+      setFields((prev) => ({ ...prev, [fieldKey]: { en: url, de: url } }));
+      setHasChanges(true);
+      setMessage(null);
+      // Live preview
+      iframeRef.current?.contentWindow?.postMessage(
+        { type: "livePreviewUpdate", section_id: activeSection.sectionId, field_key: fieldKey, value_en: url, value_de: url },
+        "*"
+      );
+    } catch {
+      setMessage({ type: "error", text: "Image upload failed. Try again." });
+    } finally {
+      setUploadingField(null);
+    }
+  }, [activeSection.sectionId]);
 
   const updateField = (key: string, locale: "en" | "de", value: string) => {
     const updated = { ...fields[key], [locale]: value };
@@ -322,49 +366,102 @@ export default function VisualEditorClient() {
                     {field.label}
                   </label>
 
-                  {/* EN */}
-                  <div className="mb-2">
-                    <div className="mb-1 flex items-center gap-1.5">
-                      <span className="rounded bg-violet-500/10 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-violet-400">EN</span>
+                  {field.type === "image" ? (
+                    /* ── Image Upload ── */
+                    <div>
+                      {/* Preview */}
+                      {fields[field.key]?.en && (
+                        <div className="mb-3 overflow-hidden rounded-xl border border-white/[0.06]">
+                          <img
+                            src={fields[field.key].en}
+                            alt="Preview"
+                            className="h-40 w-full object-cover"
+                          />
+                        </div>
+                      )}
+                      {/* Upload button */}
+                      <label className={`flex cursor-pointer items-center justify-center gap-2 rounded-lg border border-dashed px-4 py-3 text-[12px] font-medium transition-all ${
+                        uploadingField === field.key
+                          ? "border-violet-500/30 bg-violet-500/5 text-violet-400"
+                          : "border-white/[0.1] bg-white/[0.02] text-white/40 hover:border-violet-500/30 hover:bg-violet-500/5 hover:text-violet-400"
+                      }`}>
+                        {uploadingField === field.key ? (
+                          <>
+                            <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
+                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+                            </svg>
+                            Uploading...
+                          </>
+                        ) : (
+                          <>
+                            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+                            </svg>
+                            {fields[field.key]?.en ? "Replace Image" : "Upload Image"}
+                          </>
+                        )}
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          disabled={uploadingField === field.key}
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) handleImageUpload(field.key, file);
+                            e.target.value = "";
+                          }}
+                        />
+                      </label>
+                      <p className="mt-1.5 text-[10px] text-white/20">Uploads to Cloudinary. Same image shown for all languages.</p>
                     </div>
-                    {field.type === "textarea" ? (
-                      <textarea
-                        value={fields[field.key]?.en || ""}
-                        onChange={(e) => updateField(field.key, "en", e.target.value)}
-                        rows={3}
-                        className="w-full resize-none rounded-lg border border-white/[0.06] bg-white/[0.03] px-3 py-2.5 text-[13px] text-white/80 outline-none transition-all focus:border-violet-500/30 focus:bg-white/[0.05]"
-                      />
-                    ) : (
-                      <input
-                        type="text"
-                        value={fields[field.key]?.en || ""}
-                        onChange={(e) => updateField(field.key, "en", e.target.value)}
-                        className="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-3 py-2.5 text-[13px] text-white/80 outline-none transition-all focus:border-violet-500/30 focus:bg-white/[0.05]"
-                      />
-                    )}
-                  </div>
+                  ) : (
+                    <>
+                      {/* EN */}
+                      <div className="mb-2">
+                        <div className="mb-1 flex items-center gap-1.5">
+                          <span className="rounded bg-violet-500/10 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-violet-400">EN</span>
+                        </div>
+                        {field.type === "textarea" ? (
+                          <textarea
+                            value={fields[field.key]?.en || ""}
+                            onChange={(e) => updateField(field.key, "en", e.target.value)}
+                            rows={3}
+                            className="w-full resize-none rounded-lg border border-white/[0.06] bg-white/[0.03] px-3 py-2.5 text-[13px] text-white/80 outline-none transition-all focus:border-violet-500/30 focus:bg-white/[0.05]"
+                          />
+                        ) : (
+                          <input
+                            type="text"
+                            value={fields[field.key]?.en || ""}
+                            onChange={(e) => updateField(field.key, "en", e.target.value)}
+                            className="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-3 py-2.5 text-[13px] text-white/80 outline-none transition-all focus:border-violet-500/30 focus:bg-white/[0.05]"
+                          />
+                        )}
+                      </div>
 
-                  {/* DE */}
-                  <div>
-                    <div className="mb-1 flex items-center gap-1.5">
-                      <span className="rounded bg-amber-500/10 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-amber-400">DE</span>
-                    </div>
-                    {field.type === "textarea" ? (
-                      <textarea
-                        value={fields[field.key]?.de || ""}
-                        onChange={(e) => updateField(field.key, "de", e.target.value)}
-                        rows={3}
-                        className="w-full resize-none rounded-lg border border-white/[0.06] bg-white/[0.03] px-3 py-2.5 text-[13px] text-white/80 outline-none transition-all focus:border-amber-500/30 focus:bg-white/[0.05]"
-                      />
-                    ) : (
-                      <input
-                        type="text"
-                        value={fields[field.key]?.de || ""}
-                        onChange={(e) => updateField(field.key, "de", e.target.value)}
-                        className="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-3 py-2.5 text-[13px] text-white/80 outline-none transition-all focus:border-amber-500/30 focus:bg-white/[0.05]"
-                      />
-                    )}
-                  </div>
+                      {/* DE */}
+                      <div>
+                        <div className="mb-1 flex items-center gap-1.5">
+                          <span className="rounded bg-amber-500/10 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-amber-400">DE</span>
+                        </div>
+                        {field.type === "textarea" ? (
+                          <textarea
+                            value={fields[field.key]?.de || ""}
+                            onChange={(e) => updateField(field.key, "de", e.target.value)}
+                            rows={3}
+                            className="w-full resize-none rounded-lg border border-white/[0.06] bg-white/[0.03] px-3 py-2.5 text-[13px] text-white/80 outline-none transition-all focus:border-amber-500/30 focus:bg-white/[0.05]"
+                          />
+                        ) : (
+                          <input
+                            type="text"
+                            value={fields[field.key]?.de || ""}
+                            onChange={(e) => updateField(field.key, "de", e.target.value)}
+                            className="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-3 py-2.5 text-[13px] text-white/80 outline-none transition-all focus:border-amber-500/30 focus:bg-white/[0.05]"
+                          />
+                        )}
+                      </div>
+                    </>
+                  )}
 
                   {/* Divider */}
                   <div className="mt-5 h-px bg-white/[0.04]" />

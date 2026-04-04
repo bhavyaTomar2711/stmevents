@@ -5,12 +5,19 @@ import { useLanguage } from "@/lib/i18n/LanguageContext";
 import { useSiteContent } from "@/lib/hooks/useSiteContent";
 import type { TranslationKey } from "@/lib/i18n/translations";
 
-const STATS: { value: number; suffix: string; labelKey: TranslationKey; fieldKey: string }[] = [
-  { value: 50, suffix: "+", labelKey: "stats.eventsProduced", fieldKey: "events_produced" },
-  { value: 10, suffix: "K+", labelKey: "stats.peopleMoved", fieldKey: "people_moved" },
-  { value: 30, suffix: "+", labelKey: "stats.artistsFeatured", fieldKey: "artists_featured" },
-  { value: 15, suffix: "+", labelKey: "stats.venues", fieldKey: "venues" },
+const STATS: { valueKey: TranslationKey; valueFallback: string; labelKey: TranslationKey; fieldKey: string; valueFieldKey: string }[] = [
+  { valueKey: "stats.eventsProducedValue", valueFallback: "50+", labelKey: "stats.eventsProduced", fieldKey: "events_produced", valueFieldKey: "events_produced_value" },
+  { valueKey: "stats.peopleMovedValue", valueFallback: "10K+", labelKey: "stats.peopleMoved", fieldKey: "people_moved", valueFieldKey: "people_moved_value" },
+  { valueKey: "stats.artistsFeaturedValue", valueFallback: "30+", labelKey: "stats.artistsFeatured", fieldKey: "artists_featured", valueFieldKey: "artists_featured_value" },
+  { valueKey: "stats.venuesValue", valueFallback: "15+", labelKey: "stats.venues", fieldKey: "venues", valueFieldKey: "venues_value" },
 ];
+
+// Parse "10K+" → { num: 10, suffix: "K+" }, "50+" → { num: 50, suffix: "+" }
+function parseStatValue(raw: string): { num: number; suffix: string } {
+  const match = raw.match(/^(\d+)(.*)/);
+  if (match) return { num: parseInt(match[1], 10), suffix: match[2] };
+  return { num: 0, suffix: raw };
+}
 
 function CountUpNumber({ target, suffix, triggered }: { target: number; suffix: string; triggered: boolean }) {
   const [count, setCount] = useState(0);
@@ -74,21 +81,25 @@ export default function StatsBar() {
       className="relative border-t border-b border-white/[0.06] bg-black/80 backdrop-blur-xl"
     >
       <div className="mx-auto grid max-w-6xl grid-cols-2 gap-px sm:grid-cols-4">
-        {STATS.map((stat, i) => (
-          <div
-            key={stat.labelKey}
-            className={`group relative flex flex-col items-center justify-center px-6 py-10 transition-colors duration-500 hover:bg-white/[0.02] sm:py-12 ${
-              i < STATS.length - 1 ? "sm:border-r sm:border-white/[0.06]" : ""
-            } ${i < 2 ? "border-b border-white/[0.06] sm:border-b-0" : ""}`}
-          >
-            <span className="text-4xl font-bold tracking-tight text-white transition-colors duration-300 group-hover:text-purple-100 sm:text-5xl">
-              <CountUpNumber target={stat.value} suffix={stat.suffix} triggered={triggered} />
-            </span>
-            <span className="mt-2 text-[10px] font-medium uppercase tracking-[0.25em] text-purple-400/70 transition-colors duration-300 group-hover:text-purple-400">
-              {tc("stats", stat.fieldKey, stat.labelKey)}
-            </span>
-          </div>
-        ))}
+        {STATS.map((stat, i) => {
+          const rawValue = tc("stats", stat.valueFieldKey, stat.valueKey);
+          const { num, suffix } = parseStatValue(rawValue);
+          return (
+            <div
+              key={stat.labelKey}
+              className={`group relative flex flex-col items-center justify-center px-6 py-10 transition-colors duration-500 hover:bg-white/[0.02] sm:py-12 ${
+                i < STATS.length - 1 ? "sm:border-r sm:border-white/[0.06]" : ""
+              } ${i < 2 ? "border-b border-white/[0.06] sm:border-b-0" : ""}`}
+            >
+              <span className="text-4xl font-bold tracking-tight text-white transition-colors duration-300 group-hover:text-purple-100 sm:text-5xl">
+                <CountUpNumber target={num} suffix={suffix} triggered={triggered} />
+              </span>
+              <span className="mt-2 text-[10px] font-medium uppercase tracking-[0.25em] text-purple-400/70 transition-colors duration-300 group-hover:text-purple-400">
+                {tc("stats", stat.fieldKey, stat.labelKey)}
+              </span>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

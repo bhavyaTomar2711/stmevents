@@ -23,6 +23,10 @@ const translations = {
   "stats.peopleMoved": { en: "People Moved", de: "Begeisterte Gäste" },
   "stats.artistsFeatured": { en: "Artists Featured", de: "Gefeatured Artists" },
   "stats.venues": { en: "Venues", de: "Venues" },
+  "stats.eventsProducedValue": { en: "50+", de: "50+" },
+  "stats.peopleMovedValue": { en: "10K+", de: "10K+" },
+  "stats.artistsFeaturedValue": { en: "30+", de: "30+" },
+  "stats.venuesValue": { en: "15+", de: "15+" },
 
   // ── Upcoming Events ──
   "events.label": { en: "Upcoming Experiences", de: "Kommende Erlebnisse" },
@@ -136,6 +140,10 @@ const translations = {
   "services.tagline": { en: "Tailored to your vision", de: "Auf eure Vision zugeschnitten" },
 
   // ── About ──
+  "about.image": {
+    en: "https://res.cloudinary.com/dqiuwzvfb/image/upload/v1774434331/about_us_eixodf.png",
+    de: "https://res.cloudinary.com/dqiuwzvfb/image/upload/v1774434331/about_us_eixodf.png",
+  },
   "about.label": { en: "About STM Events", de: "Über STM Events" },
   "about.heading": {
     en: "Creating underground experiences that",
