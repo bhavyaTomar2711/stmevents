@@ -176,7 +176,12 @@ export default function VisualEditorClient() {
           }),
         })
       );
-      await Promise.all(promises);
+      const results = await Promise.all(promises);
+      const failed = results.find((r) => !r.ok);
+      if (failed) {
+        const err = await failed.json().catch(() => ({}));
+        throw new Error(err.error || `Server error ${failed.status}`);
+      }
       setMessage({ type: "success", text: "Changes saved! Preview will refresh." });
       setHasChanges(false);
       // Reload iframe to show changes

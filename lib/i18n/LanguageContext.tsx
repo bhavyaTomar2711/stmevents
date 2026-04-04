@@ -20,14 +20,27 @@ interface LanguageContextValue {
 const LanguageContext = createContext<LanguageContextValue | null>(null);
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [locale, setLocale] = useState<Locale>("de");
+  const [locale, setLocaleState] = useState<Locale>("de");
+
+  // Hydrate from localStorage on mount
+  useEffect(() => {
+    const stored = localStorage.getItem("stm_locale") as Locale | null;
+    if (stored === "en" || stored === "de") {
+      setLocaleState(stored);
+    }
+  }, []);
 
   useEffect(() => {
     document.documentElement.lang = locale;
+    localStorage.setItem("stm_locale", locale);
   }, [locale]);
 
+  const setLocale = useCallback((l: Locale) => {
+    setLocaleState(l);
+  }, []);
+
   const toggleLocale = useCallback(() => {
-    setLocale((prev) => (prev === "de" ? "en" : "de"));
+    setLocaleState((prev) => (prev === "de" ? "en" : "de"));
   }, []);
 
   const t = useCallback(

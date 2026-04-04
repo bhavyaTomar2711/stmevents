@@ -112,14 +112,14 @@ export default function EventCard({
     }
 
     if (isSaved) {
-      await supabase
+      const { error } = await supabase
         .from("saved_events")
         .delete()
         .eq("user_id", user.id)
         .eq("event_slug", slug);
-      setIsSaved(false);
+      if (!error) setIsSaved(false);
     } else {
-      await supabase.from("saved_events").insert({
+      const { error } = await supabase.from("saved_events").insert({
         user_id: user.id,
         event_id: slug,
         event_title: title,
@@ -128,7 +128,7 @@ export default function EventCard({
         event_location: location,
         event_image: image || null,
       });
-      setIsSaved(true);
+      if (!error) setIsSaved(true);
     }
     setSaving(false);
   };
