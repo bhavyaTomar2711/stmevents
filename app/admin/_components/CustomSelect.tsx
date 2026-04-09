@@ -36,7 +36,7 @@ export default function CustomSelect({
   }, []);
 
   return (
-    <div ref={ref} className="relative">
+    <div ref={ref} className="relative min-w-[180px]">
       {label && (
         <label className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.25em] text-purple-400">
           {label}
