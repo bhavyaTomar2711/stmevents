@@ -1,6 +1,6 @@
 import type { TranslationKey } from "@/lib/i18n/translations";
 
-export type FieldType = "text" | "textarea" | "image";
+export type FieldType = "text" | "textarea" | "image" | "url";
 
 export interface FieldConfig {
   key: string;
@@ -120,6 +120,26 @@ export const sections: SectionConfig[] = [
       { key: "heading1", label: "Heading Line 1", type: "text", translationKey: "contact.heading1" },
       { key: "heading2", label: "Heading Line 2", type: "text", translationKey: "contact.heading2" },
       { key: "description", label: "Description", type: "textarea", translationKey: "contact.description" },
+      { key: "email_value", label: "Email Address", type: "text", translationKey: "contact.emailValue" },
+      { key: "phone_value", label: "Phone Number", type: "text", translationKey: "contact.phoneValue" },
+      { key: "location_value", label: "Location", type: "text", translationKey: "contact.locationValue" },
+      { key: "quote", label: "Tagline / Quote", type: "textarea", translationKey: "contact.quote" },
+      { key: "quote_author", label: "Quote Author", type: "text", translationKey: "contact.quoteAuthor" },
+      { key: "instagram_url", label: "Instagram URL", type: "url", translationKey: "contact.instagramUrl" },
+      { key: "tiktok_url", label: "TikTok URL", type: "url", translationKey: "contact.tiktokUrl" },
+      { key: "facebook_url", label: "Facebook URL", type: "url", translationKey: "contact.facebookUrl" },
+      { key: "soundcloud_url", label: "SoundCloud URL", type: "url", translationKey: "contact.soundcloudUrl" },
+    ],
+  },
+  {
+    sectionId: "footer",
+    label: "Footer",
+    anchorId: "contact",
+    fields: [
+      { key: "instagram_url", label: "Instagram URL", type: "url", translationKey: "footer.instagramUrl" },
+      { key: "tiktok_url", label: "TikTok URL", type: "url", translationKey: "footer.tiktokUrl" },
+      { key: "facebook_url", label: "Facebook URL", type: "url", translationKey: "footer.facebookUrl" },
+      { key: "soundcloud_url", label: "SoundCloud URL", type: "url", translationKey: "footer.soundcloudUrl" },
     ],
   },
 ];

@@ -4,6 +4,7 @@ import type { DbEvent } from "@/lib/supabase/types";
 // ─── Hero Event Type ───────────────────────────────────────────────
 export interface HeroEvent {
   title: string;
+  title_de: string;
   date: string;
   time: string;
   rawDate: string;
@@ -155,6 +156,7 @@ export async function getNextEvent(): Promise<HeroEvent | null> {
     if (error || !data) return null;
     return {
       title: data.title,
+      title_de: data.title_de || "",
       date: data.date ? formatDate(data.date) : "TBA",
       time: data.date ? formatTime(data.date) : "",
       rawDate: data.date || "",

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Providers from "./Providers";
-import ConditionalFooter from "./ConditionalFooter";
+import FooterDataProvider from "./FooterDataProvider";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -37,7 +37,7 @@ export default function RootLayout({
       <body>
         <Providers>
           {children}
-          <ConditionalFooter />
+          <FooterDataProvider />
         </Providers>
       </body>
     </html>

@@ -136,6 +136,18 @@ export default function VisualEditorClient() {
     }
   }, [activeSection.sectionId]);
 
+  const updateUrlField = (key: string, value: string) => {
+    setFields((prev) => ({ ...prev, [key]: { en: value, de: value } }));
+    setHasChanges(true);
+    setMessage(null);
+    try {
+      iframeRef.current?.contentWindow?.postMessage(
+        { type: "livePreviewUpdate", section_id: activeSection.sectionId, field_key: key, value_en: value, value_de: value },
+        "*"
+      );
+    } catch { /* iframe not ready */ }
+  };
+
   const updateField = (key: string, locale: "en" | "de", value: string) => {
     const updated = { ...fields[key], [locale]: value };
     setFields((prev) => ({
@@ -419,6 +431,18 @@ export default function VisualEditorClient() {
                         />
                       </label>
                       <p className="mt-1.5 text-[10px] text-white/20">Uploads to Cloudinary. Same image shown for all languages.</p>
+                    </div>
+                  ) : field.type === "url" ? (
+                    /* ── Single URL input (locale-agnostic) ── */
+                    <div>
+                      <input
+                        type="text"
+                        value={fields[field.key]?.en || ""}
+                        onChange={(e) => updateUrlField(field.key, e.target.value)}
+                        placeholder="https://"
+                        className="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-3 py-2.5 text-[13px] text-white/80 outline-none transition-all focus:border-violet-500/30 focus:bg-white/[0.05]"
+                      />
+                      <p className="mt-1.5 text-[10px] text-white/20">Same link used for all languages.</p>
                     </div>
                   ) : (
                     <>

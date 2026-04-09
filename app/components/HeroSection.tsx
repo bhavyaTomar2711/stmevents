@@ -10,7 +10,7 @@ interface HeroSectionProps {
 }
 
 export default function HeroSection({ nextEvent }: HeroSectionProps) {
-  const { t } = useLanguage();
+  const { t, locale } = useLanguage();
   const { tc } = useSiteContent();
 
   const hasEvent = !!nextEvent;
@@ -68,7 +68,7 @@ export default function HeroSection({ nextEvent }: HeroSectionProps) {
                     {t("hero.nextEvent")}
                   </span>
                   <h2 className="text-base font-semibold uppercase tracking-wider text-white sm:text-lg">
-                    {nextEvent.title}
+                    {(locale === "de" && nextEvent.title_de) ? nextEvent.title_de : nextEvent.title}
                   </h2>
                   <span className="text-[13px] font-normal tracking-wider text-white/50">
                     {nextEvent.date}{nextEvent.time ? ` · ${nextEvent.time}` : ""}

@@ -22,7 +22,8 @@ function Lightbox({
 }) {
   const { locale } = useLanguage();
   const displayTitle = (locale === "de" && item.title_de) ? item.title_de : item.title;
-  const displayDesc = (locale === "de" && item.description_de) ? item.description_de : item.description;
+  const rawDesc = (locale === "de" && item.description_de) ? item.description_de : item.description;
+  const displayDesc = rawDesc ? rawDesc.replace(/<[^>]*>/g, "").trim() || null : null;
 
   return (
     <motion.div

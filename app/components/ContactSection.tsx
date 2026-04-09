@@ -231,8 +231,8 @@ export default function ContactSection() {
             {([
               {
                 labelKey: "contact.emailLabel" as TranslationKey,
-                value: "contact@stm-events.com",
-                href: "mailto:contact@stm-events.com",
+                value: tc("contact", "email_value", "contact.emailValue"),
+                href: `mailto:${tc("contact", "email_value", "contact.emailValue")}`,
                 icon: (
                   <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
@@ -241,8 +241,8 @@ export default function ContactSection() {
               },
               {
                 labelKey: "contact.phoneLabel" as TranslationKey,
-                value: "+49 123 456 7890",
-                href: "tel:+491234567890",
+                value: tc("contact", "phone_value", "contact.phoneValue"),
+                href: `tel:${tc("contact", "phone_value", "contact.phoneValue").replace(/[\s\-()]/g, "")}`,
                 icon: (
                   <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
@@ -251,7 +251,7 @@ export default function ContactSection() {
               },
               {
                 labelKey: "contact.locationLabel" as TranslationKey,
-                value: "Berlin, Germany",
+                value: tc("contact", "location_value", "contact.locationValue"),
                 href: null as string | null,
                 icon: (
                   <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -300,10 +300,37 @@ export default function ContactSection() {
                 {[
                   {
                     name: "Instagram",
-                    href: "https://www.instagram.com/stmevents.de?igsh=MWR6NDI3MGs3NmU4Mg%3D%3D&utm_source=qr",
+                    href: tc("contact", "instagram_url", "contact.instagramUrl"),
                     icon: (
                       <svg className="h-[18px] w-[18px]" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
+                      </svg>
+                    ),
+                  },
+                  {
+                    name: "TikTok",
+                    href: tc("contact", "tiktok_url", "contact.tiktokUrl"),
+                    icon: (
+                      <svg className="h-[18px] w-[18px]" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.73a4.85 4.85 0 01-1.01-.04z" />
+                      </svg>
+                    ),
+                  },
+                  {
+                    name: "Facebook",
+                    href: tc("contact", "facebook_url", "contact.facebookUrl"),
+                    icon: (
+                      <svg className="h-[18px] w-[18px]" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                      </svg>
+                    ),
+                  },
+                  {
+                    name: "SoundCloud",
+                    href: tc("contact", "soundcloud_url", "contact.soundcloudUrl"),
+                    icon: (
+                      <svg className="h-[18px] w-[18px]" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M1.175 12.225c-.068 0-.123.057-.133.132l-.175 1.65.175 1.627c.01.075.065.132.133.132.07 0 .124-.057.132-.132l.2-1.627-.2-1.65c-.008-.075-.062-.132-.132-.132zm-.899.828c-.086 0-.157.072-.165.16l-.111 1.474.111 1.464c.008.09.079.16.165.16.087 0 .158-.07.165-.16l.127-1.464-.127-1.474c-.007-.088-.078-.16-.165-.16zm1.8-.7c-.09 0-.165.074-.173.166l-.155 1.332.155 1.31c.008.092.083.166.173.166.09 0 .166-.074.174-.166l.177-1.31-.177-1.332c-.008-.092-.084-.166-.174-.166zm.896-.435c-.104 0-.19.085-.197.19l-.133 1.767.133 1.738c.007.105.093.19.197.19.105 0 .19-.085.198-.19l.152-1.738-.152-1.767c-.008-.105-.093-.19-.198-.19zm.9-.19c-.12 0-.218.097-.224.218l-.11 1.957.11 1.92c.006.12.104.217.224.217.12 0 .217-.097.224-.218l.126-1.92-.126-1.956c-.007-.12-.104-.218-.224-.218zm.898.095c-.134 0-.243.108-.249.243l-.088 1.862.088 1.82c.006.135.115.243.249.243.134 0 .243-.108.249-.243l.1-1.82-.1-1.862c-.006-.135-.115-.243-.249-.243zm.9-.282c-.15 0-.27.12-.275.27l-.066 2.144.066 2.095c.005.15.125.27.275.27.149 0 .27-.12.275-.27l.074-2.095-.074-2.144c-.005-.15-.126-.27-.275-.27zm.9-.194c-.163 0-.296.132-.3.296l-.044 2.338.044 2.28c.004.164.137.296.3.296.162 0 .295-.132.3-.296l.05-2.28-.05-2.338c-.005-.164-.138-.296-.3-.296zm6.725-2.092c-.299 0-.59.05-.862.143-.178-2.013-1.87-3.587-3.93-3.587-.536 0-1.05.11-1.512.307-.178.073-.226.148-.228.216v7.074c.002.07.056.128.125.135h6.407c.394 0 .714-.32.714-.714v-.002c0-1.78-1.443-3.572-3.223-3.572z" />
                       </svg>
                     ),
                   },
@@ -331,12 +358,12 @@ export default function ContactSection() {
                 <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10H14.017zM0 21v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151C7.563 6.068 6 8.789 6 11h4v10H0z" />
               </svg>
               <p className="text-[14px] leading-relaxed text-white/50 italic">
-                {t("contact.quote")}
+                {tc("contact", "quote", "contact.quote")}
               </p>
               <div className="mt-4 flex items-center gap-3">
                 <div className="h-px w-6 bg-purple-500/50" />
                 <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-purple-400/70">
-                  {t("contact.quoteAuthor")}
+                  {tc("contact", "quote_author", "contact.quoteAuthor")}
                 </span>
               </div>
             </div>

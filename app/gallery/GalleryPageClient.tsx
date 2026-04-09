@@ -18,6 +18,12 @@ function optimizeCloudinaryUrl(url: string, width = 600): string {
 
 /* ── Lightbox ── */
 function Lightbox({ item, onClose }: { item: GalleryItem; onClose: () => void }) {
+  const { locale } = useLanguage();
+  const displayTitle = (locale === "de" && item.title_de) ? item.title_de : item.title;
+  const rawDesc = (locale === "de" && item.description_de) ? item.description_de : item.description;
+  const descText = rawDesc?.replace(/<[^>]*>/g, "").trim();
+  const displayDesc = descText ? rawDesc : item.description;
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -63,12 +69,12 @@ function Lightbox({ item, onClose }: { item: GalleryItem; onClose: () => void })
         {/* Info */}
         <div className="p-6 sm:p-8">
           <h3 className="text-xl font-semibold uppercase tracking-wide text-white">
-            {item.title}
+            {displayTitle}
           </h3>
-          {item.description && (
+          {displayDesc && (
             <div
               className="mt-3 max-w-2xl text-sm leading-relaxed text-white/50 [&_p]:m-0 [&_strong]:font-semibold [&_strong]:text-white/70"
-              dangerouslySetInnerHTML={{ __html: item.description }}
+              dangerouslySetInnerHTML={{ __html: displayDesc }}
             />
           )}
           <div className="mt-4 flex flex-wrap items-center gap-3">
@@ -105,6 +111,8 @@ function GalleryCard({
   index: number;
   onClick: () => void;
 }) {
+  const { locale } = useLanguage();
+  const displayTitle = (locale === "de" && item.title_de) ? item.title_de : item.title;
   const rawSrc = item.thumbnailUrl || item.imageUrl || "";
   const src = optimizeCloudinaryUrl(rawSrc, 600);
 
@@ -155,7 +163,7 @@ function GalleryCard({
       {/* Title */}
       <div className="p-4">
         <h3 className="text-sm font-semibold uppercase tracking-[0.06em] text-white/80 transition-colors group-hover:text-white">
-          {item.title}
+          {displayTitle}
         </h3>
         {item.relatedEvent && (
           <p className="mt-1 text-[11px] text-white/30">

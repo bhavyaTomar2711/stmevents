@@ -187,9 +187,16 @@ const translations = {
   "contact.sending": { en: "SENDING...", de: "SENDEN..." },
   "contact.sent": { en: "SENT SUCCESSFULLY !", de: "ERFOLGREICH GESENDET !" },
   "contact.emailLabel": { en: "Email", de: "E-Mail" },
+  "contact.emailValue": { en: "contact@stm-events.com", de: "contact@stm-events.com" },
   "contact.phoneLabel": { en: "Phone", de: "Telefon" },
+  "contact.phoneValue": { en: "+49 123 456 7890", de: "+49 123 456 7890" },
   "contact.locationLabel": { en: "Location", de: "Standort" },
+  "contact.locationValue": { en: "Berlin, Germany", de: "Berlin, Deutschland" },
   "contact.followUs": { en: "Follow Us", de: "Folge uns" },
+  "contact.instagramUrl": { en: "https://www.instagram.com/stmevents.de?igsh=MWR6NDI3MGs3NmU4Mg%3D%3D&utm_source=qr", de: "https://www.instagram.com/stmevents.de?igsh=MWR6NDI3MGs3NmU4Mg%3D%3D&utm_source=qr" },
+  "contact.tiktokUrl": { en: "#", de: "#" },
+  "contact.facebookUrl": { en: "#", de: "#" },
+  "contact.soundcloudUrl": { en: "#", de: "#" },
   "contact.quote": {
     en: "We don't just plan events — we engineer experiences that people remember forever.",
     de: "Wir planen nicht nur Events — wir erschaffen Erlebnisse, die für immer in Erinnerung bleiben.",
@@ -197,6 +204,10 @@ const translations = {
   "contact.quoteAuthor": { en: "STM Events Team", de: "STM Events Team" },
 
   // ── Footer ──
+  "footer.instagramUrl": { en: "#", de: "#" },
+  "footer.tiktokUrl": { en: "#", de: "#" },
+  "footer.facebookUrl": { en: "#", de: "#" },
+  "footer.soundcloudUrl": { en: "#", de: "#" },
   "footer.rights": { en: "All rights reserved.", de: "Alle Rechte vorbehalten." },
   "footer.tagline": {
     en: "Crafting immersive underground experiences where music, visuals, and atmosphere collide to create unforgettable nights.",
