@@ -136,6 +136,9 @@ export const sections: SectionConfig[] = [
     label: "Footer",
     anchorId: "contact",
     fields: [
+      { key: "tagline", label: "Tagline (under logo)", type: "textarea", translationKey: "footer.tagline" },
+      { key: "email", label: "Contact Email", type: "text", translationKey: "footer.email" },
+      { key: "location", label: "Location", type: "text", translationKey: "footer.location" },
       { key: "instagram_url", label: "Instagram URL", type: "url", translationKey: "footer.instagramUrl" },
       { key: "tiktok_url", label: "TikTok URL", type: "url", translationKey: "footer.tiktokUrl" },
       { key: "facebook_url", label: "Facebook URL", type: "url", translationKey: "footer.facebookUrl" },

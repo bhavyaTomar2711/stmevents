@@ -213,6 +213,8 @@ const translations = {
     en: "Crafting immersive underground experiences where music, visuals, and atmosphere collide to create unforgettable nights.",
     de: "Immersive Underground-Erlebnisse, in denen Musik, Visuals und Atmosphäre zu unvergesslichen Nächten verschmelzen.",
   },
+  "footer.email": { en: "info@stmevents.com", de: "info@stmevents.com" },
+  "footer.location": { en: "Berlin, Germany", de: "Berlin, Deutschland" },
   "footer.quickLinks": { en: "Quick Links", de: "Quick Links" },
   "footer.contactUs": { en: "Contact", de: "Kontakt" },
   "footer.madeWith": { en: "Designed & built for the underground.", de: "Designed & gebaut für den Underground." },
