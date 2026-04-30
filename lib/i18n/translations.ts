@@ -196,7 +196,6 @@ const translations = {
   "contact.instagramUrl": { en: "https://www.instagram.com/stmevents.de?igsh=MWR6NDI3MGs3NmU4Mg%3D%3D&utm_source=qr", de: "https://www.instagram.com/stmevents.de?igsh=MWR6NDI3MGs3NmU4Mg%3D%3D&utm_source=qr" },
   "contact.tiktokUrl": { en: "#", de: "#" },
   "contact.facebookUrl": { en: "#", de: "#" },
-  "contact.soundcloudUrl": { en: "#", de: "#" },
   "contact.quote": {
     en: "We don't just plan events — we engineer experiences that people remember forever.",
     de: "Wir planen nicht nur Events — wir erschaffen Erlebnisse, die für immer in Erinnerung bleiben.",
@@ -207,7 +206,6 @@ const translations = {
   "footer.instagramUrl": { en: "#", de: "#" },
   "footer.tiktokUrl": { en: "#", de: "#" },
   "footer.facebookUrl": { en: "#", de: "#" },
-  "footer.soundcloudUrl": { en: "#", de: "#" },
   "footer.rights": { en: "All rights reserved.", de: "Alle Rechte vorbehalten." },
   "footer.tagline": {
     en: "Crafting immersive underground experiences where music, visuals, and atmosphere collide to create unforgettable nights.",

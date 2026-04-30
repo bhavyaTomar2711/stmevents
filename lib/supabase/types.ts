@@ -26,7 +26,7 @@ export interface DbDJ {
   bio: string | null;
   bio_de: string | null;
   instagram_url: string | null;
-  soundcloud_url: string | null;
+  tiktok_url: string | null;
   resident: boolean;
   display_order: number;
   created_at: string;

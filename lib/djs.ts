@@ -13,7 +13,7 @@ export interface DJData {
   genre: string;
   bio: string | null;
   instagramUrl: string | null;
-  soundcloudUrl: string | null;
+  tiktokUrl: string | null;
   resident: boolean;
   order: number;
 }
@@ -31,7 +31,7 @@ function transformDJ(row: DbDJ): DJData {
     bio: row.bio || null,
     bio_de: row.bio_de || "",
     instagramUrl: row.instagram_url || null,
-    soundcloudUrl: row.soundcloud_url || null,
+    tiktokUrl: row.tiktok_url || null,
     resident: row.resident || false,
     order: row.display_order || 0,
   };

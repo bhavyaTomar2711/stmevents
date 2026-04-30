@@ -14,10 +14,10 @@ function InstagramIcon() {
   );
 }
 
-function SoundCloudIcon() {
+function TikTokIcon() {
   return (
     <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M11.56 8.87V17h8.76c1.85-.05 2.68-1.54 2.68-2.77 0-1.83-1.39-3.03-2.82-3.14-.28-2.91-2.74-4.26-4.68-4.13a4.47 4.47 0 00-2.15.68c-.45.3-.6.67-.6 1.02V17M8.15 9.98V17M5.82 11.37V17M3.49 12.26V17M1.16 13V17" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round" />
+      <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.73a4.85 4.85 0 01-1.01-.04z" />
     </svg>
   );
 }
@@ -124,7 +124,7 @@ export default function DJDetailClient({ dj }: { dj: DJData }) {
             )}
 
             {/* Social Links */}
-            {(dj.instagramUrl || dj.soundcloudUrl) && (
+            {(dj.instagramUrl || dj.tiktokUrl) && (
               <div className="mt-10">
                 <h2 className="mb-4 text-[11px] font-semibold uppercase tracking-[0.2em] text-white/30">
                   {t("djDetail.follow")}
@@ -141,15 +141,15 @@ export default function DJDetailClient({ dj }: { dj: DJData }) {
                       <span>Instagram</span>
                     </a>
                   )}
-                  {dj.soundcloudUrl && (
+                  {dj.tiktokUrl && (
                     <a
-                      href={dj.soundcloudUrl}
+                      href={dj.tiktokUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="glass-card flex items-center gap-2.5 rounded-lg px-5 py-3 text-sm font-medium text-white/60 transition-all duration-300 hover:text-white"
                     >
-                      <SoundCloudIcon />
-                      <span>SoundCloud</span>
+                      <TikTokIcon />
+                      <span>TikTok</span>
                     </a>
                   )}
                 </div>

@@ -26,7 +26,7 @@ export default function DJForm({ dj }: { dj?: DbDJ }) {
     bio: dj?.bio || "",
     bio_de: dj?.bio_de || "",
     instagram_url: dj?.instagram_url || "",
-    soundcloud_url: dj?.soundcloud_url || "",
+    tiktok_url: dj?.tiktok_url || "",
     resident: dj?.resident ?? false,
     display_order: dj?.display_order?.toString() || "1",
     published: dj?.published ?? true,
@@ -53,7 +53,7 @@ export default function DJForm({ dj }: { dj?: DbDJ }) {
       bio: form.bio || null,
       bio_de: form.bio_de || null,
       instagram_url: form.instagram_url || null,
-      soundcloud_url: form.soundcloud_url || null,
+      tiktok_url: form.tiktok_url || null,
       resident: form.resident,
       display_order: Math.max(1, parseInt(form.display_order) || 1),
       published: form.published,
@@ -94,7 +94,7 @@ export default function DJForm({ dj }: { dj?: DbDJ }) {
         </div>
         <div className="grid gap-6 sm:grid-cols-2">
           <AdminFormField label="Instagram URL" name="instagram_url" value={form.instagram_url} onChange={(v) => update("instagram_url", v)} placeholder="https://instagram.com/..." />
-          <AdminFormField label="SoundCloud URL" name="soundcloud_url" value={form.soundcloud_url} onChange={(v) => update("soundcloud_url", v)} placeholder="https://soundcloud.com/..." />
+          <AdminFormField label="TikTok URL" name="tiktok_url" value={form.tiktok_url} onChange={(v) => update("tiktok_url", v)} placeholder="https://tiktok.com/..." />
         </div>
         <div className="grid gap-3 sm:grid-cols-2">
           <ToggleSwitch checked={form.resident} onChange={(v) => update("resident", v)} label="Resident DJ" description="Mark as resident artist" color="emerald" />

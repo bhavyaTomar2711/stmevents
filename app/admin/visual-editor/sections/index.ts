@@ -128,7 +128,6 @@ export const sections: SectionConfig[] = [
       { key: "instagram_url", label: "Instagram URL", type: "url", translationKey: "contact.instagramUrl" },
       { key: "tiktok_url", label: "TikTok URL", type: "url", translationKey: "contact.tiktokUrl" },
       { key: "facebook_url", label: "Facebook URL", type: "url", translationKey: "contact.facebookUrl" },
-      { key: "soundcloud_url", label: "SoundCloud URL", type: "url", translationKey: "contact.soundcloudUrl" },
     ],
   },
   {
@@ -142,7 +141,6 @@ export const sections: SectionConfig[] = [
       { key: "instagram_url", label: "Instagram URL", type: "url", translationKey: "footer.instagramUrl" },
       { key: "tiktok_url", label: "TikTok URL", type: "url", translationKey: "footer.tiktokUrl" },
       { key: "facebook_url", label: "Facebook URL", type: "url", translationKey: "footer.facebookUrl" },
-      { key: "soundcloud_url", label: "SoundCloud URL", type: "url", translationKey: "footer.soundcloudUrl" },
     ],
   },
 ];
